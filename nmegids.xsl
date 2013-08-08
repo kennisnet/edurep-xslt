@@ -4,7 +4,7 @@
 	<xsl:include href="edurep://repositoryToVdexMapping"/>
 	 <!-- Collectienaam voor het koppelen van -->
 	<xsl:variable name="collectionName">
-		<xsl:text>BNL</xsl:text>
+		<xsl:text>nmegids</xsl:text>
 	</xsl:variable>
 
 	<!-- De door de collectie gebruikte namespace -->
@@ -23,42 +23,6 @@
 	<!-- Mapping begrippenkader -->
 	<xsl:call-template name="collectionMapping"/>
   </xsl:copy>
-</xsl:template>
-  
-<xsl:template match="lom:contribute[child::lom:role/lom:value/lom:langstring = 'content provider']">
-    <xsl:copy>
-      <xsl:apply-templates select="@*|node()"/>
-    </xsl:copy>
-   <xsl:element name="lom:contribute">
-     <xsl:element name="lom:centity">
-       <xsl:element name="lom:vcard">
-         <xsl:text>BEGIN:VCARD 
-VERSION:3.0  
-FN:Bibliotheek.nl  
-N:Bibliotheek.nl  
-END:VCARD</xsl:text>
-       </xsl:element>
-     </xsl:element>
-     <xsl:element name="lom:role">
-       <xsl:element name="lom:source">
-         <xsl:element name="lom:langstring">
-           <xsl:attribute name="xml:lang">
-             <xsl:text>x-none</xsl:text>
-           </xsl:attribute>
-           <xsl:text>http://purl.edustandaard.nl/vdex_lifecycle_contribute_role_lomv1p0_20060628.xml</xsl:text>
-         </xsl:element>
-       </xsl:element>
-       <xsl:element name="lom:value">
-         <xsl:element name="lom:langstring">
-           <xsl:attribute name="xml:langstring">
-             <xsl:text>x-none</xsl:text>
-           </xsl:attribute>
-           <xsl:text>publisher</xsl:text>
-         </xsl:element>
-       </xsl:element>
-     </xsl:element>
-   </xsl:element> 
-  
 </xsl:template>
 
     <!-- default copy -->
