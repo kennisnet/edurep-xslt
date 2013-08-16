@@ -10,7 +10,8 @@
 <xsl:param name="vdex_learningresourcetype" select="'http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml'"/>
 <xsl:param name="vdex_intendedenduserrole" select="'http://purl.edustandaard.nl/vdex_intendedenduserrole_lomv1p0_20060628.xml'"/>
 <xsl:param name="vdex_context" select="'http://purl.edustandaard.nl/vdex_context_czp_20060628.xml'"/>
-<xsl:param name="vdex_kind" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
+<xsl:param name="vdex_kind_old" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
+<xsl:param name="vdex_kind_new" select="'http://vdex.kennisnet.nl/relation_kind_nllom_20130807.xml'"/>
 <xsl:param name="vdex_classification_purpose" select="'http://purl.edustandaard.nl/vdex_classification_purpose_czp_20060628.xml'"/>
 <xsl:param name="vdex_classification_educationallevel" select="'http://download.edustandaard.nl/vdex/vdex_classification_educationallevel_czp_20071115.xml'"/>
 <xsl:param name="vdex_classification_begrippenkader" select="'http://purl.edustandaard.nl/begrippenkader'"/>
@@ -250,7 +251,7 @@
 				<xsl:with-param name="value" select="'learner'"/>
 			</xsl:call-template>
 			
-			<xsl:call-template name="vocabulary-element">
+			<!-- <xsl:call-template name="vocabulary-element">
 				<xsl:with-param name="element_name" select="'lom:context'"/>
 				<xsl:with-param name="vocabulary" select="$vdex_context"/>
 				<xsl:with-param name="value" select="'PO'"/>
@@ -278,7 +279,7 @@
 				<xsl:with-param name="element_name" select="'lom:context'"/>
 				<xsl:with-param name="vocabulary" select="$vdex_context"/>
 				<xsl:with-param name="value" select="'BVE'"/>
-			</xsl:call-template>
+			</xsl:call-template> -->
 			
 			<xsl:call-template name="langstring-element">
 				<xsl:with-param name="element_name" select="'lom:typicalagerange'"/>
@@ -306,12 +307,13 @@
 		</xsl:element>
 
 		<!-- Relation thumbnail 100x100 -->
+		<!-- Oude methode -->
 		<xsl:element name="lom:relation">
 			<!-- kind -->
 			<xsl:call-template name="vocabulary-element">
 				<xsl:with-param name="element_name" select="'lom:kind'"/>
-				<xsl:with-param name="vocabulary" select="$vdex_kind"/>
-				<xsl:with-param name="value" select="'isformatof'"/>
+				<xsl:with-param name="vocabulary" select="$vdex_kind_old"/>
+				<xsl:with-param name="value" select="'hasformat'"/>
 			</xsl:call-template>
 			<!-- resource -->
 			<xsl:element name="lom:resource">			
@@ -330,9 +332,34 @@
 				</xsl:call-template>
 			</xsl:element>
 		</xsl:element>
+		<!-- Nieuwe methode -->
+		<xsl:element name="lom:relation">
+			<!-- kind -->
+			<xsl:call-template name="vocabulary-element">
+				<xsl:with-param name="element_name" select="'lom:kind'"/>
+				<xsl:with-param name="vocabulary" select="$vdex_kind_new"/>
+				<xsl:with-param name="value" select="'thumbnail'"/>
+			</xsl:call-template>
+			<!-- resource -->
+			<xsl:element name="lom:resource">
+				<xsl:call-template name="nllom-catalogentry">
+					<xsl:with-param name="nllom_catalog" select="'URI'"/>
+					<xsl:with-param name="nllom_entry">
+						<xsl:value-of select="//dc:format[1]"/>
+						<xsl:text>&amp;100x100</xsl:text>
+					</xsl:with-param>
+				</xsl:call-template>
+			</xsl:element>
+		</xsl:element>
+		
+		
+		
+		
+		
+		
 
 		<!-- Classification -->
-		<xsl:element name="lom:classification">
+		<!-- <xsl:element name="lom:classification">
 			<xsl:call-template name="vocabulary-element">
 				<xsl:with-param name="element_name" select="'lom:purpose'"/> 
 				<xsl:with-param name="vocabulary" select="$vdex_classification_purpose"/>
@@ -363,9 +390,9 @@
       			<xsl:with-param name="language" select="'nl'"/>
 				<xsl:with-param name="nllom_taxon_id" select="'BVE'"/>
 			</xsl:call-template>
-		</xsl:element>
+		</xsl:element> -->
 		<!-- Begrippenkader -->
-		<xsl:element name="lom:classification">
+		<!-- <xsl:element name="lom:classification">
 			<xsl:call-template name="vocabulary-element">
 				<xsl:with-param name="element_name" select="'lom:purpose'"/> 
 				<xsl:with-param name="vocabulary" select="$vdex_classification_purpose"/>
@@ -401,7 +428,7 @@
 				<xsl:with-param name="nllom_taxon_id" select="'caa97efc-a713-41ea-a845-1534ca65eac9'"/>
 				<xsl:with-param name="nllom_taxon_entry" select="'BVE'"/>
 			</xsl:call-template>
-		</xsl:element>
+		</xsl:element> -->
 		
 		<xsl:apply-templates/>
 	</xsl:element>

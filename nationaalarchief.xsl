@@ -11,7 +11,8 @@
 	<xsl:param name="vdex_cost" select="'http://purl.edustandaard.nl/vdex_cost_lomv1p0_20060628.xml'"/>
 	<xsl:param name="vdex_copyrightandotherrestrictions" select="'http://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20110411'"/>
 	<xsl:param name="vdex_kind" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
-	<xsl:param name="vdex_relationkind" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
+	<xsl:param name="vdex_relationkind_old" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
+	<xsl:param name="vdex_relationkind_new" select="'http://vdex.kennisnet.nl/relation_kind_nllom_20130807.xml'"/>
 
 
 	<!--
@@ -240,11 +241,12 @@
 			</xsl:element>
 
 			<!-- Relation -->
+			<!-- Oude methode -->
 			<xsl:element name="czp:relation">
 				<xsl:call-template name="vocabulary-element">
 					<xsl:with-param name="element_name" select="'czp:kind'"/>
-					<xsl:with-param name="vocabulary" select="$vdex_relationkind"/>
-					<xsl:with-param name="value" select="'isformatof'"/>
+					<xsl:with-param name="vocabulary" select="$vdex_relationkind_old"/>
+					<xsl:with-param name="value" select="'hasformat'"/>
 				</xsl:call-template>
 				<xsl:element name="czp:resource">
 					<xsl:call-template name="langstring-element">
@@ -262,12 +264,32 @@
 					</xsl:call-template>
 				</xsl:element>
 			</xsl:element>
+			
+			<!-- Nieuwe methode -->
+			<xsl:element name="czp:relation">
+				<xsl:call-template name="vocabulary-element">
+					<xsl:with-param name="element_name" select="'czp:kind'"/>
+					<xsl:with-param name="vocabulary" select="$vdex_relationkind_new"/>
+					<xsl:with-param name="value" select="'thumbnail'"/>
+				</xsl:call-template>
+				<xsl:element name="czp:resource">
+					<xsl:call-template name="czp-catalogentry">
+						<xsl:with-param name="czp_catalog" select="'URI'"/>
+						<xsl:with-param name="czp_entry">
+							<xsl:text>http://afbeeldingen.gahetna.nl/naa/thumb/100x100/</xsl:text>
+							<xsl:value-of select="//dc:relation"/>
+							<xsl:text>.jpg</xsl:text>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:element>
+			</xsl:element>
+			
 
 			<!-- Relation -->
 			<xsl:element name="czp:relation">
 				<xsl:call-template name="vocabulary-element">
 					<xsl:with-param name="element_name" select="'czp:kind'"/>
-					<xsl:with-param name="vocabulary" select="$vdex_relationkind"/>
+					<xsl:with-param name="vocabulary" select="$vdex_relationkind_old"/>
 					<xsl:with-param name="value" select="'haspart'"/>
 				</xsl:call-template>
 				<xsl:element name="czp:resource">

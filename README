@@ -1,3 +1,16 @@
-Here you'll find Edurep XSLT's.
+Dit is de collectie van XSLT's die Edurep gebruikt. Per collectie is er een XSLT, die waar nodig de metadata aanpast en/of aanvult. 
+Elke collectie specifieke include de repositoryToVdexMapping XSLT (zie ook 'OBK-mapping' hieronder).
 
-Cool.
+LET OP:
+Binnen Edurep wordt een specifieke manier gebruikt om XSLT's te includen, bijvoorbeeld: 
+<xsl:include href="edurep://repositoryToVdexMapping"/>
+Er wordt dus niet naar een specifiek bestandspad verwezen. Voor gebruik van deze XSLT's zal de include dus moeten worden aangepast om naar het juiste pad te verwijzen
+
+OBK-mapping:
+In de directory 'mapping-xslt' staan XSLT's die gebruikt worden voor het vertalen van bestaande waarden in veld 9 (classification) naar OBK termen en vice versa.
+Het mappen werkt volgens de volgende flow:
+Collectie specifieke XSLT --> repositoryToVdexMapping XSLT --> per gebruikte VDEX een vertaal XSLT
+
+In de repositoryToVdexMapping XSLT wordt een koppeling gemaakt tussen de collectie en de daarin gebruikte VDEX'en.
+
+Een overzicht van welke VDEX'en worden vertaald en de bestanden die gebruikt zijn om de mapping XSLT's te maken staat op: http://standaarden.wiki.kennisnet.nl/Mapping_Vocabulaires_Begrippenkader
