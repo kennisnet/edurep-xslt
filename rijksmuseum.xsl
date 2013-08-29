@@ -229,7 +229,7 @@
 		<xsl:element name="lom:technical">
 			<xsl:call-template name="elemental">
 				<xsl:with-param name="element_name" select="'lom:format'"/> <!-- verplicht -->
-				<xsl:with-param name="value" select="'text/html'"/>
+				<xsl:with-param name="value" select="'image/jpeg'"/>
 			</xsl:call-template>
 			<xsl:call-template name="elemental">
 				<xsl:with-param name="element_name" select="'lom:location'"/> <!-- verplicht -->
