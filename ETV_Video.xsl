@@ -24,6 +24,64 @@
 	<xsl:call-template name="collectionMapping"/>
   </xsl:copy>
 </xsl:template>
+	
+	
+	<!-- Aggregationlevel standaard op 2 -->
+	<xsl:template match="oai_lom:aggregationlevel/oai_lom:value/oai_lom:langstring">
+		<xsl:element name="oai_lom:langstring">
+			<xsl:attribute name="xml:lang">
+				<xsl:text>x-none</xsl:text>
+			</xsl:attribute>
+			<xsl:text>2</xsl:text>
+		</xsl:element>
+	</xsl:template>
+	
+	
+	<!-- Format 'application/x-mplayer2' naar 'video/mp4' en 'application/octet-stream' naar 'video/x-flv' -->
+	<xsl:template match="oai_lom:format">
+	<xsl:choose>
+		<xsl:when test="node() = 'application/x-mplayer2'">
+			<xsl:element name="oai_lom:format">
+				<xsl:text>video/mp4</xsl:text>
+			</xsl:element>			
+		</xsl:when>
+		<xsl:when test="node() = 'application/octet-stream'">
+			<xsl:element name="oai_lom:format">
+				<xsl:text>video/x-flv</xsl:text>
+			</xsl:element>
+		</xsl:when>
+		<xsl:when test="node() != ''">
+			<xsl:copy>
+				<xsl:apply-templates select="node()"/>
+			</xsl:copy>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:element name="oai_lom:format">
+				<xsl:text>video/x-flv</xsl:text>
+			</xsl:element>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+	
+	<!-- De waardes 'Ja' en 'ja' vervangen door 'yes' in copyrightandotherrestrictions  -->
+<xsl:template match="oai_lom:copyrightandotherrestrictions/oai_lom:value/oai_lom:langstring">
+	<xsl:choose>
+		<xsl:when test="node() = 'Ja' or node() = 'ja'">
+			<xsl:element name="oai_lom:langstring">
+				<xsl:attribute name="xml:lang">
+					<xsl:text>x-none</xsl:text>
+				</xsl:attribute>
+				<xsl:text>yes</xsl:text>
+			</xsl:element>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:copy>
+				<xsl:apply-templates select="@*|node()"/>
+			</xsl:copy>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
 
     <!-- default copy -->
 <xsl:template match="@*|node()">
