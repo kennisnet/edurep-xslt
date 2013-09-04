@@ -327,7 +327,7 @@
 					<xsl:with-param name="nllom_catalog" select="'URI'"/>
 					<xsl:with-param name="nllom_entry">
 						<xsl:value-of select="//dc:format[1]"/>
-						<xsl:text>&amp;100x100</xsl:text>
+						<xsl:text>&amp;200x200</xsl:text>
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:element>
@@ -346,90 +346,12 @@
 					<xsl:with-param name="nllom_catalog" select="'URI'"/>
 					<xsl:with-param name="nllom_entry">
 						<xsl:value-of select="//dc:format[1]"/>
-						<xsl:text>&amp;100x100</xsl:text>
+						<xsl:text>&amp;200x200</xsl:text>
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:element>
 		</xsl:element>
-		
-		
-		
-		
-		
-		
-
-		<!-- Classification -->
-		<!-- <xsl:element name="lom:classification">
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:purpose'"/> 
-				<xsl:with-param name="vocabulary" select="$vdex_classification_purpose"/>
-				<xsl:with-param name="value" select="'educational level'"/>
-			</xsl:call-template>
-			<xsl:call-template name="nllom-taxonpath">
-				<xsl:with-param name="vocabulary" select="$vdex_classification_educationallevel"/>
-      			<xsl:with-param name="language" select="'nl'"/>
-				<xsl:with-param name="nllom_taxon_id" select="'PO'"/>
-			</xsl:call-template>
-			<xsl:call-template name="nllom-taxonpath">
-				<xsl:with-param name="vocabulary" select="$vdex_classification_educationallevel"/>
-      			<xsl:with-param name="language" select="'nl'"/>
-				<xsl:with-param name="nllom_taxon_id" select="'VO'"/>
-			</xsl:call-template>
-			<xsl:call-template name="nllom-taxonpath">
-				<xsl:with-param name="vocabulary" select="$vdex_classification_educationallevel"/>
-      			<xsl:with-param name="language" select="'nl'"/>
-				<xsl:with-param name="nllom_taxon_id" select="'HBO'"/>
-			</xsl:call-template>
-			<xsl:call-template name="nllom-taxonpath">
-				<xsl:with-param name="vocabulary" select="$vdex_classification_educationallevel"/>
-      			<xsl:with-param name="language" select="'nl'"/>
-				<xsl:with-param name="nllom_taxon_id" select="'WO'"/>
-			</xsl:call-template>
-			<xsl:call-template name="nllom-taxonpath">
-				<xsl:with-param name="vocabulary" select="$vdex_classification_educationallevel"/>
-      			<xsl:with-param name="language" select="'nl'"/>
-				<xsl:with-param name="nllom_taxon_id" select="'BVE'"/>
-			</xsl:call-template>
-		</xsl:element> -->
-		<!-- Begrippenkader -->
-		<!-- <xsl:element name="lom:classification">
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:purpose'"/> 
-				<xsl:with-param name="vocabulary" select="$vdex_classification_purpose"/>
-				<xsl:with-param name="value" select="'educational level'"/>
-			</xsl:call-template>
-			<xsl:call-template name="nllom-taxonpath">
-				<xsl:with-param name="vocabulary" select="$vdex_classification_begrippenkader"/>
-      			<xsl:with-param name="language" select="'nl'"/>
-				<xsl:with-param name="nllom_taxon_id" select="'512e4729-03a4-43a2-95ba-758071d1b725'"/>
-				<xsl:with-param name="nllom_taxon_entry" select="'PO'"/>
-			</xsl:call-template>
-			<xsl:call-template name="nllom-taxonpath">
-				<xsl:with-param name="vocabulary" select="$vdex_classification_begrippenkader"/>
-      			<xsl:with-param name="language" select="'nl'"/>
-				<xsl:with-param name="nllom_taxon_id" select="'2a1401e9-c223-493b-9b86-78f6993b1a8d'"/>
-				<xsl:with-param name="nllom_taxon_entry" select="'VO'"/>
-			</xsl:call-template>
-			<xsl:call-template name="nllom-taxonpath">
-				<xsl:with-param name="vocabulary" select="$vdex_classification_begrippenkader"/>
-      			<xsl:with-param name="language" select="'nl'"/>
-				<xsl:with-param name="nllom_taxon_id" select="'be140797-803f-4b9e-81cc-5572c711e09c'"/>
-				<xsl:with-param name="nllom_taxon_entry" select="'HBO'"/>
-			</xsl:call-template>
-			<xsl:call-template name="nllom-taxonpath">
-				<xsl:with-param name="vocabulary" select="$vdex_classification_begrippenkader"/>
-      			<xsl:with-param name="language" select="'nl'"/>
-				<xsl:with-param name="nllom_taxon_id" select="'bbbd99c6-cf49-4980-baed-12388f8dcff4'"/>
-				<xsl:with-param name="nllom_taxon_entry" select="'WO'"/>
-			</xsl:call-template>
-			<xsl:call-template name="nllom-taxonpath">
-				<xsl:with-param name="vocabulary" select="$vdex_classification_begrippenkader"/>
-      			<xsl:with-param name="language" select="'nl'"/>
-				<xsl:with-param name="nllom_taxon_id" select="'caa97efc-a713-41ea-a845-1534ca65eac9'"/>
-				<xsl:with-param name="nllom_taxon_entry" select="'BVE'"/>
-			</xsl:call-template>
-		</xsl:element> -->
-		
+				
 		<xsl:apply-templates/>
 	</xsl:element>
 </xsl:template>
