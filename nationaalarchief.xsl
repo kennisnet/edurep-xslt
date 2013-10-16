@@ -236,7 +236,7 @@
 				<xsl:call-template name="langstring-element">
 					<xsl:with-param name="element_name" select="'czp:description'"/>
 					<xsl:with-param name="language" select="'nl'"/>
-					<xsl:with-param name="value" select="//dc:rights"/>
+					<xsl:with-param name="value" select="'Copyright Nationaal Archief'"/>
 				</xsl:call-template>
 			</xsl:element>
 
@@ -257,7 +257,7 @@
 					<xsl:call-template name="czp-catalogentry">
 						<xsl:with-param name="czp_catalog" select="'URI'"/>
 						<xsl:with-param name="czp_entry">
-							<xsl:text>http://afbeeldingen.gahetna.nl/naa/thumb/100x100/</xsl:text>
+							<xsl:text>https://images.memorix.nl/naa/thumb/200x200/</xsl:text>
 							<xsl:value-of select="//dc:relation"/>
 							<xsl:text>.jpg</xsl:text>
 						</xsl:with-param>
@@ -276,7 +276,7 @@
 					<xsl:call-template name="czp-catalogentry">
 						<xsl:with-param name="czp_catalog" select="'URI'"/>
 						<xsl:with-param name="czp_entry">
-							<xsl:text>http://afbeeldingen.gahetna.nl/naa/thumb/100x100/</xsl:text>
+							<xsl:text>https://images.memorix.nl/naa/thumb/200x200/</xsl:text>
 							<xsl:value-of select="//dc:relation"/>
 							<xsl:text>.jpg</xsl:text>
 						</xsl:with-param>
