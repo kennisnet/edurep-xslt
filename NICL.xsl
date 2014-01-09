@@ -3,14 +3,14 @@
 
 	<!-- <xsl:include href="edurep://repositoryToVdexMapping"/> -->
 	 <!-- Collectienaam voor het koppelen van -->
-	<xsl:variable name="collectionName">
+	<!--<xsl:variable name="collectionName">
 		<xsl:text>NICL</xsl:text>
-	</xsl:variable>
+	</xsl:variable>-->
 
 	<!-- De door de collectie gebruikte namespace -->
-	<xsl:variable name="usedNamespace">
+	<!--<xsl:variable name="usedNamespace">
 		<xsl:text>oai_czp</xsl:text>
-	</xsl:variable>
+	</xsl:variable>-->
 
 <xsl:template match="/">
   <xsl:apply-templates select="//oai_czp:lom"/>

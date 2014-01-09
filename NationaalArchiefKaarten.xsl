@@ -1,5 +1,5 @@
 <xsl:stylesheet xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:mrx="http://www.memorix.nl/memorix.xsd" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-	<xsl:output method="xml" indent="yes" standalone="no"/>
+	<xsl:output method="xml" indent="no" standalone="no"/>
 
 	<xsl:param name="default_language" select="'nl'"/>
 	<xsl:param name="vdex_aggregationlevel" select="'http://purl.edustandaard.nl/vdex_aggregationlevel_czp_20060628.xml'"/>
@@ -14,13 +14,6 @@
 	<xsl:param name="vdex_relationkind_old" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
 	<xsl:param name="vdex_relationkind_new" select="'http://vdex.kennisnet.nl/relation_kind_nllom_20130807.xml'"/>
 
-
-	<!--
-	<xsl:param name="vdex_structure" select="'http://download.edustandaard.nl/vdex/vdex_structure_lomv1p0_20060628.xml'"/>
-	<xsl:param name="vdex_relationkind" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
-	<xsl:param name="vdex_classification_purpose" select="'http://purl.edustandaard.nl/vdex_classification_purpose_czp_20060628.xml'"/>
-	<xsl:param name="vdex_classification_educationallevel" select="'http://download.edustandaard.nl/vdex/vdex_classification_educationallevel_czp_20071115.xml'"/>
-	-->
 
 	<xsl:template match="/">
 		<xsl:element name="czp:lom" namespace="http://www.imsglobal.org/xsd/imsmd_v1p2">
@@ -211,11 +204,6 @@
 					<xsl:with-param name="vocabulary" select="$vdex_intendedenduserrole"/>
 					<xsl:with-param name="value" select="'author'"/>
 				</xsl:call-template>
-				<!--<xsl:call-template name="vocabulary-element">
-			<xsl:with-param name="element_name" select="'czp:context'"/>
-			<xsl:with-param name="vocabulary" select="$vdex_context"/>
-			<xsl:with-param name="value" select="'VO'"/>
-		</xsl:call-template>-->
 				<xsl:call-template name="langstring-element">
 					<xsl:with-param name="element_name" select="'czp:typicalagerange'"/>
 					<xsl:with-param name="language" select="'x-none'"/>
@@ -248,7 +236,7 @@
 			<xsl:for-each select="//dc:relation">
 				<xsl:choose>
 					<xsl:when test="position() = 1">
-						<!-- Oude methode -->
+						<!-- Oude methode voor thumbnail -->
 						<xsl:element name="czp:relation">
 							<xsl:call-template name="vocabulary-element">
 								<xsl:with-param name="element_name" select="'czp:kind'"/>
@@ -328,21 +316,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:for-each>
-
-
-			<!--<xsl:element name="czp:classification">
-		<xsl:call-template name="vocabulary-element">
-			<xsl:with-param name="element_name" select="'czp:purpose'"/> 
-			<xsl:with-param name="vocabulary" select="$vdex_classification_purpose"/>
-			<xsl:with-param name="value" select="'educational level'"/>
-		</xsl:call-template>
-		<xsl:call-template name="czp-taxonpath">
-			<xsl:with-param name="vocabulary" select="$vdex_classification_educationallevel"/>
-      <xsl:with-param name="language" select="'nl'"/>
-			<xsl:with-param name="czp_taxon_id" select="'VO'"/>
-			<xsl:with-param name="czp_taxon_entry" select="'Voortgezet Onderwijs'"/>
-		</xsl:call-template>
-	</xsl:element>-->
+			
 		</xsl:element>
 	</xsl:template>
 

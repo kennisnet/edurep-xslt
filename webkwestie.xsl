@@ -2,6 +2,8 @@
 <xsl:output method="xml" indent="yes" encoding="UTF-8" standalone="no"/>
 
 	<xsl:include href="edurep://repositoryToVdexMapping"/>
+	<xsl:include href="edurep://validate"/>
+	
 	 <!-- Collectienaam voor het koppelen van -->
 	<xsl:variable name="collectionName">
 		<xsl:text>webkwestie</xsl:text>
@@ -26,10 +28,9 @@
 </xsl:template>
 
     <!-- default copy -->
-<xsl:template match="@*|node()">
-  <xsl:copy>
-    <xsl:apply-templates select="@*|node()"/>
-  </xsl:copy>
+	<xsl:template match="@*|node()">
+		<!-- Velden valideren -->
+		<xsl:call-template name="validateValue"/>
 </xsl:template>
 
 </xsl:stylesheet>

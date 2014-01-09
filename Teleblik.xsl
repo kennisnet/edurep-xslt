@@ -1,7 +1,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:oai="http://www.openarchives.org/OAI/2.0/" xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns="http://www.openarchives.org/OAI/2.0/" version="1.0" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
-<xsl:output method="xml" indent="yes"/>
+  <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
-	<xsl:include href="edurep://repositoryToVdexMapping"/>
+  <xsl:include href="edurep://repositoryToVdexMapping"/>
+  <xsl:include href="edurep://validate"/>
+  
 	 <!-- Collectienaam voor het koppelen van -->
 	<xsl:variable name="collectionName">
 		<xsl:text>Teleblik</xsl:text>
@@ -17,13 +19,14 @@
 <xsl:param name="vdex_aggregationlevel" select="'http://purl.edustandaard.nl/vdex_aggregationlevel_czp_20060628.xml'"/>
 <xsl:param name="vdex_classification_purpose" select="'http://purl.edustandaard.nl/vdex_classification_purpose_czp_20060628.xml'"/>
 <xsl:param name="vdex_classification_educationallevel" select="'http://purl.edustandaard.nl/vdex_classification_educationallevel_czp_20071115.xml'"/>
+<xsl:param name="vdex_classification_begrippenkader" select="'http://purl.edustandaard.nl/begrippenkader'"/>
 <xsl:param name="vdex_context" select="'http://purl.edustandaard.nl/vdex_context_czp_20060628.xml'"/>
 <xsl:param name="vdex_learningresourcetype" select="'http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml'"/>
 <xsl:param name="vdex_intendedenduserrole" select="'http://purl.edustandaard.nl/vdex_intendedenduserrole_lomv1p0_20060628.xml'"/>
 <xsl:param name="vdex_cost" select="'http://purl.edustandaard.nl/vdex_cost_lomv1p0_20060628.xml'"/>
 <xsl:param name="vdex_copyright" select="'http://purl.edustandaard.nl/vdex_copyrightsandotherrestrictions_lomv1p0_20060628.xml'"/>
 <xsl:param name="vdex_relation" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
-
+<xsl:param name="vdex_relation_new" select="'http://vdex.kennisnet.nl/relation_kind_nllom_20130807.xml'"/>
 
 
 <xsl:template match="/">
@@ -40,10 +43,9 @@
 </xsl:template>
 
     <!-- default copy -->
-<xsl:template match="@*|node()">
-  <xsl:copy>
-    <xsl:apply-templates select="@*|node()"/>
-  </xsl:copy>
+  <xsl:template match="@*|node()">
+    <!-- Velden valideren -->
+    <xsl:call-template name="validateValue"/>
 </xsl:template>
 
 
@@ -61,7 +63,7 @@
       <xsl:call-template name="vocabulary-element">
        <xsl:with-param name="element_name" select="'czp:aggregationlevel'"/>
 		   <xsl:with-param name="vocabulary" select="$vdex_aggregationlevel"/>
-		  	<xsl:with-param name="value" select="'1'"/>
+		  	<xsl:with-param name="value" select="'2'"/>
       </xsl:call-template>
     </xsl:if>
     
@@ -196,10 +198,24 @@
     </xsl:element>
   </xsl:element>
 
-
-
-
-
+  <xsl:element name="czp:relation">
+    <xsl:call-template name="vocabulary-element">
+      <xsl:with-param name="element_name" select="'czp:kind'"/>
+      <xsl:with-param name="vocabulary" select="$vdex_relation_new"/>
+      <xsl:with-param name="value" select="'embed'"/>
+    </xsl:call-template>
+    <xsl:element name="czp:resource">
+      <xsl:element name="czp:catalogentry">
+        <xsl:element name="czp:catalog">
+          <xsl:value-of select="'URI'"/>
+        </xsl:element>
+        <xsl:call-template name="langstring-element">
+          <xsl:with-param name="element_name" select="'czp:entry'"/>
+          <xsl:with-param name="value" select="concat('http://teleblik.nl/embed/vpx/asset/', //czp:general/czp:catalogentry/czp:entry/czp:langstring)"/>
+        </xsl:call-template>
+      </xsl:element>
+    </xsl:element>
+  </xsl:element>
 
 			<xsl:element name="czp:classification">
 					<xsl:call-template name="vocabulary-element">
@@ -212,6 +228,19 @@
 					  <xsl:with-param name="element" select="'classification'"/>
           </xsl:call-template>
 				</xsl:element>
+				
+			<xsl:element name="czp:classification">
+					<xsl:call-template name="vocabulary-element">
+            <xsl:with-param name="element_name" select="'czp:purpose'"/>
+						<xsl:with-param name="vocabulary" select="$vdex_classification_purpose"/>
+						<xsl:with-param name="value" select="'educational level'"/>
+					</xsl:call-template>
+					<xsl:call-template name="determine-context">
+					  <xsl:with-param name="title" select="//czp:lom/czp:general/czp:title/czp:langstring"/>
+					  <xsl:with-param name="element" select="'classificationOBK'"/>
+          </xsl:call-template>
+				</xsl:element>
+				
 </xsl:template>
 
 
@@ -230,6 +259,11 @@
         <xsl:when test="$element='classification'">
           <xsl:call-template name="make-classification">
             <xsl:with-param name="context" select="'PO'"/>
+					</xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$element='classificationOBK'">
+          <xsl:call-template name="make-classificationOBK">
+            <xsl:with-param name="context" select="'512e4729-03a4-43a2-95ba-758071d1b725'"/>
 					</xsl:call-template>
         </xsl:when>
       </xsl:choose>
@@ -252,9 +286,17 @@
             <xsl:with-param name="context" select="'VO'"/>
 					</xsl:call-template>
         </xsl:when>
+        <xsl:when test="$element='classificationOBK'">
+          <xsl:call-template name="make-classificationOBK">
+            <xsl:with-param name="context" select="'512e4729-03a4-43a2-95ba-758071d1b725'"/>
+					</xsl:call-template>
+          <xsl:call-template name="make-classificationOBK">
+            <xsl:with-param name="context" select="'2a1401e9-c223-493b-9b86-78f6993b1a8d'"/>
+					</xsl:call-template>
+        </xsl:when>
       </xsl:choose>
     </xsl:when>
-    <xsl:when test="substring( $title, 1, 9)='2 VANDAAG'       or substring( $title, 1, 21)='BAREND &amp; WITTEMAN'       or substring( $title, 1, 9)='BUITENHOF'       or substring( $title, 1, 21)='DE RONDE VAN WITTEMAN'       or substring( $title, 1, 21)='DODE DICHTERS ALMANAK'       or substring( $title, 1, 10)='EENVANDAAG'       or substring( $title, 1, 13)='HET ELFDE UUR'       or substring( $title, 1, 23)='HET LAGERHUIS: JONGEREN'       or substring( $title, 1, 19)='HET UUR VAN DE WOLF'       or substring( $title, 1, 13)='HET VERMOEDEN'       or substring( $title, 1, 8)='JOURNAAL'       or substring( $title, 1, 30)='KEYZER &amp; DE BOER ADVOCATEN'       or substring( $title, 1, 26)='KNEVEL &amp; VAN DEN BRINK'       or substring( $title, 1, 7)='NETWERK'       or substring( $title, 1, 9)='NIEUWSUUR'       or substring( $title, 1, 4)='NOVA'       or substring( $title, 1, 19)='PAUW &amp; WITTEMAN'       or substring( $title, 1, 7)='POWNEWS'       or substring( $title, 1, 8)='PREMTIME'       or substring( $title, 1, 11)='RONDOM TIEN'       or substring( $title, 1, 11)='SOETERBEECK'       or substring( $title, 1, 12)='TWEE VANDAAG'       or substring( $title, 1, 6)='ZEMBLA'">
+    <xsl:when test="substring( $title, 1, 12)='BEELDENSTORM'       or substring( $title, 1, 9)='2 VANDAAG'       or substring( $title, 1, 21)='BAREND &amp; WITTEMAN'       or substring( $title, 1, 9)='BUITENHOF'       or substring( $title, 1, 21)='DE RONDE VAN WITTEMAN'       or substring( $title, 1, 21)='DODE DICHTERS ALMANAK'       or substring( $title, 1, 10)='EENVANDAAG'       or substring( $title, 1, 13)='HET ELFDE UUR'       or substring( $title, 1, 23)='HET LAGERHUIS: JONGEREN'       or substring( $title, 1, 19)='HET UUR VAN DE WOLF'       or substring( $title, 1, 13)='HET VERMOEDEN'       or substring( $title, 1, 8)='JOURNAAL'       or substring( $title, 1, 30)='KEYZER &amp; DE BOER ADVOCATEN'       or substring( $title, 1, 26)='KNEVEL &amp; VAN DEN BRINK'       or substring( $title, 1, 7)='NETWERK'       or substring( $title, 1, 9)='NIEUWSUUR'       or substring( $title, 1, 4)='NOVA'       or substring( $title, 1, 19)='PAUW &amp; WITTEMAN'       or substring( $title, 1, 7)='POWNEWS'       or substring( $title, 1, 8)='PREMTIME'       or substring( $title, 1, 11)='RONDOM TIEN'       or substring( $title, 1, 11)='SOETERBEECK'       or substring( $title, 1, 12)='TWEE VANDAAG'       or substring( $title, 1, 6)='ZEMBLA'">
       <xsl:choose>
         <xsl:when test="$element='context'">
           <xsl:call-template name="make-context">
@@ -270,6 +312,14 @@
 					</xsl:call-template>
           <xsl:call-template name="make-classification">
             <xsl:with-param name="context" select="'mbo'"/>
+					</xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$element='classificationOBK'">
+          <xsl:call-template name="make-classificationOBK">
+            <xsl:with-param name="context" select="'2a1401e9-c223-493b-9b86-78f6993b1a8d'"/>
+					</xsl:call-template>
+          <xsl:call-template name="make-classificationOBK">
+            <xsl:with-param name="context" select="'caa97efc-a713-41ea-a845-1534ca65eac9'"/>
 					</xsl:call-template>
         </xsl:when>
       </xsl:choose>
@@ -298,6 +348,17 @@
             <xsl:with-param name="context" select="'mbo'"/>
 					</xsl:call-template>
         </xsl:when>
+        <xsl:when test="$element='classificationOBK'">
+          <xsl:call-template name="make-classificationOBK">
+            <xsl:with-param name="context" select="'512e4729-03a4-43a2-95ba-758071d1b725'"/>
+					</xsl:call-template>
+          <xsl:call-template name="make-classificationOBK">
+            <xsl:with-param name="context" select="'2a1401e9-c223-493b-9b86-78f6993b1a8d'"/>
+					</xsl:call-template>
+          <xsl:call-template name="make-classificationOBK">
+            <xsl:with-param name="context" select="'caa97efc-a713-41ea-a845-1534ca65eac9'"/>
+					</xsl:call-template>
+        </xsl:when>
       </xsl:choose>
     </xsl:otherwise>
   </xsl:choose>
@@ -324,7 +385,29 @@ substring( $title, 1, 12)='TWEE VANDAAG'-->
   </xsl:call-template>
 </xsl:template>
 
-
+<xsl:template name="make-classificationOBK">
+  <xsl:param name="context"/>
+  <xsl:variable name="entryValue">
+		<xsl:choose>
+			<xsl:when test="$context = '512e4729-03a4-43a2-95ba-758071d1b725'">
+				<xsl:text>Primair onderwijs</xsl:text>
+			</xsl:when>
+			<xsl:when test="$context = '2a1401e9-c223-493b-9b86-78f6993b1a8d'">
+				<xsl:text>Voortgezet onderwijs</xsl:text>
+			</xsl:when>
+			<xsl:when test="$context = 'caa97efc-a713-41ea-a845-1534ca65eac9'">
+				<xsl:text>Beroepsonderwijs en Volwasseneneducatie</xsl:text>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:variable>
+		
+  <xsl:call-template name="czp-taxonpath">
+	  <xsl:with-param name="vocabulary" select="$vdex_classification_begrippenkader"/>
+		<xsl:with-param name="language" select="'nl'"/>
+		<xsl:with-param name="czp_taxon_id" select="$context"/>
+		<xsl:with-param name="czp_taxon_entry" select="$entryValue"/>
+  </xsl:call-template>
+</xsl:template>
 
 
 

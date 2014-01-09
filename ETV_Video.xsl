@@ -1,7 +1,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oai_lom="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:oai="http://www.openarchives.org/OAI/2.0/" xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns="http://www.openarchives.org/OAI/2.0/" version="1.0" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
-<xsl:output method="xml" indent="yes" encoding="UTF-8" standalone="no"/>
+<xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
 	<xsl:include href="edurep://repositoryToVdexMapping"/>
+	<xsl:include href="edurep://validate"/>
+	
 	 <!-- Collectienaam voor het koppelen van -->
 	<xsl:variable name="collectionName">
 		<xsl:text>ETV_Video</xsl:text>
@@ -62,33 +64,13 @@
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>
-	
-	<!-- De waardes 'Ja' en 'ja' vervangen door 'yes' in copyrightandotherrestrictions  -->
-<xsl:template match="oai_lom:copyrightandotherrestrictions/oai_lom:value/oai_lom:langstring">
-	<xsl:choose>
-		<xsl:when test="node() = 'Ja' or node() = 'ja'">
-			<xsl:element name="oai_lom:langstring">
-				<xsl:attribute name="xml:lang">
-					<xsl:text>x-none</xsl:text>
-				</xsl:attribute>
-				<xsl:text>yes</xsl:text>
-			</xsl:element>
-		</xsl:when>
-		<xsl:otherwise>
-			<xsl:copy>
-				<xsl:apply-templates select="@*|node()"/>
-			</xsl:copy>
-		</xsl:otherwise>
-	</xsl:choose>
-</xsl:template>
 
 
     <!-- default copy -->
-<xsl:template match="@*|node()">
-  <xsl:copy>
-    <xsl:apply-templates select="@*|node()"/>
-  </xsl:copy>
-</xsl:template>
+	<xsl:template match="@*|node()">
+		<!-- Velden valideren -->
+		<xsl:call-template name="validateValue"/>
+	</xsl:template>
 
 </xsl:stylesheet>
 

@@ -2,6 +2,8 @@
 	<xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
 	<xsl:include href="edurep://repositoryToVdexMapping"/>
+	<xsl:include href="edurep://validate"/>
+	
 	<!-- Collectienaam voor het koppelen van -->
 	<xsl:variable name="collectionName">
 		<xsl:text>acadin</xsl:text>
@@ -85,9 +87,8 @@
 
 	<!-- default copy -->
 	<xsl:template match="@*|node()">
-		<xsl:copy>
-			<xsl:apply-templates select="@*|node()"/>
-		</xsl:copy>
+		<!-- Valideer velden -->
+		<xsl:call-template name="validateValue"/>
 	</xsl:template>
 
 	<!-- splits keywords die een , bevatten -->
