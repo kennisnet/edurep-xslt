@@ -52,12 +52,7 @@
 				<xsl:call-template name="vdex_classification_kerndoelen_po_04_2006_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
-			</xsl:when>			
-			<xsl:when test="$collectionName = 'DigilessenVO'">
-				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_kerndoelen_onderbouw_vo_20071115_oldToNew"/>
-			</xsl:when>			
+			</xsl:when>		
 			<xsl:when test="$collectionName = 'digimaster'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
 				<xsl:call-template name="vdex_classification_kerndoelen_po_04_2006_oldToNew"/>
@@ -127,11 +122,6 @@
 			<xsl:when test="$collectionName = 'Lesidee'">
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 			</xsl:when>
-			<xsl:when test="$collectionName = 'LesbankNL'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_kerndoelen_onderbouw_vo_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
-			</xsl:when>
 			<xsl:when test="$collectionName = 'metaplus'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_newToOld"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_newToOld"/>
@@ -157,11 +147,6 @@
 			<xsl:when test="$collectionName = 'opmaat'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20090924_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_so_20090924_oldToNew"/>
-			</xsl:when>
-			<xsl:when test="$collectionName = 'OVC'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_kerndoelen_onderbouw_vo_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
 			</xsl:when>
 			<xsl:when test="$collectionName = 'PassieVoorHoreca'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
@@ -190,16 +175,6 @@
 			</xsl:when>
 			<xsl:when test="$collectionName = 'Schooltv'">
 				<xsl:call-template name="vdex_classification_discipline_czp_20060628_oldToNew"/>
-			</xsl:when>
-			<xsl:when test="$collectionName = 'sme'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_kerndoelen_onderbouw_vo_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_kerndoelen_po_04_2006_oldToNew"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
-			</xsl:when>
-			<xsl:when test="$collectionName = 'StudioVO'">
-				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
 			</xsl:when>
 			<xsl:when test="$collectionName = 'Teleblik'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
@@ -242,11 +217,6 @@
 				<xsl:call-template name="vdex_classification_referentiekader_taal_en_rekenen_czp_2009_newToOld"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_newToOld"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_newToOld"/>
-			</xsl:when>
-			<xsl:when test="$collectionName = 'Wiskunde_Open_Leermiddelenbank'">
-				<xsl:call-template name="vdex_classification_discipline_czp_20060628_oldToNew"/>
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20060628_oldToNew"/>
-				<xsl:call-template name="vdex_classification_kerndoelen_po_04_2006_oldToNew"/>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
