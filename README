@@ -13,4 +13,4 @@ Collectie specifieke XSLT --> repositoryToVdexMapping XSLT --> per gebruikte VDE
 
 In de repositoryToVdexMapping XSLT wordt een koppeling gemaakt tussen de collectie en de daarin gebruikte VDEX'en.
 
-Een overzicht van welke VDEX'en worden vertaald en de bestanden die gebruikt zijn om de mapping XSLT's te maken staat op: http://standaarden.wiki.kennisnet.nl/Mapping_Vocabulaires_Begrippenkader
+Een overzicht van welke VDEX'en worden vertaald en de bestanden die gebruikt zijn om de mapping XSLT's te maken staat op: http://developers.wiki.kennisnet.nl/index.php/OBK:Mappen_naar_het_OBK
