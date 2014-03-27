@@ -24,6 +24,8 @@
 			<xsl:apply-templates select="@*[. != xsi:schemaLocation]|node()"/>
 			<!-- Mapping begrippenkader -->
 			<xsl:call-template name="collectionMapping"/>
+			<!-- Maak een classificatie voor de validatie -->
+			<xsl:call-template name="buildClassification"/>
 		</xsl:copy>
 	</xsl:template>
 

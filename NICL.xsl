@@ -1,6 +1,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oai_czp="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:oai="http://www.openarchives.org/OAI/2.0/" xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns="http://www.openarchives.org/OAI/2.0/" version="1.0" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
-<xsl:output method="xml" indent="yes" encoding="UTF-8" standalone="no"/>
+<xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
+	<xsl:include href="edurep://validate"/>
 	<!-- <xsl:include href="edurep://repositoryToVdexMapping"/> -->
 	 <!-- Collectienaam voor het koppelen van -->
 	<!--<xsl:variable name="collectionName">
@@ -8,9 +9,9 @@
 	</xsl:variable>-->
 
 	<!-- De door de collectie gebruikte namespace -->
-	<!--<xsl:variable name="usedNamespace">
+	<xsl:variable name="usedNamespace">
 		<xsl:text>oai_czp</xsl:text>
-	</xsl:variable>-->
+	</xsl:variable>
 
 <xsl:template match="/">
   <xsl:apply-templates select="//oai_czp:lom"/>
@@ -75,15 +76,19 @@
 	<xsl:apply-templates select="oai_czp:annotation"/>
 	<xsl:apply-templates select="oai_czp:classification"/>
 	<!-- Mapping begrippenkader -->
-	<!-- <xsl:call-template name="collectionMapping"/> -->
+  	<!-- <xsl:call-template name="collectionMapping"/> -->
+  	<!-- Maak een classificatie voor de validatie -->
+  	<xsl:call-template name="buildClassification"/>
   </xsl:copy>
 </xsl:template>
 
     <!-- default copy -->
 <xsl:template match="@*|node()">
-  <xsl:copy>
+  <!--<xsl:copy>
     <xsl:apply-templates select="@*|node()"/>
-  </xsl:copy>
+  </xsl:copy>-->
+	<!-- Valideer velden -->
+	<xsl:call-template name="validateValue"/>
 </xsl:template>
 
 </xsl:stylesheet>

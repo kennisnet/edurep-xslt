@@ -92,6 +92,8 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
+  	<!-- Maak een classificatie voor de validatie -->
+  	<xsl:call-template name="buildClassification"/>
   </xsl:copy>
 </xsl:template>
 

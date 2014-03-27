@@ -24,7 +24,8 @@
     <!--<xsl:include href="learningresourcetype.xsl"/>
     <xsl:include href="intendedenduserrole.xsl"/>
     <xsl:include href="cost.xsl"/>
-    <xsl:include href="context.xsl"/>-->
+    <xsl:include href="context.xsl"/>
+    <xsl:include href="copyrightandotherrestrictions.xsl"/>-->
     
     <!-- Startpunt validatie -->
     <xsl:template name="validateValue">

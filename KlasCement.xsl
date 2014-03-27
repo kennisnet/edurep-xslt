@@ -1,5 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:lom="http://ltsc.ieee.org/xsd/LOM" xmlns:oai="http://www.openarchives.org/OAI/2.0/" xmlns="http://www.openarchives.org/OAI/2.0/" version="1.0" xsi:schemaLocation="http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/lomv1.0/lom.xsd http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
-<xsl:output method="xml" indent="yes"/>	
+<xsl:output method="xml" indent="no"/>	
 	
 	<xsl:include href="edurep://validate"/>
 
@@ -10,6 +10,12 @@
 <xsl:param name="vdex_learningresourcetype" select="'http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml'"/>
 <xsl:param name="vdex_intendedenduserrole" select="'http://purl.edustandaard.nl/vdex_intendedenduserrole_lomv1p0_20060628.xml'"/>
 
+	<!-- De door de collectie gebruikte namespace -->
+	<xsl:variable name="usedNamespace">
+		<xsl:text>lom</xsl:text>
+	</xsl:variable>
+
+
 <xsl:template match="/">
   <xsl:apply-templates select="//lom:lom"/>
 </xsl:template>
@@ -17,7 +23,9 @@
 <xsl:template match="lom:lom">
   <xsl:copy>
     <xsl:attribute name="xsi:schemaLocation">http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/lomv1.0/lom.xsd</xsl:attribute>
-    <xsl:apply-templates select="@*[. != xsi:schemaLocation]|node()"/>
+  	<xsl:apply-templates select="@*[. != xsi:schemaLocation]|node()"/>
+  	<!-- Maak een classificatie voor de validatie -->
+  	<xsl:call-template name="buildClassification"/>
   </xsl:copy>
 </xsl:template>
 

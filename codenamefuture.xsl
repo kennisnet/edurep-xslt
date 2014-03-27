@@ -23,7 +23,9 @@
     <xsl:attribute name="xsi:schemaLocation">http://www.imsglobal.org/xsd/imsmd_v1p2 imsmd_v1p2p4.xsd</xsl:attribute>
     <xsl:apply-templates select="@*[. != xsi:schemaLocation]|node()"/>
 	<!-- Mapping begrippenkader -->
-	<xsl:call-template name="collectionMapping"/>
+  	<xsl:call-template name="collectionMapping"/>
+  	<!-- Maak een classificatie voor de validatie -->
+  	<xsl:call-template name="buildClassification"/>
   </xsl:copy>
 </xsl:template>
 

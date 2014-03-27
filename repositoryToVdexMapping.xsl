@@ -1,5 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
-	<xsl:output method="xml" indent="yes" encoding="UTF-8" standalone="no"/>
+	<xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 	
 	<!-- Include VDEX mappings -->
 	<xsl:include href="edurep://discipline_20060628"/>
