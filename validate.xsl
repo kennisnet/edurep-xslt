@@ -15,22 +15,21 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
+    <xsl:include href="edurep://aggregationlevel"/>
     <xsl:include href="edurep://learningresourcetype"/>
     <xsl:include href="edurep://intendedenduserrole"/>
     <xsl:include href="edurep://cost"/>
     <xsl:include href="edurep://context"/>
     <xsl:include href="edurep://copyrightandotherrestrictions"/>
-    
-    <!--<xsl:include href="learningresourcetype.xsl"/>
-    <xsl:include href="intendedenduserrole.xsl"/>
-    <xsl:include href="cost.xsl"/>
-    <xsl:include href="context.xsl"/>
-    <xsl:include href="copyrightandotherrestrictions.xsl"/>-->
+
     
     <!-- Startpunt validatie -->
     <xsl:template name="validateValue">
      
         <xsl:choose>
+            <xsl:when test="local-name() = 'aggregationlevel' or local-name() = 'aggregationLevel'">
+                <xsl:call-template name="validateAggregationlevel"/>    
+            </xsl:when>
             <xsl:when test="local-name() = 'format'">
                 <xsl:copy>
                     <xsl:apply-templates select="@*|node()"/>
@@ -66,6 +65,68 @@
     <xsl:template name="buildClassification">
 
         <xsl:variable name="classificationValidation">
+            
+            <!-- aggregationlevel met vdex: vdex_aggregationlevel_czp_20060628 of LOMv1.0 -->
+            <!-- zowel voor IMS-MDv1.2.4 als voor IEEE-LOMv1.0 -->
+            <xsl:for-each select="child::*[local-name() = 'aggregationlevel']/*[local-name() = 'aggregationLevel']">
+                <xsl:choose>
+                    <!-- IMS-MDv1.2.4 -->
+                    <xsl:when test="contains(child::*[local-name()= 'source']/*[local-name() = 'langstring'], 'vdex_aggregationlevel_czp_20060628') or contains(child::*[local-name()= 'source']/*[local-name() = 'langstring'], 'LOMv1.0')">
+                        <xsl:variable name="value" select="child::*[local-name() = 'value']/*[local-name() = 'langstring']"/>                
+                        <xsl:choose>
+                            <xsl:when test="$value = '1'"/>
+                            <xsl:when test="$value = '2'"/>
+                            <xsl:when test="$value = '3'"/>
+                            <xsl:when test="$value = '4'"/>
+                            <xsl:when test="contains($value,'1')">
+                                <xsl:text>aggregationlevel_edit::</xsl:text><xsl:value-of select="$value"/><xsl:text>||</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="contains($value,'2')">
+                                <xsl:text>aggregationlevel_edit::</xsl:text><xsl:value-of select="$value"/><xsl:text>||</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="contains($value,'3')">
+                                <xsl:text>aggregationlevel_edit::</xsl:text><xsl:value-of select="$value"/><xsl:text>||</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="contains($value,'4')">
+                                <xsl:text>aggregationlevel_edit::</xsl:text><xsl:value-of select="$value"/><xsl:text>||</xsl:text>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>aggregationlevel_delete::</xsl:text>
+                                <xsl:value-of select="$value"/>
+                                <xsl:text>||</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:when>
+                    <!-- IEEE-LOMv1.0 -->
+                    <xsl:when test="contains(child::*[local-name()= 'source'], 'vdex_cost_lomv1p0_20060628') or contains(child::*[local-name()= 'source'], 'LOMv1.0')">
+                        <xsl:variable name="value" select="child::*[local-name() = 'value']"/>                
+                        <xsl:choose>
+                            <xsl:when test="$value = '1'"/>
+                            <xsl:when test="$value = '2'"/>
+                            <xsl:when test="$value = '3'"/>
+                            <xsl:when test="$value = '4'"/>
+                            <xsl:when test="contains($value,'1')">
+                                <xsl:text>aggregationlevel_edit::</xsl:text><xsl:value-of select="$value"/><xsl:text>||</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="contains($value,'2')">
+                                <xsl:text>aggregationlevel_edit::</xsl:text><xsl:value-of select="$value"/><xsl:text>||</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="contains($value,'3')">
+                                <xsl:text>aggregationlevel_edit::</xsl:text><xsl:value-of select="$value"/><xsl:text>||</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="contains($value,'4')">
+                                <xsl:text>aggregationlevel_edit::</xsl:text><xsl:value-of select="$value"/><xsl:text>||</xsl:text>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:text>aggregationlevel_delete::</xsl:text>
+                                <xsl:value-of select="$value"/>
+                                <xsl:text>||</xsl:text>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:for-each>
+            
             
             <!-- learningresourcetype met vdex:  vdex_learningresourcetype_czp_20060628, vdex_learningresourcetype_lomv1p0_20060628 of LOMv1.0 -->
             <!-- zowel voor IMS-MDv1.2.4 als voor IEEE-LOMv1.0 -->
