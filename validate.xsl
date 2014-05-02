@@ -18,8 +18,9 @@
     <xsl:include href="edurep://aggregationlevel"/>
     <xsl:include href="edurep://learningresourcetype"/>
     <xsl:include href="edurep://intendedenduserrole"/>
-    <xsl:include href="edurep://cost"/>
+    <xsl:include href="edurep://typicallearningtime"/>
     <xsl:include href="edurep://context"/>
+    <xsl:include href="edurep://cost"/>
     <xsl:include href="edurep://copyrightandotherrestrictions"/>
 
     
@@ -43,6 +44,12 @@
             </xsl:when>
             <xsl:when test="local-name() = 'context'">
                 <xsl:call-template name="validateContext"/>
+            </xsl:when>
+            <xsl:when test="local-name() = 'typicalLearningTime' or local-name() = 'typicallearningtime'">
+                <xsl:call-template name="validateTypicalLearningTime"/>
+            </xsl:when>
+            <xsl:when test="local-name() = 'typicallearningtime'">
+                <xsl:call-template name="validateTypicalLearningTime"/>
             </xsl:when>
             <xsl:when test="local-name() = 'cost'">
                 <xsl:call-template name="validateCost"/>
@@ -660,7 +667,41 @@
                     </xsl:when>   
                 </xsl:choose>
             </xsl:for-each>
-            
+
+            <!-- typicallearningtime zowel voor IMS-MDv1.2.4 als voor IEEE-LOMv1.0 -->
+            <xsl:for-each select="child::*[local-name() = 'educational']/*[local-name() = 'typicallearningtime' or local-name() = 'typicalLearningTime']">
+                <xsl:variable name="nodeValue">
+                    <xsl:choose>
+                        <!-- IMS-MDv1.2.4 -->
+                        <xsl:when test="child::*[local-name() = 'datetime']">
+                            <xsl:value-of select="child::*[local-name() = 'datetime']"/>
+                        </xsl:when>
+                        <!-- IEEE-LOMv1.0 --> 
+                        <xsl:when test="child::*[local-name() = 'duration']">
+                            <xsl:value-of select="child::*[local-name() = 'duration']"/>
+                        </xsl:when>
+                    </xsl:choose>
+                </xsl:variable>
+                
+                <!-- Valideer de waarde -->
+                <xsl:variable name="validationResult">
+                    <xsl:call-template name="typicalLearningTimeValidation">
+                        <!-- Waarde moet altijd met P beginnen -->
+                        <xsl:with-param name="label">
+                            <xsl:text>P</xsl:text>
+                        </xsl:with-param>
+                        <xsl:with-param name="value">
+                            <xsl:value-of select="$nodeValue"/>
+                        </xsl:with-param>
+                    </xsl:call-template>
+                </xsl:variable>
+                
+                <xsl:if test="contains($validationResult, 'false')">
+                    <xsl:text>typicallearningtime_delete::</xsl:text>
+                    <xsl:value-of select="$nodeValue"/>
+                    <xsl:text>||</xsl:text>
+                </xsl:if>
+            </xsl:for-each> 
             
             <!-- cost met vdex: vdex_cost_lomv1p0_20060628 of LOMv1.0 -->
             <!-- zowel voor IMS-MDv1.2.4 als voor IEEE-LOMv1.0 -->
@@ -891,5 +932,250 @@
         </xsl:if>
     </xsl:template>
 
+
+
+    <!-- validatie van de waarde in het typicallearningtime veld -->
+    <xsl:template name="typicalLearningTimeValidation">
+        <xsl:param name="label"/>
+        <xsl:param name="value"/>
+        
+        <!-- Format: P[yY][mM][dD][T[hH][mM][s[.s]S]] -->
+        
+        <xsl:if test="$value != ''">
+            <xsl:choose>
+                <xsl:when test="$label = 'P'">
+                    <xsl:choose>
+                        <!-- Waarde start niet met een P -->
+                        <xsl:when test="not(starts-with($value, 'P'))">
+                            <xsl:text>false</xsl:text>
+                        </xsl:when>
+                        <!-- Waarde bevat alleen een P -->
+                        <xsl:when test="substring-after($value, 'P') = ''">
+                            <xsl:text>false</xsl:text>
+                        </xsl:when>
+                        <!-- In alle andere gevallen gaan we verder met de validatie -->
+                        <xsl:otherwise>
+                            <xsl:call-template name="typicalLearningTimeValidation">
+                                <xsl:with-param name="label">
+                                    <xsl:text>year</xsl:text>
+                                </xsl:with-param>
+                                <xsl:with-param name="value">
+                                    <xsl:value-of select="substring-after($value, 'P')"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:when test="$label = 'year'">
+                    <xsl:choose>
+                        <!-- Waarde bevat een aanduiding voor jaar -->
+                        <xsl:when test="contains($value, 'Y') and translate(substring-before($value, 'Y'), '0123456789', '') = '' and substring-before($value, 'Y') != ''">
+                            <xsl:call-template name="typicalLearningTimeValidation">
+                                <xsl:with-param name="label">
+                                    <xsl:text>month</xsl:text>
+                                </xsl:with-param>
+                                <xsl:with-param name="value">
+                                    <xsl:value-of select="substring-after($value, 'Y')"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </xsl:when>
+                        <!-- Waarde bevat geen aanduiding voor jaar -->
+                        <xsl:when test="not(contains($value, 'Y'))">
+                            <xsl:call-template name="typicalLearningTimeValidation">
+                                <xsl:with-param name="label">
+                                    <xsl:text>month</xsl:text>
+                                </xsl:with-param>
+                                <xsl:with-param name="value">
+                                    <xsl:value-of select="$value"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </xsl:when>
+                        <!-- Alle andere gevallen -->
+                        <xsl:otherwise>
+                            <xsl:text>false</xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:when test="$label = 'month'">
+                    <!-- Eerst vaststellen dat de M voor maand staat en niet voor minuut -->
+                    <xsl:choose>
+                        <xsl:when test="contains(substring-after($value, 'M'), 'D') or contains(substring-after($value, 'M'), 'T') or (substring-after($value, 'M') = '' and not(contains($value, 'T')))">
+                            <xsl:choose>
+                                <!-- Waarde bevat een aanduiding voor maand -->
+                                <xsl:when test="contains($value, 'M') and translate(substring-before($value, 'M'), '0123456789', '') = '' and substring-before($value, 'M') != ''">
+                                    <xsl:call-template name="typicalLearningTimeValidation">
+                                        <xsl:with-param name="label">
+                                            <xsl:text>day</xsl:text>
+                                        </xsl:with-param>
+                                        <xsl:with-param name="value">
+                                            <xsl:value-of select="substring-after($value, 'M')"/>
+                                        </xsl:with-param>
+                                    </xsl:call-template>
+                                </xsl:when>
+                                <!-- Waarde bevat geen aanduiding voor maand -->
+                                <xsl:when test="not(contains($value, 'M'))">
+                                    <xsl:call-template name="typicalLearningTimeValidation">
+                                        <xsl:with-param name="label">
+                                            <xsl:text>day</xsl:text>
+                                        </xsl:with-param>
+                                        <xsl:with-param name="value">
+                                            <xsl:value-of select="$value"/>
+                                        </xsl:with-param>
+                                    </xsl:call-template>
+                                </xsl:when>
+                                <!-- Alle andere gevallen -->
+                                <xsl:otherwise>
+                                    <xsl:text>false</xsl:text>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:when>
+                        <xsl:otherwise> 
+                            <xsl:call-template name="typicalLearningTimeValidation">
+                                <xsl:with-param name="label">
+                                    <xsl:text>day</xsl:text>
+                                </xsl:with-param>
+                                <xsl:with-param name="value">
+                                    <xsl:value-of select="$value"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:when test="$label = 'day'">
+                    <xsl:choose>
+                        <!-- Waarde bevat een aanduiding voor dag -->
+                        <xsl:when test="contains($value, 'D') and translate(substring-before($value, 'D'), '0123456789', '') = '' and substring-before($value, 'D') != ''">
+                            <xsl:call-template name="typicalLearningTimeValidation">
+                                <xsl:with-param name="label">
+                                    <xsl:text>T</xsl:text>
+                                </xsl:with-param>
+                                <xsl:with-param name="value">
+                                    <xsl:value-of select="substring-after($value, 'D')"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </xsl:when>
+                        <!-- Waarde bevat geen aanduiding voor dag -->
+                        <xsl:when test="not(contains($value, 'D'))">
+                            <xsl:call-template name="typicalLearningTimeValidation">
+                                <xsl:with-param name="label">
+                                    <xsl:text>T</xsl:text>
+                                </xsl:with-param>
+                                <xsl:with-param name="value">
+                                    <xsl:value-of select="$value"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </xsl:when>
+                        <!-- Alle andere gevallen -->
+                        <xsl:otherwise>
+                            <xsl:text>false</xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:when test="$label = 'T'">
+                    <xsl:choose>
+                        <!-- Waarde start niet met een T, maar bevat wel karakters -->
+                        <xsl:when test="not(starts-with($value, 'T')) and $value != ''">
+                            <xsl:text>false</xsl:text>
+                        </xsl:when>
+                        <!-- Waarde bevat alleen een T -->
+                        <xsl:when test="substring-after($value, 'T') = ''">
+                            <xsl:text>false</xsl:text>
+                        </xsl:when>
+                        <!-- In alle andere gevallen gaan we verder met de validatie -->
+                        <xsl:otherwise>
+                            <xsl:call-template name="typicalLearningTimeValidation">
+                                <xsl:with-param name="label">
+                                    <xsl:text>hour</xsl:text>
+                                </xsl:with-param>
+                                <xsl:with-param name="value">
+                                    <xsl:value-of select="substring-after($value, 'T')"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:when test="$label = 'hour'">
+                    <xsl:choose>
+                        <!-- Waarde bevat een aanduiding voor uur -->
+                        <xsl:when test="contains($value, 'H') and translate(substring-before($value, 'H'), '0123456789', '') = '' and substring-before($value, 'H') != ''">
+                            <xsl:call-template name="typicalLearningTimeValidation">
+                                <xsl:with-param name="label">
+                                    <xsl:text>minute</xsl:text>
+                                </xsl:with-param>
+                                <xsl:with-param name="value">
+                                    <xsl:value-of select="substring-after($value, 'H')"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </xsl:when>
+                        <!-- Waarde bevat geen aanduiding voor uur -->
+                        <xsl:when test="not(contains($value, 'H'))">
+                            <xsl:call-template name="typicalLearningTimeValidation">
+                                <xsl:with-param name="label">
+                                    <xsl:text>minute</xsl:text>
+                                </xsl:with-param>
+                                <xsl:with-param name="value">
+                                    <xsl:value-of select="$value"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </xsl:when>
+                        <!-- Alle andere gevallen -->
+                        <xsl:otherwise>
+                            <xsl:text>false</xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:when test="$label = 'minute'"> 
+                    <xsl:choose>
+                        <!-- Waarde bevat een aanduiding voor minuut -->
+                        <xsl:when test="contains($value, 'M') and translate(substring-before($value, 'M'), '0123456789', '') = '' and substring-before($value, 'M') != ''">
+                            <xsl:call-template name="typicalLearningTimeValidation">
+                                <xsl:with-param name="label">
+                                    <xsl:text>second</xsl:text>
+                                </xsl:with-param>
+                                <xsl:with-param name="value">
+                                    <xsl:value-of select="substring-after($value, 'M')"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </xsl:when>
+                        <!-- Waarde bevat geen aanduiding voor minuut -->
+                        <xsl:when test="not(contains($value, 'M'))">
+                            <xsl:call-template name="typicalLearningTimeValidation">
+                                <xsl:with-param name="label">
+                                    <xsl:text>second</xsl:text>
+                                </xsl:with-param>
+                                <xsl:with-param name="value">
+                                    <xsl:value-of select="$value"/>
+                                </xsl:with-param>
+                            </xsl:call-template>
+                        </xsl:when>
+                        <!-- Alle andere gevallen -->
+                        <xsl:otherwise>
+                            <xsl:text>false</xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>                
+                </xsl:when>
+                <xsl:when test="$label = 'second'"> 
+                    <xsl:choose>
+                        <!-- Waarde bevat een aanduiding voor seconde (mag een . bevatten als decimaal scheidingsteken -->
+                        <xsl:when test="contains($value, 'S') and translate(substring-before($value, 'S'), '0123456789.', '') = '' and substring-before($value, 'S') != '' and substring-before($value, 'S') != '.' and not(substring-after($value, 'S'))"/>                        
+                        <!-- Waarde bevat geen aanduiding voor seconde -->
+                        <xsl:when test="$value = ''"/>                        
+                        <!-- Alle andere gevallen -->
+                        <xsl:otherwise>
+                            <xsl:text>false</xsl:text>
+                        </xsl:otherwise>
+                    </xsl:choose>                                
+                </xsl:when>
+                <!-- Alle andere waarden voor een label zijn fout -->
+                <xsl:otherwise>
+                    <xsl:text>false</xsl:text>
+                </xsl:otherwise>
+                
+            </xsl:choose>
+        </xsl:if>
+        
+    </xsl:template>
+    
+    
 
 </xsl:stylesheet>
