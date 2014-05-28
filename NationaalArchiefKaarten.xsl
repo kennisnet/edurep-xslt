@@ -1,5 +1,13 @@
-<xsl:stylesheet xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:mrx="http://www.memorix.nl/memorix.xsd" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-	<xsl:output method="xml" indent="no" standalone="no"/>
+<xsl:stylesheet 
+	xmlns="http://www.openarchives.org/OAI/2.0/" 
+	xmlns:mrx="http://www.memorix.nl/memorix.xsd" 
+	xmlns:dc="http://purl.org/dc/elements/1.1/" 
+	xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" 
+	xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:edurep="http://meresco.org/namespace/users/kennisnet/edurep"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+	<xsl:output method="xml" indent="yes" standalone="no"/>
 
 	<xsl:param name="default_language" select="'nl'"/>
 	<xsl:param name="vdex_aggregationlevel" select="'http://purl.edustandaard.nl/vdex_aggregationlevel_czp_20060628.xml'"/>
@@ -49,12 +57,18 @@
 							</xsl:with-param>
 						</xsl:call-template>
 					</xsl:when>
-					<xsl:otherwise>
+					<xsl:when test="//dc:title">
 						<xsl:call-template name="langstring-element">
 							<xsl:with-param name="element_name" select="'czp:title'"/>
-							<!-- verplicht -->
-							<xsl:with-param name="value" select="'zonder titel'"/>
+							<xsl:with-param name="value">
+								<xsl:value-of select="//dc:title"/>
+							</xsl:with-param>
 						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:element name="edurep:error">
+							<xsl:text>No title or description available.</xsl:text>
+						</xsl:element>
 					</xsl:otherwise>
 				</xsl:choose>
 
