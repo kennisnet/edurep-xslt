@@ -1,8 +1,8 @@
 <xsl:stylesheet xmlns="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:oai_czp="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:oai_dc="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:oai_lom="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:oai_gkn="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:oai_kn="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:lom_ims="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:nllom="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-	<xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
+	<xsl:output method="xml" indent="yes" encoding="UTF-8" standalone="no"/>
 
-<xsl:key name="classification-by-newIdvdex_classification_kerndoelen_po_04_2006" match="*[local-name() = 'classification'][child::*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'competency']/*[local-name() = 'taxonpath'][contains(child::*[local-name()='source']/*[local-name()='langstring'], 'begrippenkader')]/*[local-name() = 'taxon']" use="*[local-name() = 'id']"/>
-<xsl:key name="classification-by-oldIdvdex_classification_kerndoelen_po_04_2006" match="*[local-name() = 'classification'][child::*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'competency']/*[local-name() = 'taxonpath'][contains(child::*[local-name()='source']/*[local-name()='langstring'], 'vdex_classification_kerndoelen_po_04_2006')]/*[local-name() = 'taxon']" use="*[local-name() = 'id']"/>
+    <xsl:key name="classification-by-newIdvdex_classification_kerndoelen_po_04_2006" match="*[local-name() = 'classification'][child::*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'educational objective']/*[local-name() = 'taxonpath'][contains(child::*[local-name()='source']/*[local-name()='langstring'], 'begrippenkader')]/*[local-name() = 'taxon']" use="*[local-name() = 'id']"/>
+    <xsl:key name="classification-by-oldIdvdex_classification_kerndoelen_po_04_2006" match="*[local-name() = 'classification'][child::*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'competency']/*[local-name() = 'taxonpath'][contains(child::*[local-name()='source']/*[local-name()='langstring'], 'vdex_classification_kerndoelen_po_04_2006')]/*[local-name() = 'taxon']" use="*[local-name() = 'id']"/>
 <!-- Vervangt oude VDEX waarden voor waarden uit het begrippenkader -->
 <xsl:template name="vdex_classification_kerndoelen_po_04_2006_oldToNew">
 
@@ -92,7 +92,7 @@
 <xsl:attribute name="xml:lang">
 <xsl:text>x-none</xsl:text>
 </xsl:attribute>
-<xsl:text>competency</xsl:text>
+<xsl:text>educational objective</xsl:text>
 </xsl:element>
 </xsl:element>
 </xsl:element>
@@ -812,7 +812,7 @@
 
 <!-- Map de individuele begrippenkader taxons naar oude VDEX waarden -->
 <xsl:template name="writeTaxonsNewToOldvdex_classification_kerndoelen_po_04_2006">
-<xsl:for-each select="child::*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'competency'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'http://purl.edustandaard.nl/begrippenkader')]">
+    <xsl:for-each select="child::*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'educational objective'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'http://purl.edustandaard.nl/begrippenkader')]">
 <xsl:choose>
 <xsl:when test="node() = '8cd7169b-ec2b-4b1a-bc35-e2d2ac49e902' and not(key('classification-by-oldIdvdex_classification_kerndoelen_po_04_2006','1'))">
 <xsl:element name="{$usedNamespace}:taxon">
