@@ -86,6 +86,52 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
+
+	<xsl:template match="lom:relation">
+		<!-- Plaats huidige relation terug -->
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()"/>
+		</xsl:copy>
+	<!-- Maak nieuwe relation -->
+	<xsl:element name="lom:relation">
+		<xsl:element name="lom:kind">
+			<xsl:element name="lom:source">
+				<xsl:element name="lom:langstring">
+					<xsl:attribute name="xml:lang">
+						<xsl:text>x-none</xsl:text>
+					</xsl:attribute>
+					<xsl:text>http://purl.edustandaard.nl/relation_kind_nllom_20131211</xsl:text>
+				</xsl:element>
+			</xsl:element>
+			<xsl:element name="lom:value">
+				<xsl:element name="lom:langstring">
+					<xsl:attribute name="xml:lang">
+						<xsl:text>x-none</xsl:text>
+					</xsl:attribute>
+					<xsl:text>icon</xsl:text>
+				</xsl:element>
+			</xsl:element>
+		</xsl:element>
+		<xsl:element name="lom:resource">
+			<xsl:element name="lom:catalogentry">
+				<xsl:element name="lom:catalog">
+					<xsl:text>URI</xsl:text>
+				</xsl:element>
+				<xsl:element name="lom:entry">
+					<xsl:element name="lom:langstring">
+						<xsl:attribute name="xml:lang">
+							<xsl:text>x-none</xsl:text>
+						</xsl:attribute>
+						<xsl:value-of select="child::lom:resource/lom:catalogentry/lom:entry/lom:langstring"/>
+					</xsl:element>
+				</xsl:element>
+			</xsl:element>
+		</xsl:element>
+	</xsl:element>
+	
+	</xsl:template>
+	
 
 	<!-- default copy -->
 	<xsl:template match="@*|node()">
