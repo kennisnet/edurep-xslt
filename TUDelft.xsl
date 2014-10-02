@@ -51,7 +51,29 @@
 			<xsl:value-of select="'LOMv1.0'"/>
 		</xsl:element>
 	</xsl:template>
-	
+
+	<xsl:template match="lom:context">
+		<xsl:element name="lom:context">
+			<xsl:element name="lom:source">
+				<xsl:text>http://purl.edustandaard.nl/vdex_context_czp_20060628.xml</xsl:text>
+			</xsl:element>
+			<xsl:element name="lom:value">
+				<xsl:text>HBO</xsl:text>
+			</xsl:element>
+		</xsl:element>
+		<xsl:element name="lom:context">
+			<xsl:element name="lom:source">
+				<xsl:text>http://purl.edustandaard.nl/vdex_context_czp_20060628.xml</xsl:text>
+			</xsl:element>
+			<xsl:element name="lom:value">
+				<xsl:text>WO</xsl:text>
+			</xsl:element>
+		</xsl:element>
+		<xsl:element name="lom:context">
+			<xsl:apply-templates/>
+		</xsl:element>
+	</xsl:template>
+
 	<xsl:template match="lom:copyrightAndOtherRestrictions">
 		<xsl:element name="lom:copyrightAndOtherRestrictions">
 			<xsl:element name="lom:source">
