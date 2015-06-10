@@ -2,7 +2,9 @@
 	<xsl:output method="xml" indent="yes" encoding="UTF-8" standalone="no"/>
 
     <xsl:key name="classification-by-newIdvdex_classification_kerndoelen_onderbouw_vo_20071115" match="*[local-name() = 'classification'][child::*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'educational objective']/*[local-name() = 'taxonpath'][contains(child::*[local-name()='source']/*[local-name()='langstring'], 'begrippenkader')]/*[local-name() = 'taxon']" use="*[local-name() = 'id']"/>
-    <xsl:key name="classification-by-oldIdvdex_classification_kerndoelen_onderbouw_vo_20071115" match="*[local-name() = 'classification'][child::*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'competency']/*[local-name() = 'taxonpath'][contains(child::*[local-name()='source']/*[local-name()='langstring'], 'vdex_classification_kerndoelen_onderbouw_vo_20071115')]/*[local-name() = 'taxon']" use="*[local-name() = 'id']"/>
+    <!-- Er wordt niet getest op purposetype 'competency' voor het SLO -->
+    <xsl:key name="classification-by-oldIdvdex_classification_kerndoelen_onderbouw_vo_20071115" match="*[local-name() = 'classification']/*[local-name() = 'taxonpath'][contains(child::*[local-name()='source']/*[local-name()='langstring'], 'vdex_classification_kerndoelen_onderbouw_vo_20071115')]/*[local-name() = 'taxon']" use="*[local-name() = 'id']"/>
+
 <!-- Vervangt oude VDEX waarden voor waarden uit het begrippenkader -->
 <xsl:template name="vdex_classification_kerndoelen_onderbouw_vo_20071115_oldToNew">
 
@@ -116,7 +118,7 @@
 
 <xsl:template name="writeTaxonsOldToNewvdex_classification_kerndoelen_onderbouw_vo_20071115">
 <!-- Map de individuele oude taxons naar nieuwe begrippenkader waarden -->
-<xsl:for-each select="child::*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'competency'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'vdex_classification_kerndoelen_onderbouw_vo_20071115')]">
+    <xsl:for-each select="//*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'vdex_classification_kerndoelen_onderbouw_vo_20071115')]">
 <xsl:choose>
 <xsl:when test="node() = '1' and not(key('classification-by-newIdvdex_classification_kerndoelen_onderbouw_vo_20071115','fe8cc1d3-38ad-4de9-a3f4-3d820285241a'))">
 <xsl:element name="{$usedNamespace}:taxon">
@@ -824,7 +826,7 @@
 
 <!-- Map de individuele begrippenkader taxons naar oude VDEX waarden -->
 <xsl:template name="writeTaxonsNewToOldvdex_classification_kerndoelen_onderbouw_vo_20071115">
-    <xsl:for-each select="child::*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'educational objective'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'http://purl.edustandaard.nl/begrippenkader')]">
+    <xsl:for-each select="//*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'educational objective'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'http://purl.edustandaard.nl/begrippenkader')]">
 <xsl:choose>
 <xsl:when test="node() = 'fe8cc1d3-38ad-4de9-a3f4-3d820285241a' and not(key('classification-by-oldIdvdex_classification_kerndoelen_onderbouw_vo_20071115','1'))">
 <xsl:element name="{$usedNamespace}:taxon">

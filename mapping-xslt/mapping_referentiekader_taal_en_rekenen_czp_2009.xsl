@@ -64,7 +64,7 @@
 
 <xsl:template name="writeTaxonsOldToNewvdex_classification_referentiekader_taal_en_rekenen_czp_2009">
 <!-- Map de individuele oude taxons naar nieuwe begrippenkader waarden -->
-<xsl:for-each select="child::*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'skill level'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'vdex_classification_referentiekader_taal_en_rekenen_czp_2009')]">
+<xsl:for-each select="//*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'skill level'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'vdex_classification_referentiekader_taal_en_rekenen_czp_2009')]">
 <xsl:choose>
 <xsl:when test="node() = '1F' and not(key('classification-by-newIdvdex_classification_referentiekader_taal_en_rekenen_czp_2009','d5f99b58-31be-4ffc-89f4-9d7c65526879'))">
 <xsl:element name="{$usedNamespace}:taxon">
@@ -210,7 +210,7 @@
 
 <!-- Map de individuele begrippenkader taxons naar oude VDEX waarden -->
 <xsl:template name="writeTaxonsNewToOldvdex_classification_referentiekader_taal_en_rekenen_czp_2009">
-<xsl:for-each select="child::*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'skill level'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'http://purl.edustandaard.nl/begrippenkader')]">
+<xsl:for-each select="//*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'skill level'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'http://purl.edustandaard.nl/begrippenkader')]">
 <xsl:choose>
 <xsl:when test="node() = 'd5f99b58-31be-4ffc-89f4-9d7c65526879' and not(key('classification-by-oldIdvdex_classification_referentiekader_taal_en_rekenen_czp_2009','1F'))">
 <xsl:element name="{$usedNamespace}:taxon">

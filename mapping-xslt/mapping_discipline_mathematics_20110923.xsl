@@ -63,7 +63,7 @@
 
 <xsl:template name="writeTaxonsOldToNewbegrippenkader">
 <!-- Map de individuele oude taxons naar nieuwe begrippenkader waarden -->
-<xsl:for-each select="child::*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'discipline'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'begrippenkader')]">
+<xsl:for-each select="//*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'discipline'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'begrippenkader')]">
 <xsl:choose>
 <xsl:when test="node() = '6856753d-3be7-4d32-91d7-af922fb319b2' and not(key('classification-by-newIdbegrippenkader','ea561c6e-def6-468b-a585-dc49faaff647'))">
 <xsl:element name="{$usedNamespace}:taxon">
@@ -198,7 +198,7 @@
 
 <!-- Map de individuele begrippenkader taxons naar oude VDEX waarden -->
 <xsl:template name="writeTaxonsNewToOldbegrippenkader">
-<xsl:for-each select="child::*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'discipline'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'http://purl.edustandaard.nl/begrippenkader')]">
+<xsl:for-each select="//*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'discipline'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'http://purl.edustandaard.nl/begrippenkader')]">
 <xsl:choose>
 <xsl:when test="node() = 'ea561c6e-def6-468b-a585-dc49faaff647' and not(key('classification-by-oldIdbegrippenkader','6856753d-3be7-4d32-91d7-af922fb319b2'))">
 <xsl:element name="{$usedNamespace}:taxon">

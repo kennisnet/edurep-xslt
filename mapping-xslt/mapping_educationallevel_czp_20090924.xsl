@@ -3,7 +3,7 @@
 
 <!-- Vervangt oude VDEX waarden voor waarden uit het begrippenkader -->
 <xsl:template name="vdex_classification_educationallevel_czp_20090924_oldToNew">
-<xsl:if test="child::*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'source']/*[local-name() = 'langstring'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'educational level'][contains(node(), 'vdex_classification_educationallevel_czp_20090924')]">
+<xsl:if test="//*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'source']/*[local-name() = 'langstring'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'educational level'][contains(node(), 'vdex_classification_educationallevel_czp_20090924')]">
 <xsl:element name="{$usedNamespace}:classification">
 <xsl:element name="{$usedNamespace}:purpose">
 <xsl:element name="{$usedNamespace}:source">
@@ -662,7 +662,7 @@
 <xsl:text>http://purl.edustandaard.nl/vdex_classification_educationallevel_czp_20090924.xml</xsl:text>
 </xsl:element>
 </xsl:element>
-<xsl:for-each select="child::*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'educational level'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'http://purl.edustandaard.nl/begrippenkader')]">
+<xsl:for-each select="//*[local-name() = 'classification']/*[local-name() = 'taxonpath']/*[local-name() = 'taxon']/*[local-name() = 'id'][ancestor::*[local-name() = 'classification']/*[local-name() = 'purpose']/*[local-name() = 'value']/*[local-name() = 'langstring'] = 'educational level'][contains(ancestor::*[local-name()='taxonpath']/*[local-name()='source']/*[local-name()='langstring'], 'http://purl.edustandaard.nl/begrippenkader')]">
 <xsl:choose>
 <xsl:when test="node() = 'e05b5eb1-6a65-4f45-9556-79b25cd91da8'">
 <xsl:element name="{$usedNamespace}:taxon">
