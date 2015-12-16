@@ -52,19 +52,11 @@
 				<xsl:call-template name="vdex_classification_kerndoelen_po_04_2006_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
-			</xsl:when>		
-			<xsl:when test="$collectionName = 'digimaster'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_kerndoelen_po_04_2006_oldToNew"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 			</xsl:when>
 			<xsl:when test="$collectionName = 'Digischool'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
-			</xsl:when>
-			<xsl:when test="$collectionName = 'eigenwijzer'">
-				<xsl:call-template name="vdex_classification_discipline_czp_20060628_oldToNew"/>
 			</xsl:when>
 			<xsl:when test="$collectionName = 'ETV'">
 				<xsl:call-template name="vdex_classification_domeinoverstijgende_vakken_mbo_2009_oldToNew"/>
@@ -84,9 +76,6 @@
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
 			</xsl:when>
-			<!--<xsl:when test="$collectionName = 'gkncontent'">
-				<xsl:call-template name="vdex_classification_opleidingsdomeinen_en_studierichtingen_mbo_2010_newToOld"/>
-			</xsl:when>-->
 			<xsl:when test="$collectionName = 'GroenKennisnetCc'">
 				<xsl:call-template name="vdex_classification_opleidingsdomeinen_en_studierichtingen_mbo_2010_newToOld"/>
 			</xsl:when>
@@ -117,13 +106,6 @@
 			</xsl:when>
 			<xsl:when test="$collectionName = 'Leraar24_Video'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20060628_oldToNew"/>
-			</xsl:when>
-			<xsl:when test="$collectionName = 'les20'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
-			</xsl:when>
-			<xsl:when test="$collectionName = 'Lesidee'">
-				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 			</xsl:when>
 			<xsl:when test="$collectionName = 'metaplus'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_newToOld"/>
@@ -157,21 +139,11 @@
 				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
 				<xsl:call-template name="vdex_classification_opleidingsdomeinen_en_studierichtingen_mbo_2010_oldToNew"/>
 			</xsl:when>
-			<xsl:when test="$collectionName = 'podium'">
-				<xsl:call-template name="vdex_classification_discipline_czp_20060628_oldToNew"/>
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20060628_oldToNew"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
-			</xsl:when>
 			<xsl:when test="$collectionName = 'proefjes'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_newToOld"/>
 				<xsl:call-template name="vdex_classification_kerndoelen_po_04_2006_newToOld"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_newToOld"/>
 			</xsl:when>
-			<!--<xsl:when test="$collectionName = 'qmp'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_opleidingsdomeinen_en_studierichtingen_mbo_2010_newToOld"/>
-			</xsl:when>-->
 			<xsl:when test="$collectionName = 'Samenmaken'">
 				<xsl:call-template name="vdex_classification_discipline_czp_20060628_oldToNew"/>
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20060628_oldToNew"/>
@@ -200,9 +172,6 @@
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
 			</xsl:when>
-			<!--<xsl:when test="$collectionName = 'videoserver'">
-				<xsl:call-template name="vdex_classification_opleidingsdomeinen_en_studierichtingen_mbo_2010_newToOld"/>
-			</xsl:when>-->
 			<xsl:when test="$collectionName = 'webkwestie'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20060628_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>

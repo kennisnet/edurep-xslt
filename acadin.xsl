@@ -49,6 +49,93 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	
+	<!-- Default publisher date op 31-12-2014 zetten -->
+	<xsl:template match="lom:lifecycle">
+		<xsl:element name="czp:lifecycle">
+			<xsl:apply-templates select="child::lom:version"/>
+			<xsl:apply-templates select="child::lom:status"/>
+			<xsl:choose>
+				<xsl:when test="child::lom:contribute[child::lom:role/lom:value/lom:langstring != 'publisher']">
+					<xsl:apply-templates select="child::lom:contribute"/>
+				</xsl:when>
+				<xsl:when test="child::lom:contribute[child::lom:role/lom:value/lom:langstring = 'publisher'][child::lom:date/lom:datetime != '']">
+					<xsl:apply-templates select="child::lom:contribute"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="lifecycleContribute"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:element>
+	</xsl:template>
+	
+	
+	<xsl:template name="lifecycleContribute">
+		<xsl:element name="czp:contribute">
+			
+			<xsl:element name="czp:role">
+				<xsl:element name="czp:source">
+					<xsl:element name="czp:langstring">
+						<xsl:attribute name="xml:lang">
+							<xsl:text>x-none</xsl:text>
+						</xsl:attribute>
+						<xsl:text>http://purl.edustandaard.nl/vdex_lifecycle_contribute_role_lomv1p0_20060628.xml</xsl:text>
+					</xsl:element>
+				</xsl:element>
+				<xsl:element name="czp:value">
+					<xsl:element name="czp:langstring">
+						<xsl:attribute name="xml:lang">
+							<xsl:text>x-none</xsl:text>
+						</xsl:attribute>
+						<xsl:text>publisher</xsl:text>
+					</xsl:element>
+				</xsl:element>
+			</xsl:element>
+			
+			<xsl:element name="czp:centity">
+				<xsl:element name="czp:vcard">
+					<xsl:choose>
+						<xsl:when test="child::lom:contribute/lom:centity/lom:vcard != ''">
+							<xsl:value-of select="child::lom:contribute/lom:centity/lom:vcard"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>BEGIN:VCARD
+</xsl:text>
+							<xsl:text>VERSION: 3.0
+</xsl:text>
+							<xsl:text>FN:</xsl:text>
+							<xsl:text>Acadin
+</xsl:text>
+							<xsl:text>ORG:</xsl:text>
+							<xsl:text>Acadin
+</xsl:text>
+							<xsl:text>END:VCARD</xsl:text>							
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:element>
+			</xsl:element>
+				
+			<xsl:element name="czp:date">
+				<xsl:element name="czp:datetime">						
+					<xsl:choose>
+						<xsl:when test="child::lom:contribute/lom:date/lom:datetime = ''">				
+							<xsl:text>2014-12-31</xsl:text>
+						</xsl:when>
+						<xsl:when test="not(child::lom:contribute/lom:date/lom:datetime)">
+							<xsl:text>2014-12-31</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="child::lom:contribute/lom:date/lom:datetime"/>
+						</xsl:otherwise>					
+					</xsl:choose>
+				</xsl:element>
+			</xsl:element>
+		</xsl:element>		
+
+	</xsl:template>
+	
+	
+	
 
 	<!-- rechten aanpassen voor cc-by-nc-sa-30 en cc-by-sa-30 -->
 	<xsl:template match="lom:copyrightandotherrestrictions">
