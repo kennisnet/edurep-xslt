@@ -101,7 +101,7 @@
 
     	<xsl:call-template name="elemental">
     	  <xsl:with-param name="element_name" select="'czp:location'"/>
-    	  <xsl:with-param name="value" select="concat('http://teleblik.nl/vpx/asset/', //czp:general/czp:catalogentry/czp:entry/czp:langstring)"/>
+    	  <xsl:with-param name="value" select="concat('https://teleblik.nl/vpx/asset/', //czp:general/czp:catalogentry/czp:entry/czp:langstring)"/>
     	</xsl:call-template>
       <xsl:if test="count(//czp:technical/czp:duration)!=0">
         <xsl:element name="czp:duration">
