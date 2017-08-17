@@ -11,7 +11,7 @@
 <xsl:param name="vdex_intendedenduserrole" select="'http://purl.edustandaard.nl/vdex_intendedenduserrole_lomv1p0_20060628.xml'"/>
 <xsl:param name="vdex_context" select="'http://purl.edustandaard.nl/vdex_context_czp_20060628.xml'"/>
 <xsl:param name="vdex_kind_old" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
-<xsl:param name="vdex_kind_new" select="'http://vdex.kennisnet.nl/relation_kind_nllom_20130807.xml'"/>
+<xsl:param name="vdex_kind_new" select="'https://purl.edustandaard.nl/relation_kind_nllom_20131211'"/>
 <xsl:param name="vdex_classification_purpose" select="'http://purl.edustandaard.nl/vdex_classification_purpose_czp_20060628.xml'"/>
 <xsl:param name="vdex_classification_educationallevel" select="'http://download.edustandaard.nl/vdex/vdex_classification_educationallevel_czp_20071115.xml'"/>
 <xsl:param name="vdex_classification_begrippenkader" select="'http://purl.edustandaard.nl/begrippenkader'"/>

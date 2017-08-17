@@ -28,7 +28,7 @@
   <xsl:param name="vdex_intendedenduserrole" select="'http://purl.edustandaard.nl/vdex_intendedenduserrole_lomv1p0_20060628.xml'"/>
   <xsl:param name="vdex_cost" select="'http://purl.edustandaard.nl/vdex_cost_lomv1p0_20060628.xml'"/>
   <xsl:param name="vdex_copyright" select="'http://purl.edustandaard.nl/vdex_copyrightsandotherrestrictions_lomv1p0_20060628.xml'"/>
-  <xsl:param name="vdex_relation" select="'http://vdex.kennisnet.nl/relation_kind_nllom_20130807.xml'"/>
+  <xsl:param name="vdex_relation" select="'https://purl.edustandaard.nl/relation_kind_nllom_20131211'"/>
 
 
 <xsl:template match="/">
