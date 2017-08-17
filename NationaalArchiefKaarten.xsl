@@ -20,7 +20,7 @@
 	<xsl:param name="vdex_copyrightandotherrestrictions" select="'http://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20110411'"/>
 	<xsl:param name="vdex_kind" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
 	<xsl:param name="vdex_relationkind_old" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
-	<xsl:param name="vdex_relationkind_new" select="'http://vdex.kennisnet.nl/relation_kind_nllom_20130807.xml'"/>
+	<xsl:param name="vdex_relationkind_new" select="'https://purl.edustandaard.nl/relation_kind_nllom_20131211'"/>
 
 
 	<xsl:template match="/">
