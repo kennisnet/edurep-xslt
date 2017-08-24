@@ -1,44 +1,54 @@
 <xsl:stylesheet
-  xmlns="http://www.openarchives.org/OAI/2.0/"
-  xmlns:mrx="http://www.memorix.nl/memorix.xsd"
-  xmlns:dc="http://purl.org/dc/elements/1.1/"
-  xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
-  xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  version="1.0">
+    xmlns="http://www.openarchives.org/OAI/2.0/"
+    xmlns:mrx="http://www.memorix.nl/memorix.xsd"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+    xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    version="1.0">
 
   <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
   <xsl:param name="default_language" select="//dc:language"/>
 
-  <xsl:param name="vdex_aggregationlevel" select="'http://purl.edustandaard.nl/vdex_aggregationlevel_czp_20060628.xml'"/>
+  <xsl:param name="vdex_aggregationlevel"
+             select="'http://purl.edustandaard.nl/vdex_aggregationlevel_czp_20060628.xml'"/>
 
   <xsl:param name="vdex_status" select="'http://download.edustandaard.nl/vdex/vdex_status_lomv1p0_20060628.xml'"/>
 
-  <xsl:param name="vdex_contributerole" select="'http://purl.edustandaard.nl/vdex_lifecycle_contribute_role_lomv1p0_20060628.xml'"/>
+  <xsl:param name="vdex_contributerole"
+             select="'http://purl.edustandaard.nl/vdex_lifecycle_contribute_role_lomv1p0_20060628.xml'"/>
 
-  <xsl:param name="vdex_learningresourcetype" select="'http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml'"/>
+  <xsl:param name="vdex_learningresourcetype"
+             select="'http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml'"/>
 
-  <xsl:param name="vdex_intendedenduserrole" select="'http://purl.edustandaard.nl/vdex_intendedenduserrole_lomv1p0_20060628.xml'"/>
+  <xsl:param name="vdex_intendedenduserrole"
+             select="'http://purl.edustandaard.nl/vdex_intendedenduserrole_lomv1p0_20060628.xml'"/>
 
   <xsl:param name="vdex_context" select="'http://purl.edustandaard.nl/vdex_context_czp_20060628.xml'"/>
 
   <xsl:param name="vdex_cost" select="'http://purl.edustandaard.nl/vdex_cost_lomv1p0_20060628.xml'"/>
 
-  <xsl:param name="vdex_copyrightandotherrestrictions" select="'http://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20110411'"/>
+  <xsl:param name="vdex_copyrightandotherrestrictions"
+             select="'http://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20110411'"/>
 
   <xsl:param name="vdex_kind" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
 
-  <xsl:param name="vdex_relationkind_old" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
+  <xsl:param name="vdex_relationkind_old"
+             select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
 
   <xsl:param name="vdex_relationkind_new" select="'https://purl.edustandaard.nl/relation_kind_nllom_20131211'"/>
+
+  <xsl:param name="vdex_classification" select="'http://purl.edustandaard.nl/begrippenkader'"/>
 
   <xsl:template match="/">
 
     <xsl:element name="czp:lom" namespace="http://www.imsglobal.org/xsd/imsmd_v1p2">
 
-      <xsl:attribute name="xsi:schemaLocation">http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd</xsl:attribute>
+      <xsl:attribute name="xsi:schemaLocation">http://www.imsglobal.org/xsd/imsmd_v1p2
+        http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd
+      </xsl:attribute>
 
       <!-- General -->
       <xsl:element name="czp:general">
@@ -274,17 +284,17 @@
           <xsl:with-param name="value" select="'author'"/>
         </xsl:call-template>
 
-  			<xsl:call-template name="vocabulary-element">
-  				<xsl:with-param name="element_name" select="'czp:context'"/>
-  				<xsl:with-param name="vocabulary" select="$vdex_context"/>
-  				<xsl:with-param name="value" select="'HO'"/>
-  			</xsl:call-template>
-  
-  			<xsl:call-template name="vocabulary-element">
-  				<xsl:with-param name="element_name" select="'czp:context'"/>
-  				<xsl:with-param name="vocabulary" select="$vdex_context"/>
-  				<xsl:with-param name="value" select="'WO'"/>
-  			</xsl:call-template>
+        <xsl:call-template name="vocabulary-element">
+          <xsl:with-param name="element_name" select="'czp:context'"/>
+          <xsl:with-param name="vocabulary" select="$vdex_context"/>
+          <xsl:with-param name="value" select="'HO'"/>
+        </xsl:call-template>
+
+        <xsl:call-template name="vocabulary-element">
+          <xsl:with-param name="element_name" select="'czp:context'"/>
+          <xsl:with-param name="vocabulary" select="$vdex_context"/>
+          <xsl:with-param name="value" select="'WO'"/>
+        </xsl:call-template>
 
         <xsl:call-template name="langstring-element">
 
@@ -328,6 +338,25 @@
           <xsl:with-param name="value" select="//dc:rights"/>
         </xsl:call-template>
       </xsl:element>
+
+      <!-- Classification -->
+      <xsl:element name="czp:classification">
+
+        <xsl:call-template name="vocabulary-element">
+          <xsl:with-param name="element_name" select="'czp:purpose'"/>
+          <xsl:with-param name="vocabulary" select="'LOMv1.0'"/>
+          <xsl:with-param name="value" select="'discipline'"/>
+        </xsl:call-template>
+
+        <xsl:call-template name="czp-taxonpath">
+          <xsl:with-param name="vocabulary" select="'http://purl.edustandaard.nl/begrippenkader'"/>
+          <xsl:with-param name="language" select="'nl'"/>
+          <xsl:with-param name="czp_taxon_id" select="'5e86dc82-1981-48df-bbe5-abd4a9b3767b'"/>
+          <xsl:with-param name="czp_taxon_entry" select="'Voedsel, natuur en leefomgeving'"/>
+        </xsl:call-template>
+
+      </xsl:element>
+
     </xsl:element>
   </xsl:template>
 
@@ -380,13 +409,13 @@
 </xsl:text>
         </xsl:if>
 
-        <xsl:if test="$vcard_org !=''">
+        <!--xsl:if test="$vcard_org !=''">
           <xsl:text>ORG:</xsl:text>
 
           <xsl:value-of select="$vcard_org"/>
           <xsl:text>
 </xsl:text>
-        </xsl:if>
+        </xsl:if-->
         <xsl:text>END:VCARD</xsl:text>
       </xsl:element>
     </xsl:element>
@@ -445,7 +474,7 @@
       <!-- for yyyy-mm-dd -->
 
       <xsl:when
-        test="number(substring($value, 1, 4)) &gt; 1000 and number(substring($value, 1, 4)) &lt; 2100 and substring( $value, 5, 1 ) = '-' and number(substring ( $value, 6,2 )) &gt;= 0 and number(substring ( $value, 6,2 )) &lt; 13 and substring( $value, 8, 1) = '-' and number(substring ( $value, 9,2 )) &gt;= 0 and number(substring ( $value, 9,2 )) &lt; 32">
+          test="number(substring($value, 1, 4)) &gt; 1000 and number(substring($value, 1, 4)) &lt; 2100 and substring( $value, 5, 1 ) = '-' and number(substring ( $value, 6,2 )) &gt;= 0 and number(substring ( $value, 6,2 )) &lt; 13 and substring( $value, 8, 1) = '-' and number(substring ( $value, 9,2 )) &gt;= 0 and number(substring ( $value, 9,2 )) &lt; 32">
 
         <xsl:if test="$type = 'date'">
 
@@ -455,7 +484,8 @@
 
               <xsl:with-param name="element_name" select="'czp:datetime'"/>
 
-              <xsl:with-param name="value" select="concat(substring($value, 1, 4), '-', substring ( $value, 6,2 ), '-', substring ( $value, 9,2 ), 'T00:00:00Z' )"/>
+              <xsl:with-param name="value"
+                              select="concat(substring($value, 1, 4), '-', substring ( $value, 6,2 ), '-', substring ( $value, 9,2 ), 'T00:00:00Z' )"/>
             </xsl:call-template>
           </xsl:element>
         </xsl:if>
@@ -463,7 +493,7 @@
       <!-- for dd-mm-yyyy -->
 
       <xsl:when
-        test="number(substring($value, 7, 4)) &gt; 1000 and number(substring($value, 7, 4)) &lt; 2100 and substring( $value, 6, 1 ) = '-' and number(substring ( $value, 4,2 )) &gt;= 0 and number(substring ( $value, 4,2 )) &lt; 13 and substring( $value, 3, 1) = '-' and number(substring ( $value, 1,2 )) &gt;= 0 and number(substring ( $value, 1,2 )) &lt; 32">
+          test="number(substring($value, 7, 4)) &gt; 1000 and number(substring($value, 7, 4)) &lt; 2100 and substring( $value, 6, 1 ) = '-' and number(substring ( $value, 4,2 )) &gt;= 0 and number(substring ( $value, 4,2 )) &lt; 13 and substring( $value, 3, 1) = '-' and number(substring ( $value, 1,2 )) &gt;= 0 and number(substring ( $value, 1,2 )) &lt; 32">
 
         <xsl:if test="$type = 'date'">
 
@@ -473,7 +503,8 @@
 
               <xsl:with-param name="element_name" select="'czp:datetime'"/>
 
-              <xsl:with-param name="value" select="concat(substring($value, 7, 4), '-', substring ( $value, 4,2 ), '-', substring ( $value, 1,2 ), 'T00:00:00Z' )"/>
+              <xsl:with-param name="value"
+                              select="concat(substring($value, 7, 4), '-', substring ( $value, 4,2 ), '-', substring ( $value, 1,2 ), 'T00:00:00Z' )"/>
             </xsl:call-template>
           </xsl:element>
         </xsl:if>
