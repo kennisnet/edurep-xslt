@@ -42,6 +42,15 @@
 
   <xsl:param name="vdex_classification" select="'http://purl.edustandaard.nl/begrippenkader'"/>
 
+  <xsl:variable name="publisher">
+    <xsl:choose>
+      <xsl:when test="//dc:publisher">
+        <xsl:value-of select = "//dc:publisher/text()"/>
+      </xsl:when>
+      <xsl:otherwise>WUR_staff repository</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
   <xsl:template match="/">
 
     <xsl:element name="czp:lom" namespace="http://www.imsglobal.org/xsd/imsmd_v1p2">
@@ -205,8 +214,8 @@
           </xsl:for-each>
 
         </xsl:if>
-        <!-- Contribute publisher -->
 
+        <!-- Contribute publisher -->
         <xsl:element name="czp:contribute">
 
           <xsl:call-template name="vocabulary-element">
@@ -219,10 +228,8 @@
           </xsl:call-template>
 
           <xsl:call-template name="czp-contributecentity">
-
-            <xsl:with-param name="vcard_fn" select="//dc:rights"/>
-
-            <xsl:with-param name="vcard_org" select="//dc:rights"/>
+            <xsl:with-param name="vcard_fn" select="$publisher"/>
+            <xsl:with-param name="vcard_org" select="$publisher"/>
           </xsl:call-template>
         </xsl:element>
       </xsl:element>
@@ -409,13 +416,13 @@
 </xsl:text>
         </xsl:if>
 
-        <!--xsl:if test="$vcard_org !=''">
+        <xsl:if test="$vcard_org !=''">
           <xsl:text>ORG:</xsl:text>
 
           <xsl:value-of select="$vcard_org"/>
           <xsl:text>
 </xsl:text>
-        </xsl:if-->
+        </xsl:if>
         <xsl:text>END:VCARD</xsl:text>
       </xsl:element>
     </xsl:element>
