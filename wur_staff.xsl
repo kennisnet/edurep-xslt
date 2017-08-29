@@ -200,7 +200,6 @@
 
                 <xsl:with-param name="vcard_fn" select="."/>
 
-                <xsl:with-param name="vcard_org" select="//dc:rights"/>
               </xsl:call-template>
 
               <xsl:call-template name="date">
