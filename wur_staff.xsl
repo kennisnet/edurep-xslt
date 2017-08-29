@@ -85,7 +85,7 @@
 
                   <xsl:with-param name="element_name" select="'czp:title'"/>
 
-                  <xsl:with-param name="value" select="concat(substring(//dc:title, 1, 80), '...')"/>
+                  <xsl:with-param name="value" select="//dc:title"/>
                 </xsl:call-template>
               </xsl:otherwise>
             </xsl:choose>
