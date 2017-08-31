@@ -35,19 +35,30 @@
 
   <xsl:param name="vdex_kind" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
 
-  <xsl:param name="vdex_relationkind_old"
-             select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
-
-  <xsl:param name="vdex_relationkind_new" select="'https://purl.edustandaard.nl/relation_kind_nllom_20131211'"/>
+  <xsl:param name="vdex_relationkind" select="'https://purl.edustandaard.nl/relation_kind_nllom_20131211'"/>
 
   <xsl:param name="vdex_classification" select="'http://purl.edustandaard.nl/begrippenkader'"/>
 
   <xsl:variable name="publisher">
     <xsl:choose>
       <xsl:when test="//dc:publisher">
-        <xsl:value-of select = "//dc:publisher/text()"/>
+        <xsl:value-of select="//dc:publisher/text()"/>
       </xsl:when>
       <xsl:otherwise>WUR_staff repository</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
+  <xsl:variable name="source">
+    <xsl:choose>
+      <xsl:when test="//dc:source[starts-with(text(),'ISSN: ')]">
+        <xsl:text>urn:issn:</xsl:text>
+        <xsl:value-of select="translate(//dc:source[starts-with(text(),'ISSN: ')], translate(.,'0123456789X-',''), '')"/>
+      </xsl:when>
+      <xsl:when test="//dc:source[starts-with(text(),'ISBN: ')]">
+        <xsl:text>urn:isbn:</xsl:text>
+        <xsl:value-of select="translate(//dc:source[starts-with(text(),'ISBN: ')], translate(.,'0123456789X-',''), '')"/>
+      </xsl:when>
+      <xsl:otherwise></xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
 
@@ -55,9 +66,7 @@
 
     <xsl:element name="czp:lom" namespace="http://www.imsglobal.org/xsd/imsmd_v1p2">
 
-      <xsl:attribute name="xsi:schemaLocation">http://www.imsglobal.org/xsd/imsmd_v1p2
-        http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd
-      </xsl:attribute>
+      <xsl:attribute name="xsi:schemaLocation">http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd</xsl:attribute>
 
       <!-- General -->
       <xsl:element name="czp:general">
@@ -160,7 +169,6 @@
         </xsl:for-each>
 
         <xsl:call-template name="date">
-
           <xsl:with-param name="value" select="//dc:date"/>
 
           <xsl:with-param name="type" select="'coverage'"/>
@@ -345,9 +353,27 @@
         </xsl:call-template>
       </xsl:element>
 
+      <!-- Relation -->
+      <xsl:element name="czp:relation">
+        <xsl:if test="$source">
+          <xsl:call-template name="vocabulary-element">
+            <xsl:with-param name="element_name" select="'czp:kind'"/>
+            <xsl:with-param name="vocabulary" select="$vdex_relationkind"/>
+            <xsl:with-param name="value" select="'ispartof'"/>
+          </xsl:call-template>
+          <xsl:element name="czp:resource">
+            <xsl:call-template name="czp-catalogentry">
+              <xsl:with-param name="czp_catalog" select="'uri'"/>
+              <xsl:with-param name="czp_entry">
+                <xsl:value-of select="$source"/>
+              </xsl:with-param>
+            </xsl:call-template>
+          </xsl:element>
+        </xsl:if>
+      </xsl:element>
+
       <!-- Classification -->
       <xsl:element name="czp:classification">
-
         <xsl:call-template name="vocabulary-element">
           <xsl:with-param name="element_name" select="'czp:purpose'"/>
           <xsl:with-param name="vocabulary" select="'LOMv1.0'"/>
@@ -360,7 +386,22 @@
           <xsl:with-param name="czp_taxon_id" select="'5e86dc82-1981-48df-bbe5-abd4a9b3767b'"/>
           <xsl:with-param name="czp_taxon_entry" select="'Voedsel, natuur en leefomgeving'"/>
         </xsl:call-template>
+      </xsl:element>
 
+      <!-- Classification -->
+      <xsl:element name="czp:classification">
+        <xsl:call-template name="vocabulary-element">
+          <xsl:with-param name="element_name" select="'czp:purpose'"/>
+          <xsl:with-param name="vocabulary" select="'LOMv1.0'"/>
+          <xsl:with-param name="value" select="'discipline'"/>
+        </xsl:call-template>
+
+        <xsl:call-template name="czp-taxonpath">
+          <xsl:with-param name="vocabulary" select="'http://wur_staff_types'"/>
+          <xsl:with-param name="language" select="'nl'"/>
+          <xsl:with-param name="czp_taxon_id" select="//dc:type"/>
+          <xsl:with-param name="czp_taxon_entry" select="''"/> <!-- Empty variable will be skipped -->
+        </xsl:call-template>
       </xsl:element>
 
     </xsl:element>
@@ -428,7 +469,6 @@
   </xsl:template>
 
   <xsl:template name="czp-taxonpath">
-
     <xsl:param name="vocabulary"/>
 
     <xsl:param name="language"/>
@@ -453,11 +493,12 @@
         <xsl:call-template name="elemental">
 
           <xsl:with-param name="element_name" select="'czp:id'"/>
-          <!-- verplicht -->
+           <!-- verplicht -->
 
-          <xsl:with-param name="value" select="$czp_taxon_id"/>
+           <xsl:with-param name="value" select="$czp_taxon_id"/>
         </xsl:call-template>
 
+        <xsl:if test="$czp_taxon_entry !=''">
         <xsl:call-template name="langstring-element">
 
           <xsl:with-param name="element_name" select="'czp:entry'"/>
@@ -466,6 +507,7 @@
 
           <xsl:with-param name="value" select="$czp_taxon_entry"/>
         </xsl:call-template>
+        </xsl:if>
       </xsl:element>
     </xsl:element>
   </xsl:template>
