@@ -354,23 +354,25 @@
       </xsl:element>
 
       <!-- Relation -->
-      <xsl:element name="czp:relation">
-        <xsl:if test="$source">
-          <xsl:call-template name="vocabulary-element">
-            <xsl:with-param name="element_name" select="'czp:kind'"/>
-            <xsl:with-param name="vocabulary" select="$vdex_relationkind"/>
-            <xsl:with-param name="value" select="'ispartof'"/>
-          </xsl:call-template>
-          <xsl:element name="czp:resource">
-            <xsl:call-template name="czp-catalogentry">
-              <xsl:with-param name="czp_catalog" select="'uri'"/>
-              <xsl:with-param name="czp_entry">
-                <xsl:value-of select="$source"/>
-              </xsl:with-param>
+      <xsl:if test="$source">
+        <xsl:element name="czp:relation">
+          <xsl:if test="$source">
+            <xsl:call-template name="vocabulary-element">
+              <xsl:with-param name="element_name" select="'czp:kind'"/>
+              <xsl:with-param name="vocabulary" select="$vdex_relationkind"/>
+              <xsl:with-param name="value" select="'ispartof'"/>
             </xsl:call-template>
-          </xsl:element>
-        </xsl:if>
-      </xsl:element>
+            <xsl:element name="czp:resource">
+              <xsl:call-template name="czp-catalogentry">
+                <xsl:with-param name="czp_catalog" select="'uri'"/>
+                <xsl:with-param name="czp_entry">
+                  <xsl:value-of select="$source"/>
+                </xsl:with-param>
+              </xsl:call-template>
+            </xsl:element>
+          </xsl:if>
+        </xsl:element>
+      </xsl:if>
 
       <!-- Classification -->
       <xsl:element name="czp:classification">
