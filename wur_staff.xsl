@@ -8,7 +8,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     version="1.0">
 
-  <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
+  <xsl:output method="xml" indent="yes" encoding="UTF-8" standalone="no"/>
 
   <xsl:param name="default_language" select="//dc:language"/>
 
@@ -48,7 +48,7 @@
     </xsl:choose>
   </xsl:variable>
 
-  <xsl:variable name="source">
+  <xsl:variable name="isbnissn">
     <xsl:choose>
       <xsl:when test="//dc:source[starts-with(text(),'ISSN: ')]">
         <xsl:text>urn:issn:</xsl:text>
@@ -59,6 +59,17 @@
         <xsl:value-of select="translate(//dc:source[starts-with(text(),'ISBN: ')], translate(.,'0123456789X-',''), '')"/>
       </xsl:when>
       <xsl:otherwise></xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
+  <xsl:variable name="isbnissndesc">
+    <xsl:choose>
+      <xsl:when test="not(//dc:source[starts-with(text(),'ISSN: ')]) and not(//dc:source[starts-with(text(),'ISSN: ')])">
+        <xsl:value-of select="//dc:source"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="//dc:source"/>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
 
@@ -354,9 +365,9 @@
       </xsl:element>
 
       <!-- Relation -->
-      <xsl:if test="$source">
+      <xsl:if test="$isbnissn">
         <xsl:element name="czp:relation">
-          <xsl:if test="$source">
+          <xsl:if test="$isbnissn">
             <xsl:call-template name="vocabulary-element">
               <xsl:with-param name="element_name" select="'czp:kind'"/>
               <xsl:with-param name="vocabulary" select="$vdex_relationkind"/>
@@ -366,9 +377,21 @@
               <xsl:call-template name="czp-catalogentry">
                 <xsl:with-param name="czp_catalog" select="'uri'"/>
                 <xsl:with-param name="czp_entry">
-                  <xsl:value-of select="$source"/>
+                  <xsl:value-of select="$isbnissn"/>
                 </xsl:with-param>
               </xsl:call-template>
+
+              <!-- Add optional description -->
+              <xsl:if test="$isbnissndesc">
+                <xsl:call-template name="langstring-element">
+                  <xsl:with-param name="element_name" select="'czp:description'"/>
+                  <xsl:with-param name="language" select="'x-none'"/>
+                  <xsl:with-param name="value">
+                    <xsl:value-of select="$isbnissndesc"/>
+                  </xsl:with-param>
+                </xsl:call-template>
+              </xsl:if>
+
             </xsl:element>
           </xsl:if>
         </xsl:element>
