@@ -31,7 +31,7 @@
   <xsl:param name="vdex_cost" select="'http://purl.edustandaard.nl/vdex_cost_lomv1p0_20060628.xml'"/>
 
   <xsl:param name="vdex_copyrightandotherrestrictions"
-             select="'http://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20110411'"/>
+             select="'https://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20131202'"/>
 
   <xsl:param name="vdex_kind" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
 
@@ -192,7 +192,7 @@
 
           <xsl:with-param name="vocabulary" select="$vdex_aggregationlevel"/>
 
-          <xsl:with-param name="value" select="'1'"/>
+          <xsl:with-param name="value" select="'2'"/>
         </xsl:call-template>
       </xsl:element>
 
@@ -365,35 +365,33 @@
       </xsl:element>
 
       <!-- Relation -->
-      <xsl:if test="$isbnissn">
+      <xsl:if test="$isbnissn and $isbnissn != ''">
         <xsl:element name="czp:relation">
-          <xsl:if test="$isbnissn">
-            <xsl:call-template name="vocabulary-element">
-              <xsl:with-param name="element_name" select="'czp:kind'"/>
-              <xsl:with-param name="vocabulary" select="$vdex_relationkind"/>
-              <xsl:with-param name="value" select="'ispartof'"/>
+          <xsl:call-template name="vocabulary-element">
+            <xsl:with-param name="element_name" select="'czp:kind'"/>
+            <xsl:with-param name="vocabulary" select="$vdex_relationkind"/>
+            <xsl:with-param name="value" select="'ispartof'"/>
+          </xsl:call-template>
+          <xsl:element name="czp:resource">
+            <xsl:call-template name="czp-catalogentry">
+              <xsl:with-param name="czp_catalog" select="'uri'"/>
+              <xsl:with-param name="czp_entry">
+                <xsl:value-of select="$isbnissn"/>
+              </xsl:with-param>
             </xsl:call-template>
-            <xsl:element name="czp:resource">
-              <xsl:call-template name="czp-catalogentry">
-                <xsl:with-param name="czp_catalog" select="'uri'"/>
-                <xsl:with-param name="czp_entry">
-                  <xsl:value-of select="$isbnissn"/>
+
+            <!-- Add optional description -->
+            <xsl:if test="$isbnissndesc">
+              <xsl:call-template name="langstring-element">
+                <xsl:with-param name="element_name" select="'czp:description'"/>
+                <xsl:with-param name="language" select="'x-none'"/>
+                <xsl:with-param name="value">
+                  <xsl:value-of select="$isbnissndesc"/>
                 </xsl:with-param>
               </xsl:call-template>
+            </xsl:if>
 
-              <!-- Add optional description -->
-              <xsl:if test="$isbnissndesc">
-                <xsl:call-template name="langstring-element">
-                  <xsl:with-param name="element_name" select="'czp:description'"/>
-                  <xsl:with-param name="language" select="'x-none'"/>
-                  <xsl:with-param name="value">
-                    <xsl:value-of select="$isbnissndesc"/>
-                  </xsl:with-param>
-                </xsl:call-template>
-              </xsl:if>
-
-            </xsl:element>
-          </xsl:if>
+          </xsl:element>
         </xsl:element>
       </xsl:if>
 
@@ -418,7 +416,7 @@
         <xsl:call-template name="vocabulary-element">
           <xsl:with-param name="element_name" select="'czp:purpose'"/>
           <xsl:with-param name="vocabulary" select="'LOMv1.0'"/>
-          <xsl:with-param name="value" select="'discipline'"/>
+          <xsl:with-param name="value" select="'medium'"/>
         </xsl:call-template>
 
         <xsl:call-template name="czp-taxonpath">
