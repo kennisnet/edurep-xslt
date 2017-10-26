@@ -420,7 +420,7 @@
         </xsl:call-template>
 
         <xsl:call-template name="czp-taxonpath">
-          <xsl:with-param name="vocabulary" select="'http://wur_staff_types'"/>
+          <xsl:with-param name="vocabulary" select="'http://library.wur.nl/vdex/publicatietypes.xml'"/>
           <xsl:with-param name="language" select="'nl'"/>
           <xsl:with-param name="czp_taxon_id" select="//dc:type"/>
           <xsl:with-param name="czp_taxon_entry" select="''"/> <!-- Empty variable will be skipped -->
