@@ -179,23 +179,41 @@
           </xsl:for-each>
         </xsl:if>
         <!-- Contribute publisher -->
+        <xsl:if test="not(//mods:publisher = 'Hogeschool InHolland') and not(//mods:publisher = 'Hogeschool Inholland') ">
+          <xsl:element name="czp:contribute">
+            <xsl:call-template name="vocabulary-element">
+              <xsl:with-param name="element_name" select="'czp:role'"/>
+              <xsl:with-param name="vocabulary" select="$vdex_contributerole"/>
+              <xsl:with-param name="value" select="'publisher'"/>
+            </xsl:call-template>
+            <xsl:call-template name="czp-contributecentity">
+              <xsl:with-param name="vcard_fn" select="$publisher"/>
+              <xsl:with-param name="vcard_org" select="$publisher"/>
+              <xsl:with-param name="vcard_address" select="//mods:placeTerm/text()"/>
+            </xsl:call-template>
+            <xsl:call-template name="date">
+              <xsl:with-param name="value" select="//mods:dateIssued"/>
+              <xsl:with-param name="type" select="'date'"/>
+            </xsl:call-template>
+          </xsl:element>
+        </xsl:if>
         <xsl:element name="czp:contribute">
-          <xsl:call-template name="vocabulary-element">
-            <xsl:with-param name="element_name" select="'czp:role'"/>
-            <xsl:with-param name="vocabulary" select="$vdex_contributerole"/>
-            <xsl:with-param name="value" select="'publisher'"/>
-          </xsl:call-template>
-          <xsl:call-template name="czp-contributecentity">
-            <xsl:with-param name="vcard_fn" select="$publisher"/>
-            <xsl:with-param name="vcard_org" select="$publisher"/>
-            <xsl:with-param name="vcard_role" select="concat(//hbo:namePart[@type='lectorate'], ';', //hbo:namePart[@type='department'], ',',//hbo:namePart[@type='discipline']) "/>
-            <xsl:with-param name="vcard_address" select="//mods:placeTerm/text()"/>
-          </xsl:call-template>
-          <xsl:call-template name="date">
-            <xsl:with-param name="value" select="//mods:dateIssued"/>
-            <xsl:with-param name="type" select="'date'"/>
-          </xsl:call-template>
-        </xsl:element>
+            <xsl:call-template name="vocabulary-element">
+              <xsl:with-param name="element_name" select="'czp:role'"/>
+              <xsl:with-param name="vocabulary" select="$vdex_contributerole"/>
+              <xsl:with-param name="value" select="'publisher'"/>
+            </xsl:call-template>
+            <xsl:call-template name="czp-contributecentity">
+              <xsl:with-param name="vcard_fn" select="'Hogeschool InHolland'"/>
+              <xsl:with-param name="vcard_org" select="'Hogeschool InHolland'"/>
+               <xsl:with-param name="vcard_role" select="concat(//hbo:namePart[@type='lectorate'], ';', //hbo:namePart[@type='department'], ',',//hbo:namePart[@type='discipline']) "/>
+              <xsl:with-param name="vcard_address" select="'Amsterdam'"/>
+            </xsl:call-template>
+            <xsl:call-template name="date">
+              <xsl:with-param name="value" select="//mods:dateIssued"/>
+              <xsl:with-param name="type" select="'date'"/>
+            </xsl:call-template>
+          </xsl:element>
       </xsl:element>
       <!-- Metametadata -->
       <xsl:element name="czp:metametadata">
@@ -223,12 +241,6 @@
       </xsl:element>
       <!-- Educational -->
       <xsl:element name="czp:educational">
-        <xsl:call-template name="vocabulary-element">
-          <xsl:with-param name="element_name" select="'czp:learningresourcetype'"/>
-          <!-- verplicht -->
-          <xsl:with-param name="vocabulary" select="$vdex_learningresourcetype"/>
-          <xsl:with-param name="value" select="'informatiebron'"/>
-        </xsl:call-template>
         <xsl:call-template name="vocabulary-element">
           <xsl:with-param name="element_name" select="'czp:intendedenduserrole'"/>
           <!-- verplicht -->
@@ -358,38 +370,45 @@
         <xsl:if test="$vcard_fn !=''">
           <xsl:text>FN:</xsl:text>
           <xsl:value-of select="$vcard_fn"/>
-          <xsl:text>&#10;</xsl:text>
+          <xsl:text>
+</xsl:text>
         </xsl:if>
         <xsl:if test="$vcard_n !=''">
           <xsl:text>N:</xsl:text>
           <xsl:value-of select="$vcard_n"/>
-          <xsl:text>&#10;</xsl:text>
+          <xsl:text>
+</xsl:text>
         </xsl:if>
         <xsl:if test="$vcard_title !=''">
           <xsl:text>TITLE:</xsl:text>
           <xsl:value-of select="$vcard_title"/>
-          <xsl:text>&#10;</xsl:text>
+          <xsl:text>
+</xsl:text>
         </xsl:if>
-         <xsl:if test="$vcard_role !='' and $vcard_role !=';,'">
+        <xsl:if test="$vcard_role !='' and $vcard_role !=';,'">
           <xsl:text>ROLE:</xsl:text>
           <xsl:value-of select="$vcard_role"/>
-          <xsl:text>&#10;</xsl:text>
+          <xsl:text>
+</xsl:text>
         </xsl:if>
         <xsl:if test="$vcard_uid !='' and $vcard_uid != 'DAI:'">
           <xsl:text>UID:</xsl:text>
           <xsl:value-of select="$vcard_uid"/>
-          <xsl:text>&#10;</xsl:text>
+          <xsl:text>
+</xsl:text>
         </xsl:if>
         <xsl:if test="$vcard_org !=''">
           <xsl:text>ORG:</xsl:text>
           <xsl:value-of select="$vcard_org"/>
-          <xsl:text>&#10;</xsl:text>
+          <xsl:text>
+</xsl:text>
         </xsl:if>
         <xsl:if test="$vcard_address !=''">
           <xsl:text>ADR:;;;</xsl:text>
           <xsl:value-of select="$vcard_address"/>
           <xsl:text>;;</xsl:text>
-          <xsl:text>&#10;</xsl:text>
+          <xsl:text>
+</xsl:text>
         </xsl:if>
         <xsl:text>END:VCARD</xsl:text>
       </xsl:element>
