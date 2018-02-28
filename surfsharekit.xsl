@@ -198,22 +198,22 @@
           </xsl:element>
         </xsl:if>
         <xsl:element name="czp:contribute">
-            <xsl:call-template name="vocabulary-element">
-              <xsl:with-param name="element_name" select="'czp:role'"/>
-              <xsl:with-param name="vocabulary" select="$vdex_contributerole"/>
-              <xsl:with-param name="value" select="'publisher'"/>
-            </xsl:call-template>
-            <xsl:call-template name="czp-contributecentity">
-              <xsl:with-param name="vcard_fn" select="'Hogeschool InHolland'"/>
-              <xsl:with-param name="vcard_org" select="'Hogeschool InHolland'"/>
-               <xsl:with-param name="vcard_role" select="concat(//hbo:namePart[@type='lectorate'], ';', //hbo:namePart[@type='department'], ',',//hbo:namePart[@type='discipline']) "/>
-              <xsl:with-param name="vcard_address" select="'Amsterdam'"/>
-            </xsl:call-template>
-            <xsl:call-template name="date">
-              <xsl:with-param name="value" select="//mods:dateIssued"/>
-              <xsl:with-param name="type" select="'date'"/>
-            </xsl:call-template>
-          </xsl:element>
+          <xsl:call-template name="vocabulary-element">
+            <xsl:with-param name="element_name" select="'czp:role'"/>
+            <xsl:with-param name="vocabulary" select="$vdex_contributerole"/>
+            <xsl:with-param name="value" select="'publisher'"/>
+          </xsl:call-template>
+          <xsl:call-template name="czp-contributecentity">
+            <xsl:with-param name="vcard_fn" select="'Hogeschool InHolland'"/>
+            <xsl:with-param name="vcard_org" select="'Hogeschool InHolland'"/>
+            <xsl:with-param name="vcard_role" select="concat(//hbo:namePart[@type='lectorate'], ';', //hbo:namePart[@type='department'], ',',//hbo:namePart[@type='discipline']) "/>
+            <xsl:with-param name="vcard_address" select="'Amsterdam'"/>
+          </xsl:call-template>
+          <xsl:call-template name="date">
+            <xsl:with-param name="value" select="//mods:dateIssued"/>
+            <xsl:with-param name="type" select="'date'"/>
+          </xsl:call-template>
+        </xsl:element>
       </xsl:element>
       <!-- Metametadata -->
       <xsl:element name="czp:metametadata">
@@ -278,7 +278,7 @@
           <xsl:with-param name="value" select="'yes'"/>
         </xsl:call-template>
         <xsl:call-template name="langstring-element">
-          <xsl:with-param name="element_name" select="'czp:description'"/>
+          <!--<xsl:with-param name="element_name" select="'czp:description'"/>-->
           <xsl:with-param name="language" select="'nl'"/>
           <xsl:with-param name="value" select="//dc:rights"/>
         </xsl:call-template>
@@ -324,15 +324,6 @@
           <xsl:with-param name="czp_taxon_id" select="'5e86dc82-1981-48df-bbe5-abd4a9b3767b'"/>
           <xsl:with-param name="czp_taxon_entry" select="'Voedsel, natuur en leefomgeving'"/>
         </xsl:call-template>
-      </xsl:element>
-      <!-- Classification -->
-      <xsl:element name="czp:classification">
-        <xsl:call-template name="vocabulary-element">
-          <xsl:with-param name="element_name" select="'czp:purpose'"/>
-          <xsl:with-param name="vocabulary" select="'LOMv1.0'"/>
-          <xsl:with-param name="value" select="'medium'"/>
-        </xsl:call-template>
-        <!--  <xsl:call-template name="czp-taxonpath"><xsl:with-param name="vocabulary" select="'http://library.wur.nl/vdex/publicatietypes.xml'"/><xsl:with-param name="language" select="'nl'"/><xsl:with-param name="czp_taxon_id" select="//mods:type"/><xsl:with-param name="czp_taxon_entry" select="''"/></xsl:call-template>-->
       </xsl:element>
     </xsl:element>
   </xsl:template>
