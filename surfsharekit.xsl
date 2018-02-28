@@ -277,11 +277,11 @@
           <xsl:with-param name="vocabulary" select="$vdex_copyrightandotherrestrictions"/>
           <xsl:with-param name="value" select="'yes'"/>
         </xsl:call-template>
-        <xsl:call-template name="langstring-element">
-          <!--<xsl:with-param name="element_name" select="'czp:description'"/>-->
+        <!--<xsl:call-template name="langstring-element">
+          <xsl:with-param name="element_name" select="'czp:description'"/>
           <xsl:with-param name="language" select="'nl'"/>
           <xsl:with-param name="value" select="//dc:rights"/>
-        </xsl:call-template>
+        </xsl:call-template>-->
       </xsl:element>
       <!-- Relation -->
       <xsl:if test="$isbnissn and $isbnissn != ''">
