@@ -61,7 +61,7 @@
 				<!-- Catalogentry -->
 				<xsl:call-template name="czp-catalogentry">
 					<xsl:with-param name="czp_catalog" select="'URI'"/>
-					<xsl:with-param name="czp_entry" select="//dc:identifier"/>
+					<xsl:with-param name="czp_entry" select="concat('http://proxy.handle.net/10648/',substring-after(//dc:identifier, ':'))"/>
 				</xsl:call-template>
 				<xsl:call-template name="elemental">
 					<xsl:with-param name="element_name" select="'czp:language'"/>
@@ -103,10 +103,12 @@
 						<xsl:with-param name="value" select="."/>
 					</xsl:call-template>
 				</xsl:for-each>
-				<xsl:call-template name="date">
-					<xsl:with-param name="value" select="//dc:date"/>
-					<xsl:with-param name="type" select="'coverage'"/>
-				</xsl:call-template>
+				<xsl:if test="//dc:date/text()">
+					<xsl:call-template name="date">
+						<xsl:with-param name="value" select="//dc:date"/>
+						<xsl:with-param name="type" select="'coverage'"/>
+					</xsl:call-template>
+				</xsl:if>
 
 				<!-- Aggregationlevel -->
 				<xsl:call-template name="vocabulary-element">
@@ -181,7 +183,7 @@
 					<!-- verplicht -->
 					<xsl:with-param name="value">
 						<xsl:text>http://www.gahetna.nl/collectie/afbeeldingen/fotocollectie/zoeken/weergave/detail/q/id/</xsl:text>
-						<xsl:value-of select="substring-after(substring-after(//dc:identifier, ':'),':')"/>
+						<xsl:value-of select="substring-after(//dc:identifier, ':')"/>
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:element>

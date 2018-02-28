@@ -221,12 +221,7 @@
 
               </xsl:call-template>
 
-              <xsl:call-template name="date">
-
-                <xsl:with-param name="value" select="//dc:date"/>
-
-                <xsl:with-param name="type" select="'date'"/>
-              </xsl:call-template>
+             
             </xsl:element>
 
           </xsl:for-each>
@@ -249,6 +244,10 @@
             <xsl:with-param name="vcard_fn" select="$publisher"/>
             <xsl:with-param name="vcard_org" select="$publisher"/>
           </xsl:call-template>
+         <xsl:call-template name="date">
+            <xsl:with-param name="value" select="//dc:date"/>
+                <xsl:with-param name="type" select="'date'"/>
+             </xsl:call-template>
         </xsl:element>
       </xsl:element>
 
