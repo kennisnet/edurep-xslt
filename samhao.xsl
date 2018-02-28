@@ -151,7 +151,7 @@
         <!-- Keywords -->
         <xsl:for-each select="//dc:subject">
           <xsl:call-template name="langstring-element">
-            <xsl:with-param name="language" select="@xml:lang"/>
+            <xsl:with-param name="language" select="'nl'"/> <!-- Hard coded NL -->
             <xsl:with-param name="element_name" select="'czp:keyword'"/>
             <!-- verplicht -->
             <xsl:with-param name="value" select="."/>
@@ -353,15 +353,6 @@
           <xsl:with-param name="czp_taxon_id" select="'5e86dc82-1981-48df-bbe5-abd4a9b3767b'"/>
           <xsl:with-param name="czp_taxon_entry" select="'Voedsel, natuur en leefomgeving'"/>
         </xsl:call-template>
-      </xsl:element>
-      <!-- Classification -->
-      <xsl:element name="czp:classification">
-        <xsl:call-template name="vocabulary-element">
-          <xsl:with-param name="element_name" select="'czp:purpose'"/>
-          <xsl:with-param name="vocabulary" select="'LOMv1.0'"/>
-          <xsl:with-param name="value" select="'medium'"/>
-        </xsl:call-template>
-        <!--  <xsl:call-template name="czp-taxonpath"><xsl:with-param name="vocabulary" select="'http://library.wur.nl/vdex/publicatietypes.xml'"/><xsl:with-param name="language" select="'nl'"/><xsl:with-param name="czp_taxon_id" select="//dc:type"/><xsl:with-param name="czp_taxon_entry" select="''"/></xsl:call-template>-->
       </xsl:element>
     </xsl:element>
   </xsl:template>
