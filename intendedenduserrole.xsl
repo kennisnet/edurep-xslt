@@ -57,6 +57,12 @@
                             <xsl:with-param name="elementValue" select="'manager'"/>
                         </xsl:call-template>
                     </xsl:when>
+                    <xsl:when test="$value=''">
+                        <xsl:call-template name="buildIntendedenduserrole">
+                            <xsl:with-param name="vdexValue" select="child::*[local-name() = 'source']/*[local-name() = 'langstring']"/>
+                            <xsl:with-param name="elementValue" select="'learner'"/>
+                        </xsl:call-template>
+                    </xsl:when>
                     <!-- Intendedenduserrole elementen met foute waarden worden niet teruggeplaatst -->
                 </xsl:choose>
                 
@@ -95,6 +101,12 @@
                         <xsl:call-template name="buildLomIntendedenduserrole">
                             <xsl:with-param name="vdexValue" select="child::*[local-name() = 'source']"/>
                             <xsl:with-param name="elementValue" select="'manager'"/>
+                        </xsl:call-template>
+                    </xsl:when>
+                    <xsl:when test="$value=''">
+                        <xsl:call-template name="buildLomIntendedenduserrole">
+                            <xsl:with-param name="vdexValue" select="child::*[local-name() = 'source']/*[local-name() = 'langstring']"/>
+                            <xsl:with-param name="elementValue" select="'learner'"/>
                         </xsl:call-template>
                     </xsl:when>
                     <!-- Intendedenduserrole elementen met foute waarden worden niet teruggeplaatst -->

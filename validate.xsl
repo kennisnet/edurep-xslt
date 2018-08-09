@@ -456,6 +456,9 @@
                             <xsl:when test="contains($value,'teacher')">
                                 <xsl:text>intendedenduserrole_edit::</xsl:text><xsl:value-of select="$value"/><xsl:text>||</xsl:text>
                             </xsl:when>
+                            <xsl:when test="$value=''">
+                                <xsl:text>intendedenduserrole_edit::</xsl:text><xsl:value-of select="'lege waarde vervangen'"/><xsl:text>||</xsl:text>
+                            </xsl:when>
                             <xsl:otherwise>
                                 <xsl:text>intendedenduserrole_delete::</xsl:text>
                                 <xsl:value-of select="$value"/>
@@ -493,6 +496,9 @@
                             </xsl:when>
                             <xsl:when test="contains($value,'teacher')">
                                 <xsl:text>intendedenduserrole_edit::</xsl:text><xsl:value-of select="$value"/><xsl:text>||</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="$value=''">
+                                <xsl:text>intendedenduserrole_edit::</xsl:text><xsl:value-of select="'lege waarde vervangen'"/><xsl:text>||</xsl:text>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:text>intendedenduserrole_delete::</xsl:text>
