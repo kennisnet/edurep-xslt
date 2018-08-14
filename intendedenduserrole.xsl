@@ -4,9 +4,6 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
-    <xsl:include href="edurep://lomwriter"/>
-
-
     <!-- Test de waarde van intendedenduserrole -->
     <xsl:template name="validateIntendedenduserrole">
         

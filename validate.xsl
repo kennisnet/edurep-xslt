@@ -15,6 +15,7 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
+    <xsl:include href="edurep://lomwriter"/>
     <xsl:include href="edurep://aggregationlevel"/>
     <xsl:include href="edurep://learningresourcetype"/>
     <xsl:include href="edurep://intendedenduserrole"/>
@@ -1181,7 +1182,28 @@
         </xsl:if>
         
     </xsl:template>
-    
-    
+
+    <!-- make sure access rights are set -->
+    <xsl:template name="ensureAccessrights">
+        <!-- 'OpenAccess::open toegang||' is a good default -->
+        <xsl:param name="taxons"/>
+
+        <xsl:variable name="accessrightsExists">
+            <!-- check is very simple, if purpose value exists, we asume it is present already -->
+            <xsl:for-each select="child::*[local-name() = 'classification']/*[local-name() = 'purpose']">
+                <xsl:if test="child::*[local-name()= 'value']/*[local-name() = 'langstring']='access rights'">
+                    <xsl:text>true</xsl:text>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+
+        <xsl:if test="$accessrightsExists!='true'">
+            <xsl:call-template name="IMSclassification">
+                <xsl:with-param name="purpose_value" select="'access rights'"/>
+                <xsl:with-param name="taxon_source" select="'http://purl.edustandaard.nl/classification_accessrights_nllom_20180530'"/>
+                <xsl:with-param name="taxons" select="$taxons"/>
+            </xsl:call-template>
+        </xsl:if>
+    </xsl:template>    
 
 </xsl:stylesheet>
