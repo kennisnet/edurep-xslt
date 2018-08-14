@@ -22,6 +22,31 @@ called from other templates when included.
 
     <!-- IMS Functions -->
 
+    <xsl:template name="IMSclassification">
+        <!-- purpose source is hardcoded to latest, taxons are key-value pair texts -->
+        <xsl:param name="purpose_value"/>
+        <xsl:param name="taxon_source"/>
+        <xsl:param name="taxons"/>
+
+        <xsl:element name="{$usedNamespace}:classification">
+            <xsl:call-template name="IMSvocabulary">
+                <xsl:with-param name="element" select="concat($usedNamespace, ':purpose')"/>
+                <xsl:with-param name="source" select="'http://purl.edustandaard.nl/classification_purpose_nllom_20180530'"/>
+                <xsl:with-param name="value" select="$purpose_value"/>
+            </xsl:call-template>
+            <xsl:element name="{$usedNamespace}:taxonpath">
+                <xsl:call-template name="IMSlangstring">
+                    <xsl:with-param name="element" select="concat($usedNamespace, ':source')"/>
+                    <xsl:with-param name="language" select="'x-none'"/>
+                    <xsl:with-param name="value" select="$taxon_source"/>
+                </xsl:call-template>
+            </xsl:element>
+            <xsl:call-template name="IMStaxon">
+                <xsl:with-param name="taxons" select="$taxons"/>
+            </xsl:call-template>
+        </xsl:element>
+    </xsl:template>
+
     <xsl:template name="IMSvocabulary">
         <xsl:param name="element"/>
         <xsl:param name="source"/>
@@ -54,6 +79,31 @@ called from other templates when included.
                 <xsl:value-of select="$value"/>
             </xsl:element>
         </xsl:element>
+    </xsl:template>
+
+    <xsl:template name="IMStaxon">
+        <!-- based on Derrick Toppert's awesome buildTaxon function, ex: id1::entry1||id2::entry2|| -->
+        <xsl:param name="taxons"/>
+
+        <xsl:if test="substring-before($taxons, '||') != ''">
+            <xsl:element name="{$usedNamespace}:taxon">
+                <xsl:element name="{$usedNamespace}:id">
+                    <xsl:value-of select="substring-before($taxons, '::')"/>
+                </xsl:element>
+                <xsl:call-template name="IMSlangstring">
+                    <xsl:with-param name="element" select="concat($usedNamespace, ':entry')"/>
+                    <xsl:with-param name="language" select="'nl'"/>
+                    <xsl:with-param name="value" select="substring-before(substring-after($taxons, '::'), '||')"/>
+                </xsl:call-template>
+            </xsl:element>
+        </xsl:if>
+
+        <!-- Als er nog meer foute waarden zijn roep dan de template nogmaals aan -->
+        <xsl:if test="substring-after($taxons, '|') != ''">
+            <xsl:call-template name="IMStaxon">
+                <xsl:with-param name="taxons" select="substring-after($taxons, '||')"/>
+            </xsl:call-template>
+        </xsl:if>
     </xsl:template>
 
 
