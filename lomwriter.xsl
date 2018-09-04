@@ -40,10 +40,10 @@ called from other templates when included.
                     <xsl:with-param name="language" select="'x-none'"/>
                     <xsl:with-param name="value" select="$taxon_source"/>
                 </xsl:call-template>
+                <xsl:call-template name="IMStaxon">
+                    <xsl:with-param name="taxons" select="$taxons"/>
+                </xsl:call-template>
             </xsl:element>
-            <xsl:call-template name="IMStaxon">
-                <xsl:with-param name="taxons" select="$taxons"/>
-            </xsl:call-template>
         </xsl:element>
     </xsl:template>
 
