@@ -14,10 +14,51 @@ called from other templates when included.
     xmlns:lom_ims="http://www.imsglobal.org/xsd/imsmd_v1p2"
     xmlns:nllom="http://www.imsglobal.org/xsd/imsmd_v1p2"
     xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2"
+    xmlns:ieee="http://ltsc.ieee.org/xsd/LOM"
     xmlns:vv="http://www.imsglobal.org/xsd/imsmd_v1p2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
+
+    <!-- Generic Functions -->
+
+    <xsl:template name="classification">
+        <!-- Generic classification wrapper, determines whether to use IEEE or IMS output -->
+        <xsl:param name="purpose_value"/>
+        <xsl:param name="taxon_source"/>
+        <xsl:param name="taxons"/>
+
+        <xsl:variable name="usedBinding">
+            <xsl:call-template name="getBinding"/>
+        </xsl:variable>
+
+        <xsl:if test="$usedBinding='IEEE'">
+            <xsl:call-template name="IEEEclassification">
+                <xsl:with-param name="purpose_value" select="$purpose_value"/>
+                <xsl:with-param name="taxon_source" select="$taxon_source"/>
+                <xsl:with-param name="taxons" select="$taxons"/>
+            </xsl:call-template>
+        </xsl:if>
+        <xsl:if test="$usedBinding='IMS'">
+            <xsl:call-template name="IMSclassification">
+                <xsl:with-param name="purpose_value" select="$purpose_value"/>
+                <xsl:with-param name="taxon_source" select="$taxon_source"/>
+                <xsl:with-param name="taxons" select="$taxons"/>
+            </xsl:call-template>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="getBinding">
+        <!-- Retrieve binding to determine which output type to use -->
+        <xsl:choose>
+            <xsl:when test="contains(/node()/@*[local-name()='schemaLocation'], 'ieee')">
+                <xsl:text>IEEE</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text>IMS</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 
 
     <!-- IMS Functions -->
@@ -110,6 +151,31 @@ called from other templates when included.
 
     <!-- IEEE Functions -->
 
+    <xsl:template name="IEEEclassification">
+        <!-- purpose source is hardcoded to latest, taxons are key-value pair texts -->
+        <xsl:param name="purpose_value"/>
+        <xsl:param name="taxon_source"/>
+        <xsl:param name="taxons"/>
+
+        <xsl:element name="{$usedNamespace}:classification">
+            <xsl:call-template name="IEEEvocabulary">
+                <xsl:with-param name="element" select="concat($usedNamespace, ':purpose')"/>
+                <xsl:with-param name="source" select="'http://purl.edustandaard.nl/classification_purpose_nllom_20180530'"/>
+                <xsl:with-param name="value" select="$purpose_value"/>
+            </xsl:call-template>
+            <xsl:element name="{$usedNamespace}:taxonPath">
+                <xsl:call-template name="IEEElangstring">
+                    <xsl:with-param name="element" select="concat($usedNamespace, ':source')"/>
+                    <xsl:with-param name="language" select="'x-none'"/>
+                    <xsl:with-param name="value" select="$taxon_source"/>
+                </xsl:call-template>
+                <xsl:call-template name="IEEEtaxon">
+                    <xsl:with-param name="taxons" select="$taxons"/>
+                </xsl:call-template>
+            </xsl:element>
+        </xsl:element>
+    </xsl:template>
+
     <xsl:template name="IEEEvocabulary">
         <xsl:param name="element"/>
         <xsl:param name="source"/>
@@ -124,4 +190,45 @@ called from other templates when included.
             </xsl:element>
         </xsl:element>
     </xsl:template>
+
+    <xsl:template name="IEEElangstring">
+        <xsl:param name="element"/>
+        <xsl:param name="language"/>
+        <xsl:param name="value"/>
+
+        <xsl:element name="{$element}">
+            <xsl:element name="{$usedNamespace}:string">
+                <xsl:attribute name="language">
+                    <xsl:value-of select="$language"/>
+                </xsl:attribute>
+                <xsl:value-of select="$value"/>
+            </xsl:element>
+        </xsl:element>
+    </xsl:template>
+
+    <xsl:template name="IEEEtaxon">
+        <!-- based on Derrick Toppert's awesome buildTaxon function, ex: id1::entry1||id2::entry2|| -->
+        <xsl:param name="taxons"/>
+
+        <xsl:if test="substring-before($taxons, '||') != ''">
+            <xsl:element name="{$usedNamespace}:taxon">
+                <xsl:element name="{$usedNamespace}:id">
+                    <xsl:value-of select="substring-before($taxons, '::')"/>
+                </xsl:element>
+                <xsl:call-template name="IEEElangstring">
+                    <xsl:with-param name="element" select="concat($usedNamespace, ':entry')"/>
+                    <xsl:with-param name="language" select="'nl'"/>
+                    <xsl:with-param name="value" select="substring-before(substring-after($taxons, '::'), '||')"/>
+                </xsl:call-template>
+            </xsl:element>
+        </xsl:if>
+
+        <!-- Als er nog meer foute waarden zijn roep dan de template nogmaals aan -->
+        <xsl:if test="substring-after($taxons, '|') != ''">
+            <xsl:call-template name="IEEEtaxon">
+                <xsl:with-param name="taxons" select="substring-after($taxons, '||')"/>
+            </xsl:call-template>
+        </xsl:if>
+    </xsl:template>
+
 </xsl:stylesheet>

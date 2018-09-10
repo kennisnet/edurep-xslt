@@ -873,7 +873,7 @@
                 
         <!-- Maak een taxonpad aan als er foute waarden gevonden zijn -->
         <xsl:if test="$classificationValidation != ''">
-            <xsl:call-template name="IMSclassification">
+            <xsl:call-template name="classification">
                 <xsl:with-param name="purpose_value" select="'idea'"/>
                 <xsl:with-param name="taxon_source" select="'https://raw.github.com/kennisnet/vocabularies/master/vdex_lom_field_validation.xml'"/>
                 <xsl:with-param name="taxons" select="$classificationValidation"/>
@@ -1139,7 +1139,7 @@
         </xsl:variable>
 
         <xsl:if test="$accessrightsExists!='true'">
-            <xsl:call-template name="IMSclassification">
+            <xsl:call-template name="classification">
                 <xsl:with-param name="purpose_value" select="'access rights'"/>
                 <xsl:with-param name="taxon_source" select="'http://purl.edustandaard.nl/classification_accessrights_nllom_20180530'"/>
                 <xsl:with-param name="taxons" select="$taxons"/>
