@@ -51,7 +51,7 @@ called from other templates when included.
     <xsl:template name="getBinding">
         <!-- Retrieve binding to determine which output type to use -->
         <xsl:choose>
-            <xsl:when test="contains(/node()/@*[local-name()='schemaLocation'], 'ieee')">
+            <xsl:when test="//ieee:string">
                 <xsl:text>IEEE</xsl:text>
             </xsl:when>
             <xsl:otherwise>
