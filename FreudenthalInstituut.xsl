@@ -31,8 +31,10 @@
 			<xsl:call-template name="collectionMapping"/>
 			<!-- Maak een classificatie voor de validatie -->
 			<xsl:call-template name="buildClassification"/>
-			
-			
+			<!-- add access rights -->
+			<xsl:call-template name="ensureAccessrights">
+				<xsl:with-param name="taxons" select="'OpenAccess::open toegang||'"/>
+			</xsl:call-template>
 		</xsl:element>
 	</xsl:template>
 	
