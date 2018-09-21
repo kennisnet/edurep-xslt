@@ -53,11 +53,6 @@
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
 			</xsl:when>
-			<xsl:when test="$collectionName = 'Digischool'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
-			</xsl:when>
 			<xsl:when test="$collectionName = 'ETV'">
 				<xsl:call-template name="vdex_classification_domeinoverstijgende_vakken_mbo_2009_oldToNew"/>
 			</xsl:when>
@@ -155,19 +150,6 @@
 			<xsl:when test="$collectionName = 'Teleblik'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
 			</xsl:when>
-			<xsl:when test="$collectionName = 'TaalEnRekenen'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20060628_oldToNew"/>
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
-				<xsl:call-template name="vdex_classification_domeinoverstijgende_vakken_mbo_2009_oldToNew"/>
-				<xsl:call-template name="vdex_classification_opleidingsdomeinen_en_studierichtingen_mbo_2010_oldToNew"/>
-				<xsl:call-template name="vdex_classification_referentiekader_taal_en_rekenen_czp_2009_oldToNew"/>
-			</xsl:when>
-			<xsl:when test="$collectionName = 'TSS_Mobile_Repository'">
-				<xsl:call-template name="vdex_classification_discipline_czp_20060628_oldToNew"/>
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20060628_oldToNew"/>
-				<xsl:call-template name="vdex_classification_kerndoelen_po_04_2006_oldToNew"/>
-			</xsl:when>
 			<xsl:when test="$collectionName = 'tumult'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_oldToNew"/>
@@ -181,15 +163,6 @@
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 				<xsl:call-template name="vdex_classification_opleidingsdomeinen_en_studierichtingen_mbo_2010_newToOld"/>
-			</xsl:when>
-			<xsl:when test="$collectionName = 'wikiwijs_repository'">
-				<xsl:call-template name="vdex_classification_discipline_domains_lb_20110301_newToOld"/>
-				<xsl:call-template name="vdex_classification_domeinoverstijgende_vakken_mbo_2009_newToOld"/>
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_newToOld"/>
-				<xsl:call-template name="vdex_classification_opleidingsdomeinen_en_studierichtingen_mbo_2010_newToOld"/>
-				<xsl:call-template name="vdex_classification_referentiekader_taal_en_rekenen_czp_2009_newToOld"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_newToOld"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_newToOld"/>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

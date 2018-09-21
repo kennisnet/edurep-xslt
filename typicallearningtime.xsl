@@ -10,6 +10,7 @@
     xmlns:lom_ims="http://www.imsglobal.org/xsd/imsmd_v1p2"
     xmlns:nllom="http://www.imsglobal.org/xsd/imsmd_v1p2"
     xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2"
+    xmlns:ieee="http://ltsc.ieee.org/xsd/LOM"
     xmlns:vv="http://www.imsglobal.org/xsd/imsmd_v1p2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">

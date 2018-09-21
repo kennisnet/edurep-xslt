@@ -10,11 +10,13 @@
     xmlns:lom_ims="http://www.imsglobal.org/xsd/imsmd_v1p2"
     xmlns:nllom="http://www.imsglobal.org/xsd/imsmd_v1p2"
     xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2"
+    xmlns:ieee="http://ltsc.ieee.org/xsd/LOM"
     xmlns:vv="http://www.imsglobal.org/xsd/imsmd_v1p2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
+    <xsl:include href="edurep://lomwriter"/>
     <xsl:include href="edurep://aggregationlevel"/>
     <xsl:include href="edurep://learningresourcetype"/>
     <xsl:include href="edurep://intendedenduserrole"/>
@@ -456,6 +458,9 @@
                             <xsl:when test="contains($value,'teacher')">
                                 <xsl:text>intendedenduserrole_edit::</xsl:text><xsl:value-of select="$value"/><xsl:text>||</xsl:text>
                             </xsl:when>
+                            <xsl:when test="$value=''">
+                                <xsl:text>intendedenduserrole_edit::</xsl:text><xsl:value-of select="'lege waarde vervangen'"/><xsl:text>||</xsl:text>
+                            </xsl:when>
                             <xsl:otherwise>
                                 <xsl:text>intendedenduserrole_delete::</xsl:text>
                                 <xsl:value-of select="$value"/>
@@ -493,6 +498,9 @@
                             </xsl:when>
                             <xsl:when test="contains($value,'teacher')">
                                 <xsl:text>intendedenduserrole_edit::</xsl:text><xsl:value-of select="$value"/><xsl:text>||</xsl:text>
+                            </xsl:when>
+                            <xsl:when test="$value=''">
+                                <xsl:text>intendedenduserrole_edit::</xsl:text><xsl:value-of select="'lege waarde vervangen'"/><xsl:text>||</xsl:text>
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:text>intendedenduserrole_delete::</xsl:text>
@@ -863,75 +871,16 @@
             
         </xsl:variable>
         
-        
-        
+                
         <!-- Maak een taxonpad aan als er foute waarden gevonden zijn -->
         <xsl:if test="$classificationValidation != ''">
-            <xsl:element name="{$usedNamespace}:classification">
-                <!-- Purpose -->
-                <xsl:element name="{$usedNamespace}:purpose">
-                    <xsl:element name="{$usedNamespace}:source">
-                        <xsl:element name="{$usedNamespace}:langstring">
-                            <xsl:attribute name="xml:lang">
-                                <xsl:text>x-none</xsl:text>
-                            </xsl:attribute>
-                            <xsl:text>http://purl.edustandaard.nl/vdex_classification_purpose_czp_20060628.xml</xsl:text>
-                        </xsl:element>
-                    </xsl:element>
-                    <xsl:element name="{$usedNamespace}:value">
-                        <xsl:element name="{$usedNamespace}:langstring">
-                            <xsl:text>idea</xsl:text>
-                        </xsl:element>
-                    </xsl:element>
-                </xsl:element>
-                <!-- Taxonpad -->
-                <xsl:element name="{$usedNamespace}:taxonpath">
-                    <xsl:element name="{$usedNamespace}:source">
-                        <xsl:element name="{$usedNamespace}:langstring">
-                            <xsl:attribute name="xml:lang">
-                                <xsl:text>x-none</xsl:text>
-                            </xsl:attribute>
-                            <xsl:text>https://raw.github.com/kennisnet/vocabularies/master/vdex_lom_field_validation.xml</xsl:text>
-                        </xsl:element>
-                    </xsl:element>
-                    <xsl:call-template name="buildTaxon">
-                        <xsl:with-param name="taxonValues">
-                            <xsl:value-of select="$classificationValidation"/>
-                        </xsl:with-param>
-                    </xsl:call-template>
-                </xsl:element>
-            </xsl:element>
-        </xsl:if>
-    </xsl:template>
-    
-    
-    <!-- Maak een taxon aan -->
-    <xsl:template name="buildTaxon">
-        <xsl:param name="taxonValues"></xsl:param>
-        <xsl:if test="substring-before($taxonValues, '||') != ''">
-            <xsl:element name="{$usedNamespace}:taxon">
-                <xsl:element name="{$usedNamespace}:id">
-                    <xsl:value-of select="substring-before($taxonValues, '::')"/>
-                </xsl:element>
-                <xsl:element name="{$usedNamespace}:entry">
-                    <xsl:element name="{$usedNamespace}:langstring">
-                        <xsl:attribute name="xml:lang">
-                            <xsl:text>nl</xsl:text>
-                        </xsl:attribute>
-                        <xsl:value-of select="substring-before(substring-after($taxonValues, '::'), '||')"/>
-                    </xsl:element>
-                </xsl:element>
-            </xsl:element>
-        </xsl:if>
-        
-        <!-- Als er nog meer foute waarden zijn roep dan de templat nogmaals aan -->
-        <xsl:if test="substring-after($taxonValues, '|') != ''">
-            <xsl:call-template name="buildTaxon">
-                <xsl:with-param name="taxonValues" select="substring-after($taxonValues, '||')"/>
+            <xsl:call-template name="classification">
+                <xsl:with-param name="purpose_value" select="'idea'"/>
+                <xsl:with-param name="taxon_source" select="'https://raw.github.com/kennisnet/vocabularies/master/vdex_lom_field_validation.xml'"/>
+                <xsl:with-param name="taxons" select="$classificationValidation"/>
             </xsl:call-template>
         </xsl:if>
     </xsl:template>
-
 
 
     <!-- validatie van de waarde in het typicallearningtime veld -->
@@ -1175,7 +1124,28 @@
         </xsl:if>
         
     </xsl:template>
-    
-    
+
+    <!-- make sure access rights are set -->
+    <xsl:template name="ensureAccessrights">
+        <!-- 'OpenAccess::open toegang||' is a good default -->
+        <xsl:param name="taxons"/>
+
+        <xsl:variable name="accessrightsExists">
+            <!-- check is very simple, if purpose value exists, we asume it is present already -->
+            <xsl:for-each select="child::*[local-name() = 'classification']/*[local-name() = 'purpose']">
+                <xsl:if test="child::*[local-name()= 'value']/*[local-name() = 'langstring']='access rights'">
+                    <xsl:text>true</xsl:text>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+
+        <xsl:if test="$accessrightsExists!='true'">
+            <xsl:call-template name="classification">
+                <xsl:with-param name="purpose_value" select="'access rights'"/>
+                <xsl:with-param name="taxon_source" select="'http://purl.edustandaard.nl/classification_accessrights_nllom_20180530'"/>
+                <xsl:with-param name="taxons" select="$taxons"/>
+            </xsl:call-template>
+        </xsl:if>
+    </xsl:template>    
 
 </xsl:stylesheet>

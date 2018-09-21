@@ -12,22 +12,26 @@
 
 	<!-- De door de collectie gebruikte namespace -->
 	<xsl:variable name="usedNamespace">
-		<xsl:text>lom</xsl:text>
+		<xsl:text>ieee</xsl:text>
 	</xsl:variable>
 
 
-<xsl:template match="/">
-  <xsl:apply-templates select="//lom:lom"/>
-</xsl:template>
+	<xsl:template match="/">
+		<xsl:apply-templates select="//lom:lom"/>
+	</xsl:template>
 
-<xsl:template match="lom:lom">
-  <xsl:copy>
-    <xsl:attribute name="xsi:schemaLocation">http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/lomv1.0/lom.xsd</xsl:attribute>
-  	<xsl:apply-templates select="@*[. != xsi:schemaLocation]|node()"/>
-  	<!-- Maak een classificatie voor de validatie -->
-  	<xsl:call-template name="buildClassification"/>
-  </xsl:copy>
-</xsl:template>
+	<xsl:template match="lom:lom">
+		<xsl:copy>
+			<xsl:attribute name="xsi:schemaLocation">http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/lomv1.0/lom.xsd</xsl:attribute>
+			<xsl:apply-templates select="@*[. != xsi:schemaLocation]|node()"/>
+			<!-- Maak een classificatie voor de validatie -->
+			<xsl:call-template name="buildClassification"/>
+			<!-- add access rights -->
+			<xsl:call-template name="ensureAccessrights">
+				<xsl:with-param name="taxons" select="'RestrictedAccess::beperkte toegang||'"/>
+			</xsl:call-template>
+		</xsl:copy>
+	</xsl:template>
 
     <!-- default copy -->
 	<xsl:template match="@*|node()">

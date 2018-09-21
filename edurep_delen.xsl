@@ -40,43 +40,42 @@
   </xsl:copy>
 </xsl:template>
 
-
-	<!-- Vervang betsandsformaat als de catalogentry één van de onderstaande URL's bevat -->
+	<!-- Vervang video bestandsformaat als de catalogentry één van de onderstaande URL's bevat -->
 	<xsl:template match="lom:format">
-		<xsl:choose>
-			<xsl:when test=" contains(//lom:general/lom:catalogentry[child::lom:catalog = 'URI']/lom:entry/lom:langstring, 'youtube.com')">
-				<xsl:element name="lom:format">
-					<xsl:text>video/x-flv</xsl:text>
-				</xsl:element>
-			</xsl:when>
-			<xsl:when test=" contains(//lom:general/lom:catalogentry[child::lom:catalog = 'URI']/lom:entry/lom:langstring, 'youtu.be')">
-				<xsl:element name="lom:format">
-					<xsl:text>video/x-flv</xsl:text>
-				</xsl:element>
-			</xsl:when>
-			<xsl:when test=" contains(//lom:general/lom:catalogentry[child::lom:catalog = 'URI']/lom:entry/lom:langstring, 'vimeo.com')">
-				<xsl:element name="lom:format">
-					<xsl:text>video/x-flv</xsl:text>
-				</xsl:element>
-			</xsl:when>
-			<xsl:when test=" contains(//lom:general/lom:catalogentry[child::lom:catalog = 'URI']/lom:entry/lom:langstring, 'player.omroep.nl')">
-				<xsl:element name="lom:format">
-					<xsl:text>video/x-flv</xsl:text>
-				</xsl:element>
-			</xsl:when>
-			<xsl:when test=" contains(//lom:general/lom:catalogentry[child::lom:catalog = 'URI']/lom:entry/lom:langstring, 'download.omroep.nl')">
-				<xsl:element name="lom:format">
-					<xsl:text>video/x-flv</xsl:text>
-				</xsl:element>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:element name="lom:format">
+		<xsl:element name="lom:format">
+			<!-- only touch video formats -->
+			<xsl:choose>
+				<xsl:when test="contains(node(), 'video/')">
+					<!-- collect all uri's in one string to use contain on -->
+					<xsl:variable name="uris">
+						<xsl:apply-templates select="//lom:general/lom:catalogentry[child::lom:catalog = 'URI']/lom:entry/lom:langstring"/>
+					</xsl:variable>
+					<xsl:choose>
+						<xsl:when test="contains($uris, 'youtube.com') or contains($uris, 'youtu.be')">
+							<xsl:text>video/x-flv</xsl:text>
+						</xsl:when>
+						<xsl:when test="contains($uris, 'vimeo.com')">
+							<xsl:text>video/x-flv</xsl:text>
+						</xsl:when>
+						<xsl:when test="contains($uris, 'player.omroep.nl') or contains($uris, 'download.omroep.nl')">
+							<xsl:text>video/x-flv</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="node()"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
 					<xsl:value-of select="node()"/>
-				</xsl:element>
-			</xsl:otherwise>
-		</xsl:choose>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:element>
 	</xsl:template>
 
+	<xsl:template match="//lom:general/lom:catalogentry[child::lom:catalog = 'URI']/lom:entry/lom:langstring/text()">
+		<!-- concat without delimeter, it also adds it to the catalogentries -->
+		<xsl:value-of select="concat(.,'')"/>
+	</xsl:template>
 
 
 	<xsl:template match="lom:educational">
