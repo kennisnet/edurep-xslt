@@ -94,6 +94,10 @@
 		</xsl:if>
   	<!-- Maak een classificatie voor de validatie -->
   	<xsl:call-template name="buildClassification"/>
+	<!-- add access rights -->
+	<xsl:call-template name="ensureAccessrights">
+		<xsl:with-param name="taxons" select="'OpenAccess::open toegang||'"/>
+	</xsl:call-template>
   </xsl:copy>
 </xsl:template>
 

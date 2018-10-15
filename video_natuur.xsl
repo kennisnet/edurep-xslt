@@ -9,7 +9,7 @@
 	<xsl:variable name="collectionName">
 		<xsl:text>video_natuur</xsl:text>
 	</xsl:variable>
-	
+
 	<!-- De door de collectie gebruikte namespace -->
 	<xsl:variable name="usedNamespace">
 		<xsl:text>lom</xsl:text>
@@ -18,7 +18,7 @@
 	<xsl:template match="/">
 		<xsl:apply-templates select="//lom:lom"/>
 	</xsl:template>
-	
+
 	<xsl:template match="lom:lom">
 		<xsl:copy>
 			<xsl:attribute name="xsi:schemaLocation">http://www.imsglobal.org/xsd/imsmd_v1p2 imsmd_v1p2p4.xsd</xsl:attribute>
@@ -27,9 +27,13 @@
 			<xsl:call-template name="collectionMapping"/>
 			<!-- Maak een classificatie voor de validatie -->
 			<xsl:call-template name="buildClassification"/>
+			<!-- add access rights -->
+			<xsl:call-template name="ensureAccessrights">
+				<xsl:with-param name="taxons" select="'OpenAccess::open toegang||'"/>
+			</xsl:call-template>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<!-- default copy -->
 	<xsl:template match="@*|node()">
 		<!-- Velden valideren -->
