@@ -401,19 +401,21 @@
       </xsl:element>
 
       <!-- Classification purpose idea with custom vocabulaire -->
-      <xsl:element name="czp:classification">
-        <xsl:call-template name="IMSvocabulary">
-          <xsl:with-param name="element" select="'czp:purpose'"/>
-          <xsl:with-param name="source" select="'LOMv1.0'"/>
-          <xsl:with-param name="value" select="'idea'"/>
-        </xsl:call-template>
-        <xsl:call-template name="czp-taxonpath">
-          <xsl:with-param name="vocabulary" select="'http://library.wur.nl/vdex/publicatietypes-samhao.xml'"/>
-          <xsl:with-param name="language" select="'nl'"/>
-          <xsl:with-param name="czp_taxon_id" select="//dc:type"/>
-          <xsl:with-param name="czp_taxon_entry" select="''"/> <!-- Empty variable will be skipped -->
-        </xsl:call-template>
-      </xsl:element>
+      <xsl:if test="//dc:type">
+        <xsl:element name="czp:classification">
+          <xsl:call-template name="IMSvocabulary">
+            <xsl:with-param name="element" select="'czp:purpose'"/>
+            <xsl:with-param name="source" select="'LOMv1.0'"/>
+            <xsl:with-param name="value" select="'idea'"/>
+          </xsl:call-template>
+          <xsl:call-template name="czp-taxonpath">
+            <xsl:with-param name="vocabulary" select="'http://library.wur.nl/vdex/publicatietypes-samhao.xml'"/>
+            <xsl:with-param name="language" select="'nl'"/>
+            <xsl:with-param name="czp_taxon_id" select="//dc:type"/>
+            <xsl:with-param name="czp_taxon_entry" select="''"/> <!-- Empty variable will be skipped -->
+          </xsl:call-template>
+        </xsl:element>
+      </xsl:if>
 
       <!-- add access rights classification -->
       <xsl:call-template name="ensureAccessrights">
