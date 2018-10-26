@@ -1,8 +1,13 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:oai_czp="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:oai="http://www.openarchives.org/OAI/2.0/" xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns="http://www.openarchives.org/OAI/2.0/" version="1.0" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
+<xsl:stylesheet version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2"
+	xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd">
+
 <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
 	<!--<xsl:include href="edurep://repositoryToVdexMapping"/>-->
-	<!--<xsl:include href="edurep://validate"/>-->
+	<xsl:include href="edurep://validate"/>
 	
 	 <!-- Collectienaam voor het koppelen van -->
 	<xsl:variable name="collectionName">
@@ -37,6 +42,10 @@
   	<!-- <xsl:call-template name="collectionMapping"/> -->
   	<!-- Maak een classificatie voor de validatie -->
   	<!--<xsl:call-template name="buildClassification"/>-->
+	<!-- add access rights, open for all until this can be managed with BME individually -->
+	<xsl:call-template name="ensureAccessrights">
+		<xsl:with-param name="taxons" select="'OpenAccess::open toegang||'"/>
+	</xsl:call-template>
   </xsl:copy>
 </xsl:template>
 

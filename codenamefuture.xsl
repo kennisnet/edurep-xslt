@@ -14,26 +14,30 @@
 		<xsl:text>lom</xsl:text>
 	</xsl:variable>
 
-<xsl:template match="/">
-  <xsl:apply-templates select="//lom:lom"/>
-</xsl:template>
+	<xsl:template match="/">
+		<xsl:apply-templates select="//lom:lom"/>
+	</xsl:template>
 
-<xsl:template match="lom:lom">
-  <xsl:copy>
-    <xsl:attribute name="xsi:schemaLocation">http://www.imsglobal.org/xsd/imsmd_v1p2 imsmd_v1p2p4.xsd</xsl:attribute>
-    <xsl:apply-templates select="@*[. != xsi:schemaLocation]|node()"/>
-	<!-- Mapping begrippenkader -->
-  	<xsl:call-template name="collectionMapping"/>
-  	<!-- Maak een classificatie voor de validatie -->
-  	<xsl:call-template name="buildClassification"/>
-  </xsl:copy>
-</xsl:template>
+	<xsl:template match="lom:lom">
+		<xsl:copy>
+			<xsl:attribute name="xsi:schemaLocation">http://www.imsglobal.org/xsd/imsmd_v1p2 imsmd_v1p2p4.xsd</xsl:attribute>
+			<xsl:apply-templates select="@*[. != xsi:schemaLocation]|node()"/>
+			<!-- Mapping begrippenkader -->
+			<xsl:call-template name="collectionMapping"/>
+			<!-- Maak een classificatie voor de validatie -->
+			<xsl:call-template name="buildClassification"/>
+			<!-- add access rights -->
+			<xsl:call-template name="ensureAccessrights">
+				<xsl:with-param name="taxons" select="'OpenAccess::open toegang||'"/>
+			</xsl:call-template>
+		</xsl:copy>
+	</xsl:template>
 
-    <!-- default copy -->
-<xsl:template match="@*|node()">
-	<!-- Velden valideren -->
-	<xsl:call-template name="validateValue"/>
-</xsl:template>
+	<!-- default copy -->
+	<xsl:template match="@*|node()">
+		<!-- Velden valideren -->
+		<xsl:call-template name="validateValue"/>
+	</xsl:template>
 
 </xsl:stylesheet>
 
