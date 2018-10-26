@@ -1,11 +1,11 @@
 <xsl:stylesheet version="1.0"
-    xmlns="http://www.openarchives.org/OAI/2.0/"
-    xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:mrx="http://www.memorix.nl/memorix.xsd"
-    xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns="http://www.openarchives.org/OAI/2.0/"
+                xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2"
+                xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns:mrx="http://www.memorix.nl/memorix.xsd"
+                xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <!-- Samhao XSLT voor de sets VILENTUM, VHL en LECTORHAS -->
   <xsl:output encoding="UTF-8" indent="yes" method="xml" standalone="no"/>
 
@@ -384,6 +384,7 @@
           </xsl:element>
         </xsl:element>
       </xsl:if>
+
       <!-- Classification -->
       <xsl:element name="czp:classification">
         <xsl:call-template name="IMSvocabulary">
@@ -398,6 +399,22 @@
           <xsl:with-param name="czp_taxon_entry" select="'Voedsel, natuur en leefomgeving'"/>
         </xsl:call-template>
       </xsl:element>
+
+      <!-- Classification purpose idea with custom vocabulaire -->
+      <xsl:element name="czp:classification">
+        <xsl:call-template name="IMSvocabulary">
+          <xsl:with-param name="element" select="'czp:purpose'"/>
+          <xsl:with-param name="source" select="'LOMv1.0'"/>
+          <xsl:with-param name="value" select="'idea'"/>
+        </xsl:call-template>
+        <xsl:call-template name="czp-taxonpath">
+          <xsl:with-param name="vocabulary" select="'http://library.wur.nl/vdex/publicatietypes-samhao.xml'"/>
+          <xsl:with-param name="language" select="'nl'"/>
+          <xsl:with-param name="czp_taxon_id" select="//dc:type"/>
+          <xsl:with-param name="czp_taxon_entry" select="''"/> <!-- Empty variable will be skipped -->
+        </xsl:call-template>
+      </xsl:element>
+
       <!-- add access rights classification -->
       <xsl:call-template name="ensureAccessrights">
         <xsl:with-param name="taxons" select="$accessrights"/>
