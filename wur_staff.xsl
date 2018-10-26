@@ -10,34 +10,24 @@
 
   <xsl:output method="xml" indent="yes" encoding="UTF-8" standalone="no"/>
 
+  <xsl:include href="edurep://validate"/>
+
   <xsl:param name="default_language" select="//dc:language"/>
-
-  <xsl:param name="vdex_aggregationlevel"
-             select="'http://purl.edustandaard.nl/vdex_aggregationlevel_czp_20060628.xml'"/>
-
+  <xsl:param name="vdex_aggregationlevel" select="'http://purl.edustandaard.nl/vdex_aggregationlevel_czp_20060628.xml'"/>
   <xsl:param name="vdex_status" select="'http://download.edustandaard.nl/vdex/vdex_status_lomv1p0_20060628.xml'"/>
-
-  <xsl:param name="vdex_contributerole"
-             select="'http://purl.edustandaard.nl/vdex_lifecycle_contribute_role_lomv1p0_20060628.xml'"/>
-
-  <xsl:param name="vdex_learningresourcetype"
-             select="'http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml'"/>
-
-  <xsl:param name="vdex_intendedenduserrole"
-             select="'http://purl.edustandaard.nl/vdex_intendedenduserrole_lomv1p0_20060628.xml'"/>
-
+  <xsl:param name="vdex_contributerole" select="'http://purl.edustandaard.nl/vdex_lifecycle_contribute_role_lomv1p0_20060628.xml'"/>
+  <xsl:param name="vdex_learningresourcetype" select="'http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml'"/>
+  <xsl:param name="vdex_intendedenduserrole" select="'http://purl.edustandaard.nl/vdex_intendedenduserrole_lomv1p0_20060628.xml'"/>
   <xsl:param name="vdex_context" select="'http://purl.edustandaard.nl/vdex_context_czp_20060628.xml'"/>
-
   <xsl:param name="vdex_cost" select="'http://purl.edustandaard.nl/vdex_cost_lomv1p0_20060628.xml'"/>
-
-  <xsl:param name="vdex_copyrightandotherrestrictions"
-             select="'https://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20131202'"/>
-
+  <xsl:param name="vdex_copyrightandotherrestrictions" select="'https://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20131202'"/>
   <xsl:param name="vdex_kind" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
-
   <xsl:param name="vdex_relationkind" select="'https://purl.edustandaard.nl/relation_kind_nllom_20131211'"/>
-
   <xsl:param name="vdex_classification" select="'http://purl.edustandaard.nl/begrippenkader'"/>
+
+  <xsl:variable name="usedNamespace">
+    <xsl:text>czp</xsl:text>
+  </xsl:variable>
 
   <xsl:variable name="publisher">
     <xsl:choose>
@@ -186,12 +176,9 @@
         </xsl:call-template>
 
         <!-- Aggregationlevel -->
-        <xsl:call-template name="vocabulary-element">
-
-          <xsl:with-param name="element_name" select="'czp:aggregationlevel'"/>
-
-          <xsl:with-param name="vocabulary" select="$vdex_aggregationlevel"/>
-
+        <xsl:call-template name="IMSvocabulary">
+          <xsl:with-param name="element" select="'czp:aggregationlevel'"/>
+          <xsl:with-param name="source" select="$vdex_aggregationlevel"/>
           <xsl:with-param name="value" select="'2'"/>
         </xsl:call-template>
       </xsl:element>
@@ -206,12 +193,9 @@
 
             <xsl:element name="czp:contribute">
 
-              <xsl:call-template name="vocabulary-element">
-
-                <xsl:with-param name="element_name" select="'czp:role'"/>
-
-                <xsl:with-param name="vocabulary" select="$vdex_contributerole"/>
-
+              <xsl:call-template name="IMSvocabulary">
+                <xsl:with-param name="element" select="'czp:role'"/>
+                <xsl:with-param name="source" select="$vdex_contributerole"/>
                 <xsl:with-param name="value" select="'author'"/>
               </xsl:call-template>
 
@@ -230,16 +214,11 @@
 
         <!-- Contribute publisher -->
         <xsl:element name="czp:contribute">
-
-          <xsl:call-template name="vocabulary-element">
-
-            <xsl:with-param name="element_name" select="'czp:role'"/>
-
-            <xsl:with-param name="vocabulary" select="$vdex_contributerole"/>
-
+          <xsl:call-template name="IMSvocabulary">
+            <xsl:with-param name="element" select="'czp:role'"/>
+            <xsl:with-param name="source" select="$vdex_contributerole"/>
             <xsl:with-param name="value" select="'publisher'"/>
           </xsl:call-template>
-
           <xsl:call-template name="czp-contributecentity">
             <xsl:with-param name="vcard_fn" select="$publisher"/>
             <xsl:with-param name="vcard_org" select="$publisher"/>
@@ -288,35 +267,24 @@
       <!-- Educational -->
       <xsl:element name="czp:educational">
 
-        <xsl:call-template name="vocabulary-element">
-
-          <xsl:with-param name="element_name" select="'czp:learningresourcetype'"/>
-          <!-- verplicht -->
-
-          <xsl:with-param name="vocabulary" select="$vdex_learningresourcetype"/>
-
+        <xsl:call-template name="IMSvocabulary">
+          <xsl:with-param name="element" select="'czp:learningresourcetype'"/>
+          <xsl:with-param name="source" select="$vdex_learningresourcetype"/>
           <xsl:with-param name="value" select="'informatiebron'"/>
         </xsl:call-template>
-
-        <xsl:call-template name="vocabulary-element">
-
-          <xsl:with-param name="element_name" select="'czp:intendedenduserrole'"/>
-          <!-- verplicht -->
-
-          <xsl:with-param name="vocabulary" select="$vdex_intendedenduserrole"/>
-
+        <xsl:call-template name="IMSvocabulary">
+          <xsl:with-param name="element" select="'czp:intendedenduserrole'"/>
+          <xsl:with-param name="source" select="$vdex_intendedenduserrole"/>
           <xsl:with-param name="value" select="'author'"/>
         </xsl:call-template>
-
-        <xsl:call-template name="vocabulary-element">
-          <xsl:with-param name="element_name" select="'czp:context'"/>
-          <xsl:with-param name="vocabulary" select="$vdex_context"/>
+        <xsl:call-template name="IMSvocabulary">
+          <xsl:with-param name="element" select="'czp:context'"/>
+          <xsl:with-param name="source" select="$vdex_context"/>
           <xsl:with-param name="value" select="'HO'"/>
         </xsl:call-template>
-
-        <xsl:call-template name="vocabulary-element">
-          <xsl:with-param name="element_name" select="'czp:context'"/>
-          <xsl:with-param name="vocabulary" select="$vdex_context"/>
+        <xsl:call-template name="IMSvocabulary">
+          <xsl:with-param name="element" select="'czp:context'"/>
+          <xsl:with-param name="source" select="$vdex_context"/>
           <xsl:with-param name="value" select="'WO'"/>
         </xsl:call-template>
 
@@ -333,23 +301,15 @@
       <!-- Rights -->
       <xsl:element name="czp:rights">
 
-        <xsl:call-template name="vocabulary-element">
-
-          <xsl:with-param name="element_name" select="'czp:cost'"/>
-          <!-- verplicht -->
-
-          <xsl:with-param name="vocabulary" select="$vdex_cost"/>
-
+        <xsl:call-template name="IMSvocabulary">
+          <xsl:with-param name="element" select="'czp:cost'"/>
+          <xsl:with-param name="source" select="$vdex_cost"/>
           <xsl:with-param name="value" select="'no'"/>
         </xsl:call-template>
 
-        <xsl:call-template name="vocabulary-element">
-
-          <xsl:with-param name="element_name" select="'czp:copyrightandotherrestrictions'"/>
-          <!-- verplicht -->
-
-          <xsl:with-param name="vocabulary" select="$vdex_copyrightandotherrestrictions"/>
-
+        <xsl:call-template name="IMSvocabulary">
+          <xsl:with-param name="element" select="'czp:copyrightandotherrestrictions'"/>
+          <xsl:with-param name="source" select="$vdex_copyrightandotherrestrictions"/>
           <xsl:with-param name="value" select="'yes'"/>
         </xsl:call-template>
 
@@ -366,9 +326,9 @@
       <!-- Relation -->
       <xsl:if test="$isbnissn and $isbnissn != ''">
         <xsl:element name="czp:relation">
-          <xsl:call-template name="vocabulary-element">
-            <xsl:with-param name="element_name" select="'czp:kind'"/>
-            <xsl:with-param name="vocabulary" select="$vdex_relationkind"/>
+          <xsl:call-template name="IMSvocabulary">
+            <xsl:with-param name="element" select="'czp:kind'"/>
+            <xsl:with-param name="source" select="$vdex_relationkind"/>
             <xsl:with-param name="value" select="'ispartof'"/>
           </xsl:call-template>
           <xsl:element name="czp:resource">
@@ -396,12 +356,11 @@
 
       <!-- Classification -->
       <xsl:element name="czp:classification">
-        <xsl:call-template name="vocabulary-element">
-          <xsl:with-param name="element_name" select="'czp:purpose'"/>
-          <xsl:with-param name="vocabulary" select="'LOMv1.0'"/>
+        <xsl:call-template name="IMSvocabulary">
+          <xsl:with-param name="element" select="'czp:purpose'"/>
+          <xsl:with-param name="source" select="'LOMv1.0'"/>
           <xsl:with-param name="value" select="'discipline'"/>
         </xsl:call-template>
-
         <xsl:call-template name="czp-taxonpath">
           <xsl:with-param name="vocabulary" select="'http://purl.edustandaard.nl/begrippenkader'"/>
           <xsl:with-param name="language" select="'nl'"/>
@@ -412,12 +371,11 @@
 
       <!-- Classification -->
       <xsl:element name="czp:classification">
-        <xsl:call-template name="vocabulary-element">
-          <xsl:with-param name="element_name" select="'czp:purpose'"/>
-          <xsl:with-param name="vocabulary" select="'LOMv1.0'"/>
+        <xsl:call-template name="IMSvocabulary">
+          <xsl:with-param name="element" select="'czp:purpose'"/>
+          <xsl:with-param name="source" select="'LOMv1.0'"/>
           <xsl:with-param name="value" select="'medium'"/>
         </xsl:call-template>
-
         <xsl:call-template name="czp-taxonpath">
           <xsl:with-param name="vocabulary" select="'http://library.wur.nl/vdex/publicatietypes.xml'"/>
           <xsl:with-param name="language" select="'nl'"/>
@@ -426,6 +384,10 @@
         </xsl:call-template>
       </xsl:element>
 
+      <!-- access rights -->
+      <xsl:call-template name="ensureAccessrights">
+        <xsl:with-param name="taxons" select="'OpenAccess::open toegang||'"/>
+      </xsl:call-template>
     </xsl:element>
   </xsl:template>
 
@@ -613,37 +575,6 @@
   </xsl:template>
 
   <!-- Herbruikbare delen code, aangeroepen in bovenstaande functies -->
-
-  <!-- Maakt een <source><langstring xml:lang="x-none">$vocabulary</langstring></source><value><langstring xml:lang="x-none">$value</langstring></value> construct. -->
-  <xsl:template name="vocabulary-element">
-
-    <xsl:param name="element_name"/>
-
-    <xsl:param name="vocabulary"/>
-
-    <xsl:param name="value"/>
-
-    <xsl:element name="{$element_name}">
-
-      <xsl:call-template name="langstring-element">
-
-        <xsl:with-param name="element_name" select="'czp:source'"/>
-
-        <xsl:with-param name="language" select="'x-none'"/>
-
-        <xsl:with-param name="value" select="$vocabulary"/>
-      </xsl:call-template>
-
-      <xsl:call-template name="langstring-element">
-
-        <xsl:with-param name="element_name" select="'czp:value'"/>
-
-        <xsl:with-param name="language" select="'x-none'"/>
-
-        <xsl:with-param name="value" select="$value"/>
-      </xsl:call-template>
-    </xsl:element>
-  </xsl:template>
 
   <!-- Maakt een <$element_name>$value</$element_name> -->
   <xsl:template name="elemental">
