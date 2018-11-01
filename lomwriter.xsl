@@ -20,6 +20,20 @@ called from other templates when included.
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
+    <!-- vocabulary sources -->
+    <xsl:param name="vdex_aggregationlevel" select="'http://purl.edustandaard.nl/vdex_aggregationlevel_czp_20060628.xml'"/>
+    <xsl:param name="vdex_status" select="'http://purl.edustandaard.nl/vdex_status_lomv1p0_20060628.xml'"/>
+    <xsl:param name="vdex_contributerole" select="'http://purl.edustandaard.nl/vdex_lifecycle_contribute_role_lomv1p0_20060628.xml'"/>
+    <xsl:param name="vdex_learningresourcetype" select="'http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml'"/>
+    <xsl:param name="vdex_intendedenduserrole" select="'http://purl.edustandaard.nl/vdex_intendedenduserrole_lomv1p0_20060628.xml'"/>
+    <xsl:param name="vdex_context" select="'http://purl.edustandaard.nl/vdex_context_czp_20060628.xml'"/>
+    <xsl:param name="vdex_cost" select="'http://purl.edustandaard.nl/vdex_cost_lomv1p0_20060628.xml'"/>
+    <xsl:param name="vdex_copyrightandotherrestrictions" select="'http://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20131202'"/>
+    <xsl:param name="vdex_relationkind" select="'http://purl.edustandaard.nl/relation_kind_nllom_20131211'"/>
+    <xsl:param name="vdex_purpose" select="'http://purl.edustandaard.nl/classification_purpose_nllom_20180530'"/>
+    <xsl:param name="vdex_classification_begrippenkader" select="'http://purl.edustandaard.nl/begrippenkader'"/>
+    <xsl:param name="vdex_classification_educationallevel" select="'http://purl.edustandaard.nl/vdex_classification_educationallevel_czp_20071115.xml'"/>
+
     <!-- Generic Functions -->
 
     <xsl:template name="classification">

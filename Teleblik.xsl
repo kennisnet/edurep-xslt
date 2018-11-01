@@ -18,25 +18,7 @@
     <xsl:text>czp</xsl:text>
   </xsl:variable>
 
-
   <xsl:param name="default_language" select="'nl'"/>
-  <xsl:param name="vdex_aggregationlevel"
-             select="'http://purl.edustandaard.nl/vdex_aggregationlevel_czp_20060628.xml'"/>
-  <xsl:param name="vdex_classification_purpose"
-             select="'http://purl.edustandaard.nl/vdex_classification_purpose_czp_20060628.xml'"/>
-  <xsl:param name="vdex_classification_educationallevel"
-             select="'http://purl.edustandaard.nl/vdex_classification_educationallevel_czp_20071115.xml'"/>
-  <xsl:param name="vdex_classification_obk" select="'http://purl.edustandaard.nl/begrippenkader'"/>
-  <xsl:param name="vdex_context" select="'http://purl.edustandaard.nl/vdex_context_czp_20060628.xml'"/>
-  <xsl:param name="vdex_learningresourcetype"
-             select="'http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml'"/>
-  <xsl:param name="vdex_intendedenduserrole"
-             select="'http://purl.edustandaard.nl/vdex_intendedenduserrole_lomv1p0_20060628.xml'"/>
-  <xsl:param name="vdex_cost" select="'http://purl.edustandaard.nl/vdex_cost_lomv1p0_20060628.xml'"/>
-  <xsl:param name="vdex_copyright"
-             select="'http://purl.edustandaard.nl/vdex_copyrightsandotherrestrictions_lomv1p0_20060628.xml'"/>
-  <xsl:param name="vdex_relation" select="'https://purl.edustandaard.nl/relation_kind_nllom_20131211'"/>
-
 
   <xsl:template match="/">
     <xsl:apply-templates select="//czp:lom"/>
@@ -65,7 +47,6 @@
           <xsl:apply-templates select="@*|node()"/>
         </xsl:copy>
       </xsl:for-each>
-
       <!--insert lom.technical.aggregationlevel -->
       <xsl:if test="count(//czp:aggregationlevel)=0">
         <xsl:call-template name="IMSvocabulary">
@@ -74,10 +55,8 @@
           <xsl:with-param name="value" select="'2'"/>
         </xsl:call-template>
       </xsl:if>
-
     </xsl:element>
   </xsl:template>
-
 
   <!-- insert lom.technical, lom.educational and lom.rights after lom.metametadata-->
   <xsl:template match="czp:metametadata">
@@ -163,7 +142,7 @@
         <!-- Insert lom.rights.copyrightandotherrestrictions -->
         <xsl:call-template name="IMSvocabulary">
           <xsl:with-param name="element" select="'czp:copyrightandotherrestrictions'"/>
-          <xsl:with-param name="source" select="$vdex_copyright"/>
+          <xsl:with-param name="source" select="$vdex_copyrightandotherrestrictions"/>
           <xsl:with-param name="value" select="'yes'"/>
         </xsl:call-template>
 
@@ -200,7 +179,7 @@
       <!-- Old style relation element -->
       <xsl:call-template name="IMSvocabulary">
         <xsl:with-param name="element" select="'czp:kind'"/>
-        <xsl:with-param name="source" select="$vdex_relation"/>
+        <xsl:with-param name="source" select="$vdex_relationkind"/>
         <xsl:with-param name="value" select="'hasformat'"/>
       </xsl:call-template>
 
@@ -226,7 +205,7 @@
     <xsl:element name="czp:relation">
       <xsl:call-template name="IMSvocabulary">
         <xsl:with-param name="element" select="'czp:kind'"/>
-        <xsl:with-param name="source" select="$vdex_relation"/>
+        <xsl:with-param name="source" select="$vdex_relationkind"/>
         <xsl:with-param name="value" select="'embed'"/>
       </xsl:call-template>
 
@@ -249,7 +228,7 @@
     <xsl:element name="czp:classification">
       <xsl:call-template name="IMSvocabulary">
         <xsl:with-param name="element" select="'czp:purpose'"/>
-        <xsl:with-param name="source" select="$vdex_classification_purpose"/>
+        <xsl:with-param name="source" select="$vdex_purpose"/>
         <xsl:with-param name="value" select="'educational level'"/>
       </xsl:call-template>
 
@@ -263,7 +242,7 @@
     <xsl:element name="czp:classification">
       <xsl:call-template name="IMSvocabulary">
         <xsl:with-param name="element" select="'czp:purpose'"/>
-        <xsl:with-param name="source" select="$vdex_classification_purpose"/>
+        <xsl:with-param name="source" select="$vdex_purpose"/>
         <xsl:with-param name="value" select="'educational level'"/>
       </xsl:call-template>
       <xsl:call-template name="determine-context">
@@ -399,7 +378,7 @@
     <!-- OBK classificatie -->
     <xsl:if test="$context != '' and $context != 'VVE' and $context != 'bedrijfsopleiding'">
       <xsl:call-template name="czp-taxonpath">
-        <xsl:with-param name="vocabulary" select="$vdex_classification_obk"/>
+        <xsl:with-param name="vocabulary" select="$vdex_classification_begrippenkader"/>
         <xsl:with-param name="language" select="'nl'"/>
         <xsl:with-param name="czp_taxon_id">
           <xsl:choose>
