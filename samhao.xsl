@@ -114,11 +114,11 @@
         <!-- Catalogentry -->
         <xsl:for-each select="//dc:identifier">
           <xsl:if test="not(string-length(translate(., '0123456789', '')) = 0)">
-            <xsl:if test="//dc:identifier[starts-with(text(),'http://www.greeni.nl/iguana/www.main.cls?surl=greenisearch#RecordId=')]">
+            <xsl:if test="//dc:identifier[starts-with(text(),'https://www.greeni.nl/iguana/www.main.cls?surl=greenisearch#RecordId=')]">
               <xsl:variable name="uri">
                 <xsl:call-template name="string-replace-all">
                   <xsl:with-param name="text" select="."/>
-                  <xsl:with-param name="replace" select="'http://www.greeni.nl/iguana/www.main.cls?surl=greenisearch#RecordId='"/>
+                  <xsl:with-param name="replace" select="'https://www.greeni.nl/iguana/www.main.cls?surl=greenisearch#RecordId='"/>
                   <xsl:with-param name="by" select="''"/>
                 </xsl:call-template>
               </xsl:variable>
