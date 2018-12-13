@@ -249,7 +249,7 @@
           <xsl:with-param name="element_name" select="'czp:location'"/>
           <!-- verplicht -->
 
-          <xsl:with-param name="value" select="//dc:identifier"/>
+          <xsl:with-param name="value" select="//dc:relation"/>
         </xsl:call-template>
       </xsl:element>
 
