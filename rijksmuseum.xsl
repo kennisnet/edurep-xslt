@@ -1,24 +1,27 @@
-<xsl:stylesheet xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns="http://www.openarchives.org/OAI/2.0/"
+	xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	version="1.0">
 	<xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
-<xsl:param name="default_language" select="'nl'"/>
-<xsl:param name="vdex_aggregationlevel" select="'http://purl.edustandaard.nl/vdex_aggregationlevel_czp_20060628.xml'"/>
-<xsl:param name="vdex_status" select="'http://download.edustandaard.nl/vdex/vdex_status_lomv1p0_20060628.xml'"/>
-<xsl:param name="vdex_contributerole" select="'http://purl.edustandaard.nl/vdex_lifecycle_contribute_role_lomv1p0_20060628.xml'"/>
-<xsl:param name="vdex_cost" select="'http://purl.edustandaard.nl/vdex_cost_lomv1p0_20060628.xml'"/>
-<xsl:param name="vdex_copyrightandotherrestrictions" select="'http://purl.edustandaard.nl/copyrightsandotherrestrictions_nllom_20110411'"/>
-<xsl:param name="vdex_learningresourcetype" select="'http://purl.edustandaard.nl/vdex_learningresourcetype_czp_20060628.xml'"/>
-<xsl:param name="vdex_intendedenduserrole" select="'http://purl.edustandaard.nl/vdex_intendedenduserrole_lomv1p0_20060628.xml'"/>
-<xsl:param name="vdex_context" select="'http://purl.edustandaard.nl/vdex_context_czp_20060628.xml'"/>
-<xsl:param name="vdex_kind_old" select="'http://purl.edustandaard.nl/vdex_relation_kind_lomv1p0_20060628.xml'"/>
-<xsl:param name="vdex_kind_new" select="'https://purl.edustandaard.nl/relation_kind_nllom_20131211'"/>
-<xsl:param name="vdex_classification_purpose" select="'http://purl.edustandaard.nl/vdex_classification_purpose_czp_20060628.xml'"/>
-<xsl:param name="vdex_classification_educationallevel" select="'http://download.edustandaard.nl/vdex/vdex_classification_educationallevel_czp_20071115.xml'"/>
-<xsl:param name="vdex_classification_begrippenkader" select="'http://purl.edustandaard.nl/begrippenkader'"/>
+	<xsl:param name="default_language" select="'nl'"/>
+	<xsl:include href="edurep://validate"/>
 
-<xsl:template match="/">
-	<xsl:element name="lom:lom" namespace="http://www.imsglobal.org/xsd/imsmd_v1p2">
-	<xsl:attribute name="xsi:schemaLocation">http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd</xsl:attribute>
+	<xsl:variable name="collectionName">
+		<xsl:text>rijksmuseum</xsl:text>
+	</xsl:variable>
+
+	<xsl:variable name="usedNamespace">
+		<xsl:text>lom</xsl:text>
+	</xsl:variable>
+
+
+	<xsl:template match="/">
+		<xsl:element name="lom:lom" namespace="http://www.imsglobal.org/xsd/imsmd_v1p2">
+		<xsl:attribute name="xsi:schemaLocation">http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd</xsl:attribute>
 		
 		<!-- General -->
 		<xsl:element name="lom:general">
@@ -185,9 +188,9 @@
 			</xsl:for-each>
 
 			<!-- Aggregationlevel -->
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:aggregationlevel'"/>
-				<xsl:with-param name="vocabulary" select="$vdex_aggregationlevel"/>
+			<xsl:call-template name="IMSvocabulary">
+				<xsl:with-param name="element" select="'lom:aggregationlevel'"/>
+				<xsl:with-param name="source" select="$vdex_aggregationlevel"/>
 				<xsl:with-param name="value" select="'1'"/>
 			</xsl:call-template>
 
@@ -203,9 +206,9 @@
 			</xsl:call-template>
 
 			<xsl:element name="lom:contribute">
-				<xsl:call-template name="vocabulary-element">
-        			<xsl:with-param name="element_name" select="'lom:role'"/>
-        			<xsl:with-param name="vocabulary" select="$vdex_contributerole"/>
+				<xsl:call-template name="IMSvocabulary">
+        			<xsl:with-param name="element" select="'lom:role'"/>
+        			<xsl:with-param name="source" select="$vdex_contributerole"/>
 			  		<xsl:with-param name="value" select="'publisher'"/>
       			</xsl:call-template>
       			<xsl:call-template name="nllom-contributecentity">
@@ -239,69 +242,33 @@
 
 		<!-- Educational -->
 		<xsl:element name="lom:educational">
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:learningresourcetype'"/> <!-- verplicht -->
-				<xsl:with-param name="vocabulary" select="$vdex_learningresourcetype"/>
+			<xsl:call-template name="IMSvocabulary">
+				<xsl:with-param name="element" select="'lom:learningresourcetype'"/>
+				<xsl:with-param name="source" select="$vdex_learningresourcetype"/>
 				<xsl:with-param name="value" select="'informatiebron'"/>
 			</xsl:call-template>
-
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:intendedenduserrole'"/> <!-- verplicht -->
-				<xsl:with-param name="vocabulary" select="$vdex_intendedenduserrole"/>
+			<xsl:call-template name="IMSvocabulary">
+				<xsl:with-param name="element" select="'lom:intendedenduserrole'"/>
+				<xsl:with-param name="source" select="$vdex_intendedenduserrole"/>
 				<xsl:with-param name="value" select="'learner'"/>
 			</xsl:call-template>
-			
-			<!-- <xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:context'"/>
-				<xsl:with-param name="vocabulary" select="$vdex_context"/>
-				<xsl:with-param name="value" select="'PO'"/>
-			</xsl:call-template>
-			
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:context'"/>
-				<xsl:with-param name="vocabulary" select="$vdex_context"/>
-				<xsl:with-param name="value" select="'VO'"/>
-			</xsl:call-template>
-			
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:context'"/>
-				<xsl:with-param name="vocabulary" select="$vdex_context"/>
-				<xsl:with-param name="value" select="'HBO'"/>
-			</xsl:call-template>
-			
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:context'"/>
-				<xsl:with-param name="vocabulary" select="$vdex_context"/>
-				<xsl:with-param name="value" select="'WO'"/>
-			</xsl:call-template>
-			
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:context'"/>
-				<xsl:with-param name="vocabulary" select="$vdex_context"/>
-				<xsl:with-param name="value" select="'BVE'"/>
-			</xsl:call-template> -->
-			
 			<xsl:call-template name="langstring-element">
 				<xsl:with-param name="element_name" select="'lom:typicalagerange'"/>
 				<xsl:with-param name="language" select="'x-none'"/>
 				<xsl:with-param name="value" select="'7+'"/>
 			</xsl:call-template>
-
 		</xsl:element>
 
 		<!-- Rights -->
 		<xsl:element name="lom:rights">
-			<!-- cost -->
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:cost'"/>
-				<xsl:with-param name="vocabulary" select="$vdex_cost"/>
+			<xsl:call-template name="IMSvocabulary">
+				<xsl:with-param name="element" select="'lom:cost'"/>
+				<xsl:with-param name="source" select="$vdex_cost"/>
 				<xsl:with-param name="value" select="'no'"/>
 			</xsl:call-template>
-
-			<!-- copyrightandotherrestrictions -->
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:copyrightandotherrestrictions'"/> <!-- verplicht -->
-				<xsl:with-param name="vocabulary" select="$vdex_copyrightandotherrestrictions"/>
+			<xsl:call-template name="IMSvocabulary">
+				<xsl:with-param name="element" select="'lom:copyrightandotherrestrictions'"/>
+				<xsl:with-param name="source" select="$vdex_copyrightandotherrestrictions"/>
 				<xsl:with-param name="value" select="'cc-by-30'"/>
 			</xsl:call-template>
 		</xsl:element>
@@ -309,14 +276,12 @@
 		<!-- Relation thumbnail 100x100 -->
 		<!-- Oude methode -->
 		<xsl:element name="lom:relation">
-			<!-- kind -->
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:kind'"/>
-				<xsl:with-param name="vocabulary" select="$vdex_kind_old"/>
+			<xsl:call-template name="IMSvocabulary">
+				<xsl:with-param name="element" select="'lom:kind'"/>
+				<xsl:with-param name="source" select="$vdex_relationkind"/>
 				<xsl:with-param name="value" select="'hasformat'"/>
 			</xsl:call-template>
-			<!-- resource -->
-			<xsl:element name="lom:resource">			
+			<xsl:element name="lom:resource">
 			<xsl:element name="lom:description">
 				<xsl:element name="lom:langstring">
 					<xsl:attribute name="xml:lang">nl</xsl:attribute>
@@ -334,13 +299,11 @@
 		</xsl:element>
 		<!-- Nieuwe methode -->
 		<xsl:element name="lom:relation">
-			<!-- kind -->
-			<xsl:call-template name="vocabulary-element">
-				<xsl:with-param name="element_name" select="'lom:kind'"/>
-				<xsl:with-param name="vocabulary" select="$vdex_kind_new"/>
+			<xsl:call-template name="IMSvocabulary">
+				<xsl:with-param name="element" select="'lom:kind'"/>
+				<xsl:with-param name="source" select="$vdex_relationkind"/>
 				<xsl:with-param name="value" select="'thumbnail'"/>
 			</xsl:call-template>
-			<!-- resource -->
 			<xsl:element name="lom:resource">
 				<xsl:call-template name="nllom-catalogentry">
 					<xsl:with-param name="nllom_catalog" select="'URI'"/>
@@ -351,12 +314,14 @@
 				</xsl:call-template>
 			</xsl:element>
 		</xsl:element>
-				
+
+		<xsl:call-template name="ensureAccessrights">
+			<xsl:with-param name="taxons" select="'OpenAccess::open toegang||'"/>
+		</xsl:call-template>
+
 		<xsl:apply-templates/>
-	</xsl:element>
-</xsl:template>
-
-
+		</xsl:element>
+	</xsl:template>
 
 
 
@@ -421,59 +386,6 @@
   	</xsl:element>
 </xsl:template>
 
-
-<xsl:template name="nllom-taxonpath">
-	<xsl:param name="vocabulary"/>
-	<xsl:param name="language"/>
-	<xsl:param name="nllom_taxon_id"/>
-	<xsl:param name="nllom_taxon_entry"/>
-	<xsl:element name="lom:taxonpath">
-		<xsl:call-template name="langstring-element">
-			<xsl:with-param name="element_name" select="'lom:source'"/>
-			<xsl:with-param name="language" select="'x-none'"/>
-			<xsl:with-param name="value" select="$vocabulary"/>
-		</xsl:call-template>
-		<xsl:element name="lom:taxon">
-		  <xsl:call-template name="elemental">
-			  <xsl:with-param name="element_name" select="'lom:id'"/> <!-- verplicht -->
-			  <xsl:with-param name="value" select="$nllom_taxon_id"/>
-		  </xsl:call-template>
-			<xsl:call-template name="langstring-element">
-				<xsl:with-param name="element_name" select="'lom:entry'"/>
-				<xsl:with-param name="language" select="$language"/>
-				<xsl:with-param name="value" select="$nllom_taxon_entry"/>
-			</xsl:call-template>
-		</xsl:element>
-	</xsl:element>
-</xsl:template>
-
-
-
-<!-- Maakt een 
-	<source>
-		<langstring xml:lang="x-none">$vocabulary</langstring>
-	</source>
-	<value>
-		<langstring xml:lang="x-none">$value</langstring>
-	</value> 
-	construct. -->
-<xsl:template name="vocabulary-element">
-	<xsl:param name="element_name"/>
-	<xsl:param name="vocabulary"/>
-	<xsl:param name="value"/>
-	<xsl:element name="{$element_name}">
-		<xsl:call-template name="langstring-element">
-			<xsl:with-param name="element_name" select="'lom:source'"/>
-			<xsl:with-param name="language" select="'x-none'"/>
-			<xsl:with-param name="value" select="$vocabulary"/>
-		</xsl:call-template>
-		<xsl:call-template name="langstring-element">
-			<xsl:with-param name="element_name" select="'lom:value'"/>
-			<xsl:with-param name="language" select="'x-none'"/>
-			<xsl:with-param name="value" select="$value"/>
-		</xsl:call-template>
-	</xsl:element>
-</xsl:template>
 
 
 <!-- Maakt een <$element_name>$value</$element_name> -->
