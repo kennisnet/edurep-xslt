@@ -71,9 +71,9 @@
 				</xsl:choose>
 
 				<!-- Catalogentry -->
-				<xsl:call-template name="czp-catalogentry">
-					<xsl:with-param name="czp_catalog" select="'URI'"/>
-					<xsl:with-param name="czp_entry" select="//dc:identifier"/>
+				<xsl:call-template name="IMScatalogentry">
+					<xsl:with-param name="catalog" select="'URI'"/>
+					<xsl:with-param name="entry" select="//dc:identifier"/>
 				</xsl:call-template>
 				<xsl:call-template name="elemental">
 					<xsl:with-param name="element_name" select="'czp:language'"/>
@@ -257,13 +257,9 @@
 									<xsl:with-param name="language" select="'x-none'"/>
 									<xsl:with-param name="value" select="'thumbnail'"/>
 								</xsl:call-template>
-								<xsl:call-template name="czp-catalogentry">
-									<xsl:with-param name="czp_catalog" select="'URI'"/>
-									<xsl:with-param name="czp_entry">
-										<xsl:text>http://afbeeldingen.gahetna.nl/naa/thumb/100x100/</xsl:text>
-										<xsl:value-of select="//dc:relation"/>
-										<xsl:text>.jpg</xsl:text>
-									</xsl:with-param>
+								<xsl:call-template name="IMScatalogentry">
+									<xsl:with-param name="catalog" select="'URI'"/>
+									<xsl:with-param name="entry" select="concat('http://afbeeldingen.gahetna.nl/naa/thumb/100x100/', //dc:relation, '.jpg')"/>
 								</xsl:call-template>
 							</xsl:element>
 						</xsl:element>
@@ -274,13 +270,9 @@
 								<xsl:with-param name="value" select="'haspart'"/>
 							</xsl:call-template>
 							<xsl:element name="czp:resource">
-								<xsl:call-template name="czp-catalogentry">
-									<xsl:with-param name="czp_catalog" select="'URI'"/>
-									<xsl:with-param name="czp_entry">
-										<xsl:text>http://afbeeldingen.gahetna.nl/naa/thumb/1280x1280/</xsl:text>
-										<xsl:value-of select="//dc:relation"/>
-										<xsl:text>.jpg</xsl:text>
-									</xsl:with-param>
+								<xsl:call-template name="IMScatalogentry">
+									<xsl:with-param name="catalog" select="'URI'"/>
+									<xsl:with-param name="entry" select="concat('http://afbeeldingen.gahetna.nl/naa/thumb/1280x1280/', //dc:relation, '.jpg')"/>
 								</xsl:call-template>
 							</xsl:element>
 						</xsl:element>
@@ -292,13 +284,9 @@
 								<xsl:with-param name="value" select="'thumbnail'"/>
 							</xsl:call-template>
 							<xsl:element name="czp:resource">
-								<xsl:call-template name="czp-catalogentry">
-									<xsl:with-param name="czp_catalog" select="'URI'"/>
-									<xsl:with-param name="czp_entry">
-										<xsl:text>http://afbeeldingen.gahetna.nl/naa/thumb/100x100/</xsl:text>
-										<xsl:value-of select="//dc:relation"/>
-										<xsl:text>.jpg</xsl:text>
-									</xsl:with-param>
+								<xsl:call-template name="IMScatalogentry">
+									<xsl:with-param name="catalog" select="'URI'"/>
+									<xsl:with-param name="entry" select="concat('http://afbeeldingen.gahetna.nl/naa/thumb/100x100/', //dc:relation, '.jpg')"/>
 								</xsl:call-template>
 							</xsl:element>
 						</xsl:element>
@@ -311,13 +299,9 @@
 								<xsl:with-param name="value" select="'haspart'"/>
 							</xsl:call-template>
 							<xsl:element name="czp:resource">
-								<xsl:call-template name="czp-catalogentry">
-									<xsl:with-param name="czp_catalog" select="'URI'"/>
-									<xsl:with-param name="czp_entry">
-										<xsl:text>http://afbeeldingen.gahetna.nl/naa/thumb/1280x1280/</xsl:text>
-										<xsl:value-of select="//dc:relation"/>
-										<xsl:text>.jpg</xsl:text>
-									</xsl:with-param>
+								<xsl:call-template name="IMScatalogentry">
+									<xsl:with-param name="catalog" select="'URI'"/>
+									<xsl:with-param name="entry" select="concat('http://afbeeldingen.gahetna.nl/naa/thumb/1280x1280/', //dc:relation, '.jpg')"/>
 								</xsl:call-template>
 							</xsl:element>
 						</xsl:element>
@@ -334,23 +318,6 @@
 
 
 	<!-- Dit zijn de functies, verander alleen hierboven de variabelen. -->
-	<!--combo van elemental en langstring-element-->
-	<xsl:template name="czp-catalogentry">
-		<xsl:param name="czp_catalog"/>
-		<xsl:param name="czp_entry"/>
-		<xsl:element name="czp:catalogentry">
-			<xsl:element name="czp:catalog">
-				<xsl:value-of select="$czp_catalog"/>
-			</xsl:element>
-			<xsl:element name="czp:entry">
-				<xsl:call-template name="langstring">
-					<xsl:with-param name="language" select="'x-none'"/>
-					<xsl:with-param name="czp_langstring" select="$czp_entry"/>
-				</xsl:call-template>
-			</xsl:element>
-		</xsl:element>
-	</xsl:template>
-
 	<xsl:template name="czp-contributecentity">
 		<xsl:param name="vcard_fn"/>
 		<xsl:param name="vcard_org"/>

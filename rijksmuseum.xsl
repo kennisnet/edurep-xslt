@@ -26,14 +26,9 @@
 		<!-- General -->
 		<xsl:element name="lom:general">
 			<!-- Catalog entry -->
-			<xsl:call-template name="nllom-catalogentry">
-				<xsl:with-param name="nllom_catalog" select="'URI'"/>
-				<xsl:with-param name="nllom_entry">
-					<xsl:text>urn:rijksmuseum:</xsl:text>
-					<xsl:value-of select="normalize-space(//oai_dc:dc/dc:identifier[2])"/>
-					<xsl:text>-</xsl:text>
-					<xsl:value-of select="normalize-space(//oai_dc:dc/dc:identifier[1])"/>
-				</xsl:with-param>
+			<xsl:call-template name="IMScatalogentry">
+				<xsl:with-param name="catalog" select="'URI'"/>
+				<xsl:with-param name="entry" select="concat('urn:rijksmuseum:', normalize-space(//oai_dc:dc/dc:identifier[2]), '-', normalize-space(//oai_dc:dc/dc:identifier[1]) )"/>
 			</xsl:call-template>			
 			<!-- Language -->
 			<xsl:call-template name="elemental">
@@ -288,12 +283,9 @@
 					<xsl:text>thumbnail</xsl:text>
 				</xsl:element>
 			</xsl:element>
-				<xsl:call-template name="nllom-catalogentry">
-					<xsl:with-param name="nllom_catalog" select="'URI'"/>
-					<xsl:with-param name="nllom_entry">
-						<xsl:value-of select="//dc:format[1]"/>
-						<xsl:text>&amp;200x200</xsl:text>
-					</xsl:with-param>
+				<xsl:call-template name="IMScatalogentry">
+					<xsl:with-param name="catalog" select="'URI'"/>
+					<xsl:with-param name="entry" select="concat(//dc:format[1],'&amp;200x200')"/>
 				</xsl:call-template>
 			</xsl:element>
 		</xsl:element>
@@ -305,12 +297,9 @@
 				<xsl:with-param name="value" select="'thumbnail'"/>
 			</xsl:call-template>
 			<xsl:element name="lom:resource">
-				<xsl:call-template name="nllom-catalogentry">
-					<xsl:with-param name="nllom_catalog" select="'URI'"/>
-					<xsl:with-param name="nllom_entry">
-						<xsl:value-of select="//dc:format[1]"/>
-						<xsl:text>&amp;200x200</xsl:text>
-					</xsl:with-param>
+				<xsl:call-template name="IMScatalogentry">
+					<xsl:with-param name="catalog" select="'URI'"/>
+					<xsl:with-param name="entry" select="concat(//dc:format[1],'&amp;200x200')"/>
 				</xsl:call-template>
 			</xsl:element>
 		</xsl:element>
@@ -329,23 +318,6 @@
 <xsl:template match="@*|node()">
 </xsl:template>
 
-
-
-<xsl:template name="nllom-catalogentry">
-	<xsl:param name="nllom_catalog"/>
-	<xsl:param name="nllom_entry"/>
-	<xsl:element name="lom:catalogentry">
-		<xsl:element name="lom:catalog">
-			<xsl:value-of select="$nllom_catalog"/>
-		</xsl:element>
-		<xsl:element name="lom:entry">
-			<xsl:call-template name="langstring">
-				<xsl:with-param name="language" select="'x-none'"/>
-				<xsl:with-param name="nllom_langstring" select="$nllom_entry"/>
-			</xsl:call-template>
-		</xsl:element>
-	</xsl:element>
-</xsl:template>
 
 <xsl:template name="nllom-contributecentity">
 	<xsl:param name="vcard_n"/>

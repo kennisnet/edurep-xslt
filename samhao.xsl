@@ -111,23 +111,23 @@
                   <xsl:with-param name="by" select="''"/>
                 </xsl:call-template>
               </xsl:variable>
-              <xsl:call-template name="czp-catalogentry">
-                <xsl:with-param name="czp_catalog" select="'URI'"/>
-                <xsl:with-param name="czp_entry" select="concat('oai:www.samhao.nl:VBS:', translate($uri,'.',':'))"/>
+              <xsl:call-template name="IMScatalogentry">
+                <xsl:with-param name="IMScatalog" select="'URI'"/>
+                <xsl:with-param name="IMSentry" select="concat('oai:www.samhao.nl:VBS:', translate($uri,'.',':'))"/>
               </xsl:call-template>
             </xsl:if>
-            <xsl:call-template name="czp-catalogentry">
-              <xsl:with-param name="czp_catalog" select="'URI'"/>
-              <xsl:with-param name="czp_entry" select="."/>
+            <xsl:call-template name="IMScatalogentry">
+              <xsl:with-param name="catalog" select="'URI'"/>
+              <xsl:with-param name="entry" select="."/>
             </xsl:call-template>
           </xsl:if>
         </xsl:for-each>
         <!--if isbn-->
         <xsl:for-each select="//dc:identifier">
           <xsl:if test="string-length(translate(., '0123456789', '')) = 0">
-            <xsl:call-template name="czp-catalogentry">
-              <xsl:with-param name="czp_catalog" select="'urn:isbn'"/>
-              <xsl:with-param name="czp_entry" select="."/>
+            <xsl:call-template name="IMScatalogentry">
+              <xsl:with-param name="catalog" select="'urn:isbn'"/>
+              <xsl:with-param name="entry" select="."/>
             </xsl:call-template>
           </xsl:if>
         </xsl:for-each>
@@ -354,11 +354,9 @@
             <xsl:with-param name="value" select="'ispartof'"/>
           </xsl:call-template>
           <xsl:element name="czp:resource">
-            <xsl:call-template name="czp-catalogentry">
-              <xsl:with-param name="czp_catalog" select="'uri'"/>
-              <xsl:with-param name="czp_entry">
-                <xsl:value-of select="$isbnissn"/>
-              </xsl:with-param>
+            <xsl:call-template name="IMScatalogentry">
+              <xsl:with-param name="catalog" select="'uri'"/>
+              <xsl:with-param name="entry" select="$isbnissn"/>
             </xsl:call-template>
             <!-- Add optional description -->
             <xsl:if test="$isbnissndesc">
@@ -412,23 +410,9 @@
       </xsl:call-template>
     </xsl:element>
   </xsl:template>
+
+
   <!-- Dit zijn de functies, verander alleen hierboven de variabelen. -->
-  <!--combo van elemental en langstring-element-->
-  <xsl:template name="czp-catalogentry">
-    <xsl:param name="czp_catalog"/>
-    <xsl:param name="czp_entry"/>
-    <xsl:element name="czp:catalogentry">
-      <xsl:element name="czp:catalog">
-        <xsl:value-of select="$czp_catalog"/>
-      </xsl:element>
-      <xsl:element name="czp:entry">
-        <xsl:call-template name="langstring">
-          <xsl:with-param name="language" select="'x-none'"/>
-          <xsl:with-param name="czp_langstring" select="$czp_entry"/>
-        </xsl:call-template>
-      </xsl:element>
-    </xsl:element>
-  </xsl:template>
   <xsl:template name="czp-contributecentity">
     <xsl:param name="vcard_n"/>
     <xsl:param name="vcard_fn"/>

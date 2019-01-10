@@ -188,16 +188,10 @@
           <xsl:with-param name="element_name" select="'czp:description'"/>
           <xsl:with-param name="value" select="'embed-url'"/>
         </xsl:call-template>
-        <xsl:element name="czp:catalogentry">
-          <xsl:element name="czp:catalog">
-            <xsl:value-of select="'URI'"/>
-          </xsl:element>
-          <xsl:call-template name="langstring-element">
-            <xsl:with-param name="element_name" select="'czp:entry'"/>
-            <xsl:with-param name="value"
-                            select="concat('http://teleblik.nl/embed/vpx/asset/', //czp:general/czp:catalogentry/czp:entry/czp:langstring)"/>
-          </xsl:call-template>
-        </xsl:element>
+        <xsl:call-template name="IMScatalogentry">
+          <xsl:with-param name="catalog" select="'URI'"/>
+          <xsl:with-param name="entry" select="concat('http://teleblik.nl/embed/vpx/asset/', //czp:general/czp:catalogentry/czp:entry/czp:langstring)" />
+        </xsl:call-template>
       </xsl:element>
     </xsl:element>
 
@@ -210,16 +204,10 @@
       </xsl:call-template>
 
       <xsl:element name="czp:resource">
-        <xsl:element name="czp:catalogentry">
-          <xsl:element name="czp:catalog">
-            <xsl:value-of select="'URI'"/>
-          </xsl:element>
-          <xsl:call-template name="langstring-element">
-            <xsl:with-param name="element_name" select="'czp:entry'"/>
-            <xsl:with-param name="value"
-                            select="concat('http://teleblik.nl/embed/vpx/asset/', //czp:general/czp:catalogentry/czp:entry/czp:langstring)"/>
-          </xsl:call-template>
-        </xsl:element>
+        <xsl:call-template name="IMScatalogentry">
+          <xsl:with-param name="catalog" select="'URI'"/>
+          <xsl:with-param name="entry" select="concat('http://teleblik.nl/embed/vpx/asset/', //czp:general/czp:catalogentry/czp:entry/czp:langstring)" />
+        </xsl:call-template>
       </xsl:element>
 
     </xsl:element>

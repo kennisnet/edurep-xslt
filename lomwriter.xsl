@@ -136,6 +136,22 @@ called from other templates when included.
         </xsl:element>
     </xsl:template>
 
+    <xsl:template name="IMScatalogentry">
+        <xsl:param name="catalog"/>
+        <xsl:param name="entry"/>
+
+        <xsl:element name="{$usedNamespace}:catalogentry">
+            <xsl:element name="{$usedNamespace}:catalog">
+                <xsl:value-of select="$catalog"/>
+            </xsl:element>
+            <xsl:call-template name="IMSlangstring">
+                <xsl:with-param name="element" select="concat($usedNamespace, ':entry')"/>
+                <xsl:with-param name="language" select="'x-none'"/>
+                <xsl:with-param name="value" select="$entry"/>
+            </xsl:call-template>
+        </xsl:element>
+    </xsl:template>
+
     <xsl:template name="IMStaxon">
         <!-- based on Derrick Toppert's awesome buildTaxon function, ex: id1::entry1||id2::entry2|| -->
         <xsl:param name="taxons"/>
@@ -216,6 +232,20 @@ called from other templates when included.
                     <xsl:value-of select="$language"/>
                 </xsl:attribute>
                 <xsl:value-of select="$value"/>
+            </xsl:element>
+        </xsl:element>
+    </xsl:template>
+
+    <xsl:template name="IEEEcatalogentry">
+        <xsl:param name="catalog"/>
+        <xsl:param name="entry"/>
+
+        <xsl:element name="{$usedNamespace}:identifier">
+            <xsl:element name="{$usedNamespace}:catalog">
+                <xsl:value-of select="$catalog"/>
+            </xsl:element>
+            <xsl:element name="{$usedNamespace}:entry">
+                <xsl:value-of select="$entry"/>
             </xsl:element>
         </xsl:element>
     </xsl:template>

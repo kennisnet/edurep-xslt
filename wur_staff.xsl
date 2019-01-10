@@ -92,18 +92,14 @@
         </xsl:choose>
 
         <!-- Catalogentry -->
-        <xsl:call-template name="czp-catalogentry">
-
-          <xsl:with-param name="czp_catalog" select="'URI'"/>
-
-          <xsl:with-param name="czp_entry" select="//dc:identifier"/>
+        <xsl:call-template name="IMScatalogentry">
+          <xsl:with-param name="catalog" select="'URI'"/>
+          <xsl:with-param name="entry" select="//dc:identifier"/>
         </xsl:call-template>
 
         <xsl:call-template name="elemental">
-
           <xsl:with-param name="element_name" select="'czp:language'"/>
           <!-- verplicht -->
-
           <xsl:with-param name="value" select="$default_language"/>
         </xsl:call-template>
 
@@ -321,11 +317,9 @@
             <xsl:with-param name="value" select="'ispartof'"/>
           </xsl:call-template>
           <xsl:element name="czp:resource">
-            <xsl:call-template name="czp-catalogentry">
-              <xsl:with-param name="czp_catalog" select="'uri'"/>
-              <xsl:with-param name="czp_entry">
-                <xsl:value-of select="$isbnissn"/>
-              </xsl:with-param>
+            <xsl:call-template name="IMScatalogentry">
+              <xsl:with-param name="catalog" select="'uri'"/>
+              <xsl:with-param name="entry" select="$isbnissn"/>
             </xsl:call-template>
 
             <!-- Add optional description -->
@@ -381,31 +375,6 @@
   </xsl:template>
 
   <!-- Dit zijn de functies, verander alleen hierboven de variabelen. -->
-  <!--combo van elemental en langstring-element-->
-
-  <xsl:template name="czp-catalogentry">
-
-    <xsl:param name="czp_catalog"/>
-
-    <xsl:param name="czp_entry"/>
-
-    <xsl:element name="czp:catalogentry">
-
-      <xsl:element name="czp:catalog">
-        <xsl:value-of select="$czp_catalog"/>
-      </xsl:element>
-
-      <xsl:element name="czp:entry">
-
-        <xsl:call-template name="langstring">
-
-          <xsl:with-param name="language" select="'x-none'"/>
-
-          <xsl:with-param name="czp_langstring" select="$czp_entry"/>
-        </xsl:call-template>
-      </xsl:element>
-    </xsl:element>
-  </xsl:template>
 
   <xsl:template name="czp-contributecentity">
 
