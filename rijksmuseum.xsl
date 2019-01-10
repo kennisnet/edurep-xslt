@@ -7,8 +7,10 @@
 	version="1.0">
 	<xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
-	<xsl:param name="default_language" select="'nl'"/>
 	<xsl:include href="edurep://validate"/>
+
+	<!-- language to use in language specific langstrings -->
+	<xsl:param name="default_language" select="'nl'"/>
 
 	<xsl:variable name="collectionName">
 		<xsl:text>rijksmuseum</xsl:text>
@@ -29,15 +31,15 @@
 			<xsl:call-template name="IMScatalogentry">
 				<xsl:with-param name="catalog" select="'URI'"/>
 				<xsl:with-param name="entry" select="concat('urn:rijksmuseum:', normalize-space(//oai_dc:dc/dc:identifier[2]), '-', normalize-space(//oai_dc:dc/dc:identifier[1]) )"/>
-			</xsl:call-template>			
+			</xsl:call-template>
 			<!-- Language -->
 			<xsl:call-template name="elemental">
 				<xsl:with-param name="element_name" select="'lom:language'"/> 
 				<xsl:with-param name="value" select="$default_language"/>
 			</xsl:call-template>
 			<!-- Title -->
-			<xsl:call-template name="langstring-element">
-              	<xsl:with-param name="element_name" select="'lom:title'"/>
+			<xsl:call-template name="IMSlangstring">
+              	<xsl:with-param name="element" select="'lom:title'"/>
 				<xsl:with-param name="value">
 					<xsl:choose>
 						<xsl:when test="//oai_dc:dc/child::dc:title">
@@ -50,8 +52,8 @@
 				</xsl:with-param>
             </xsl:call-template>
 			<!-- Description -->
-			<xsl:call-template name="langstring-element">
-          		<xsl:with-param name="element_name" select="'lom:description'"/>
+			<xsl:call-template name="IMSlangstring">
+          		<xsl:with-param name="element" select="'lom:description'"/>
           		<xsl:with-param name="value">
 					<xsl:variable name="combinedDescription">
 						<xsl:value-of select="//dc:description"/>
@@ -121,17 +123,15 @@
         	</xsl:call-template>
 			<!-- Keyword -->
 			<xsl:for-each select="//dc:creator[not(contains(node(),'anoniem'))]">
-				<xsl:call-template name="langstring-element">
-					<xsl:with-param name="element_name" select="'lom:keyword'"/> 
-					<xsl:with-param name="value">
-						<xsl:value-of select="substring-after(node(), ', ')"/>
-						<xsl:value-of select="substring-before(substring-after(node(), ':'), ', ')"/>
+				<xsl:call-template name="IMSlangstring">
+					<xsl:with-param name="element" select="'lom:keyword'"/> 
+					<xsl:with-param name="value" select="concat(substring-after(node(), ', '), substring-before(substring-after(node(), ':'), ', '))"/>
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:for-each>
 			<xsl:for-each select="//dc:date">
-				<xsl:call-template name="langstring-element">
-					<xsl:with-param name="element_name" select="'lom:keyword'"/> 
+				<xsl:call-template name="IMSlangstring">
+					<xsl:with-param name="element" select="'lom:keyword'"/> 
 					<xsl:with-param name="value">
 						<xsl:choose>
 							<xsl:when test="substring-before(node(), ' -  ') = substring-after(node(), ' -  ')">
@@ -145,8 +145,8 @@
 				</xsl:call-template>
 			</xsl:for-each>
 			<xsl:for-each select="//dc:type">
-				<xsl:call-template name="langstring-element">
-					<xsl:with-param name="element_name" select="'lom:keyword'"/> 
+				<xsl:call-template name="IMSlangstring">
+					<xsl:with-param name="element" select="'lom:keyword'"/> 
 					<xsl:with-param name="value" select="."/>
 				</xsl:call-template>
 			</xsl:for-each>
@@ -154,8 +154,8 @@
 				<xsl:choose>
 					<xsl:when test="contains(node(), 'Iconclasscode: ')"/>
 					<xsl:otherwise>
-						<xsl:call-template name="langstring-element">
-							<xsl:with-param name="element_name" select="'lom:keyword'"/> 
+						<xsl:call-template name="IMSlangstring">
+							<xsl:with-param name="element" select="'lom:keyword'"/> 
 							<xsl:with-param name="value" select="."/>
 						</xsl:call-template>
 					</xsl:otherwise>
@@ -163,8 +163,8 @@
 			</xsl:for-each>
 			<xsl:for-each select="//dc:format">
 					<xsl:if test="contains(node(), 'techniek: ')">
-						<xsl:call-template name="langstring-element">
-							<xsl:with-param name="element_name" select="'lom:keyword'"/> 
+						<xsl:call-template name="IMSlangstring">
+							<xsl:with-param name="element" select="'lom:keyword'"/> 
 							<xsl:with-param name="value" select="substring-after(node(), 'techniek: ')"/>
 						</xsl:call-template>
 					</xsl:if>
@@ -174,8 +174,8 @@
 				<xsl:choose>
 					<xsl:when test="name(preceding-sibling::*[1]) = 'dc:creator'"/>
 					<xsl:otherwise>
-						<xsl:call-template name="langstring-element">
-							<xsl:with-param name="element_name" select="'lom:coverage'"/>						
+						<xsl:call-template name="IMSlangstring">
+							<xsl:with-param name="element" select="'lom:coverage'"/>						
 							<xsl:with-param name="value" select="."/>
 						</xsl:call-template>
 					</xsl:otherwise>
@@ -194,8 +194,8 @@
 		<!-- Lifecycle -->
 		<xsl:element name="lom:lifecycle">
 			<!-- Version -->
-			<xsl:call-template name="langstring-element">
-				<xsl:with-param name="element_name" select="'lom:version'"/>
+			<xsl:call-template name="IMSlangstring">
+				<xsl:with-param name="element" select="'lom:version'"/>
 				<xsl:with-param name="language" select="'x-none'"/>
 				<xsl:with-param name="value" select="'onbekend'"/>
 			</xsl:call-template>
@@ -247,7 +247,7 @@
 				<xsl:with-param name="source" select="$vdex_intendedenduserrole"/>
 				<xsl:with-param name="value" select="'learner'"/>
 			</xsl:call-template>
-			<xsl:call-template name="langstring-element">
+			<xsl:call-template name="IMSlangstring">
 				<xsl:with-param name="element_name" select="'lom:typicalagerange'"/>
 				<xsl:with-param name="language" select="'x-none'"/>
 				<xsl:with-param name="value" select="'7+'"/>
@@ -277,12 +277,11 @@
 				<xsl:with-param name="value" select="'hasformat'"/>
 			</xsl:call-template>
 			<xsl:element name="lom:resource">
-			<xsl:element name="lom:description">
-				<xsl:element name="lom:langstring">
-					<xsl:attribute name="xml:lang">nl</xsl:attribute>
-					<xsl:text>thumbnail</xsl:text>
-				</xsl:element>
-			</xsl:element>
+				<xsl:call-template name="IMSlangstring">
+					<xsl:with-param name="element_name" select="'lom:description'"/>
+					<xsl:with-param name="language" select="'x-none'"/>
+					<xsl:with-param name="value" select="'thumbnail'"/>
+				</xsl:call-template>
 				<xsl:call-template name="IMScatalogentry">
 					<xsl:with-param name="catalog" select="'URI'"/>
 					<xsl:with-param name="entry" select="concat(//dc:format[1],'&amp;200x200')"/>
@@ -369,40 +368,6 @@
 	</xsl:element>
 </xsl:template>
 
-
-<!-- Maakt een <$element_name><langstring xml:lang="$language">$value</langstring></$element_name> -->
-<xsl:template name="langstring-element">
-	<xsl:param name="element_name"/>
-	<xsl:param name="language"/>
-	<xsl:param name="value"/>
-	<xsl:element name="{$element_name}">
-	<xsl:choose>
-		<xsl:when test="$language!=''">
-			<xsl:call-template name="langstring">
-				<xsl:with-param name="language" select="$language"/>
-				<xsl:with-param name="nllom_langstring" select="$value"/>
-			</xsl:call-template>
-		</xsl:when>
-		<xsl:otherwise>
-			<xsl:call-template name="langstring">
-				<xsl:with-param name="language" select="$default_language"/>
-				<xsl:with-param name="nllom_langstring" select="$value"/>
-			</xsl:call-template>
-		</xsl:otherwise>
-	</xsl:choose>
-	</xsl:element>
-</xsl:template>
-
-
-<!-- Maakt een <langstring xml:lang="$language">$value</langstring>-->
-<xsl:template name="langstring">
-	<xsl:param name="nllom_langstring"/>
-	<xsl:param name="language"/>
-	<xsl:element name="lom:langstring">
-		<xsl:attribute name="xml:lang"><xsl:value-of select="$language"/></xsl:attribute>
-		<xsl:value-of select="$nllom_langstring"/>
-	</xsl:element>
-</xsl:template>
 
 </xsl:stylesheet>
 

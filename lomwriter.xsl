@@ -129,7 +129,14 @@ called from other templates when included.
         <xsl:element name="{$element}">
             <xsl:element name="{$usedNamespace}:langstring">
                 <xsl:attribute name="xml:lang">
-                    <xsl:value-of select="$language"/>
+                    <xsl:choose>
+                        <xsl:when test="$language!=''">
+                            <xsl:value-of select="$language"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$default_language"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:attribute>
                 <xsl:value-of select="$value"/>
             </xsl:element>
@@ -229,7 +236,14 @@ called from other templates when included.
         <xsl:element name="{$element}">
             <xsl:element name="{$usedNamespace}:string">
                 <xsl:attribute name="language">
-                    <xsl:value-of select="$language"/>
+                    <xsl:choose>
+                        <xsl:when test="$language!=''">
+                            <xsl:value-of select="$language"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$default_language"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:attribute>
                 <xsl:value-of select="$value"/>
             </xsl:element>
