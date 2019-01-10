@@ -4,7 +4,8 @@ Elke collectie specifieke include de repositoryToVdexMapping XSLT (zie ook 'OBK-
 LET OP:
 Binnen Edurep wordt een specifieke manier gebruikt om XSLT's te includen, bijvoorbeeld: 
 <xsl:include href="edurep://repositoryToVdexMapping"/>
-Er wordt dus niet naar een specifiek bestandspad verwezen. Voor gebruik van deze XSLT's zal de include dus moeten worden aangepast om naar het juiste pad te verwijzen
+Er wordt dus niet naar een specifiek bestandspad verwezen. Voor gebruik van deze XSLT's zal de include dus moeten worden aangepast om naar het juiste pad te verwijzen. 
+Dit kan met behulp van het local-setup.sh commando. Of handmatig met de rewrite-includes.xsl sheet.
 
 OBK-mapping:
 In de directory 'mapping-xslt' staan XSLT's die gebruikt worden voor het vertalen van bestaande waarden in veld 9 (classification) naar OBK termen en vice versa.
