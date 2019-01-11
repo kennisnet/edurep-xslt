@@ -1,12 +1,5 @@
-<xsl:stylesheet
-    xmlns="http://www.openarchives.org/OAI/2.0/"
-    xmlns:mrx="http://www.memorix.nl/memorix.xsd"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
-    xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    version="1.0">
+<?xml version="1.0" standalone="no"?>
+<xsl:stylesheet xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:mrx="http://www.memorix.nl/memorix.xsd" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
   <xsl:output method="xml" indent="yes" encoding="UTF-8" standalone="no"/>
 
@@ -37,7 +30,7 @@
         <xsl:text>urn:isbn:</xsl:text>
         <xsl:value-of select="translate(//dc:source[starts-with(text(),'ISBN: ')], translate(.,'0123456789X-',''), '')"/>
       </xsl:when>
-      <xsl:otherwise></xsl:otherwise>
+      <xsl:otherwise/>
     </xsl:choose>
   </xsl:variable>
 
@@ -61,29 +54,18 @@
       <!-- General -->
       <xsl:element name="czp:general">
         <!-- Title -->
-
         <xsl:choose>
-
           <xsl:when test="//dc:title/text()">
-
             <xsl:choose>
-
               <xsl:when test="string-length(//dc:title) &lt; 80">
-
-                <xsl:call-template name="langstring-element">
-
-                  <xsl:with-param name="element_name" select="'czp:title'"/>
-
+                <xsl:call-template name="IMSlangstring">
+                  <xsl:with-param name="element" select="'czp:title'"/>
                   <xsl:with-param name="value" select="//dc:title"/>
                 </xsl:call-template>
               </xsl:when>
-
               <xsl:otherwise>
-
-                <xsl:call-template name="langstring-element">
-
-                  <xsl:with-param name="element_name" select="'czp:title'"/>
-
+                <xsl:call-template name="IMSlangstring">
+                  <xsl:with-param name="element" select="'czp:title'"/>
                   <xsl:with-param name="value" select="//dc:title"/>
                 </xsl:call-template>
               </xsl:otherwise>
@@ -97,33 +79,21 @@
           <xsl:with-param name="entry" select="//dc:identifier"/>
         </xsl:call-template>
 
-        <xsl:call-template name="elemental">
-          <xsl:with-param name="element_name" select="'czp:language'"/>
-          <!-- verplicht -->
-          <xsl:with-param name="value" select="$default_language"/>
-        </xsl:call-template>
+        <xsl:element name="czp:language">
+            <xsl:value-of select="$default_language"/>
+        </xsl:element>
 
         <!-- Description -->
         <xsl:choose>
-
           <xsl:when test="//dc:description/text()">
-
-            <xsl:call-template name="langstring-element">
-
-              <xsl:with-param name="element_name" select="'czp:description'"/>
-              <!-- verplicht -->
-
+            <xsl:call-template name="IMSlangstring">
+              <xsl:with-param name="element" select="'czp:description'"/>
               <xsl:with-param name="value" select="//dc:description"/>
             </xsl:call-template>
           </xsl:when>
-
           <xsl:otherwise>
-
-            <xsl:call-template name="langstring-element">
-
-              <xsl:with-param name="element_name" select="'czp:description'"/>
-              <!-- verplicht -->
-
+            <xsl:call-template name="IMSlangstring">
+              <xsl:with-param name="element" select="'czp:description'"/>
               <xsl:with-param name="value" select="'zonder beschrijving'"/>
             </xsl:call-template>
           </xsl:otherwise>
@@ -131,32 +101,23 @@
 
         <!-- Keywords -->
         <xsl:for-each select="//dc:subject">
-
-          <xsl:call-template name="langstring-element">
-
+          <xsl:call-template name="IMSlangstring">
             <xsl:with-param name="language" select="@xml:lang"/>
-
-            <xsl:with-param name="element_name" select="'czp:keyword'"/>
-            <!-- verplicht -->
-
+            <xsl:with-param name="element" select="'czp:keyword'"/>
             <xsl:with-param name="value" select="."/>
           </xsl:call-template>
         </xsl:for-each>
 
         <!-- Coverage -->
         <xsl:for-each select="//dc:coverage">
-
-          <xsl:call-template name="langstring-element">
-
-            <xsl:with-param name="element_name" select="'czp:coverage'"/>
-
+          <xsl:call-template name="IMSlangstring">
+            <xsl:with-param name="element" select="'czp:coverage'"/>
             <xsl:with-param name="value" select="."/>
           </xsl:call-template>
         </xsl:for-each>
 
         <xsl:call-template name="date">
           <xsl:with-param name="value" select="//dc:date"/>
-
           <xsl:with-param name="type" select="'coverage'"/>
         </xsl:call-template>
 
@@ -272,38 +233,27 @@
           <xsl:with-param name="source" select="$vdex_context"/>
           <xsl:with-param name="value" select="'WO'"/>
         </xsl:call-template>
-
-        <xsl:call-template name="langstring-element">
-
-          <xsl:with-param name="element_name" select="'czp:typicalagerange'"/>
-
+        <xsl:call-template name="IMSlangstring">
+          <xsl:with-param name="element" select="'czp:typicalagerange'"/>
           <xsl:with-param name="language" select="'x-none'"/>
-
           <xsl:with-param name="value" select="'16+'"/>
         </xsl:call-template>
       </xsl:element>
 
       <!-- Rights -->
       <xsl:element name="czp:rights">
-
         <xsl:call-template name="IMSvocabulary">
           <xsl:with-param name="element" select="'czp:cost'"/>
           <xsl:with-param name="source" select="$vdex_cost"/>
           <xsl:with-param name="value" select="'no'"/>
         </xsl:call-template>
-
         <xsl:call-template name="IMSvocabulary">
           <xsl:with-param name="element" select="'czp:copyrightandotherrestrictions'"/>
           <xsl:with-param name="source" select="$vdex_copyrightandotherrestrictions"/>
           <xsl:with-param name="value" select="'yes'"/>
         </xsl:call-template>
-
-        <xsl:call-template name="langstring-element">
-
-          <xsl:with-param name="element_name" select="'czp:description'"/>
-
-          <xsl:with-param name="language" select="'nl'"/>
-
+        <xsl:call-template name="IMSlangstring">
+          <xsl:with-param name="element" select="'czp:description'"/>
           <xsl:with-param name="value" select="//dc:rights"/>
         </xsl:call-template>
       </xsl:element>
@@ -321,52 +271,31 @@
               <xsl:with-param name="catalog" select="'uri'"/>
               <xsl:with-param name="entry" select="$isbnissn"/>
             </xsl:call-template>
-
             <!-- Add optional description -->
             <xsl:if test="$isbnissndesc">
-              <xsl:call-template name="langstring-element">
-                <xsl:with-param name="element_name" select="'czp:description'"/>
+              <xsl:call-template name="IMSlangstring">
+                <xsl:with-param name="element" select="'czp:description'"/>
                 <xsl:with-param name="language" select="'x-none'"/>
-                <xsl:with-param name="value">
-                  <xsl:value-of select="$isbnissndesc"/>
-                </xsl:with-param>
+                <xsl:with-param name="value" select="$isbnissndesc"/>
               </xsl:call-template>
             </xsl:if>
-
           </xsl:element>
         </xsl:element>
       </xsl:if>
 
       <!-- Classification -->
-      <xsl:element name="czp:classification">
-        <xsl:call-template name="IMSvocabulary">
-          <xsl:with-param name="element" select="'czp:purpose'"/>
-          <xsl:with-param name="source" select="'LOMv1.0'"/>
-          <xsl:with-param name="value" select="'discipline'"/>
-        </xsl:call-template>
-        <xsl:call-template name="czp-taxonpath">
-          <xsl:with-param name="vocabulary" select="'http://purl.edustandaard.nl/begrippenkader'"/>
-          <xsl:with-param name="language" select="'nl'"/>
-          <xsl:with-param name="czp_taxon_id" select="'5e86dc82-1981-48df-bbe5-abd4a9b3767b'"/>
-          <xsl:with-param name="czp_taxon_entry" select="'Voedsel, natuur en leefomgeving'"/>
-        </xsl:call-template>
-      </xsl:element>
-
-      <!-- Classification -->
-      <xsl:element name="czp:classification">
-        <xsl:call-template name="IMSvocabulary">
-          <xsl:with-param name="element" select="'czp:purpose'"/>
-          <xsl:with-param name="source" select="'LOMv1.0'"/>
-          <xsl:with-param name="value" select="'medium'"/>
-        </xsl:call-template>
-        <xsl:call-template name="czp-taxonpath">
-          <xsl:with-param name="vocabulary" select="'http://library.wur.nl/vdex/publicatietypes.xml'"/>
-          <xsl:with-param name="language" select="'nl'"/>
-          <xsl:with-param name="czp_taxon_id" select="//dc:type"/>
-          <xsl:with-param name="czp_taxon_entry" select="''"/> <!-- Empty variable will be skipped -->
-        </xsl:call-template>
-      </xsl:element>
-
+      <xsl:call-template name="IMSclassification">
+        <xsl:with-param name="purpose_value" select="'discipline'"/>
+        <xsl:with-param name="taxon_source" select="$vdex_classification_begrippenkader"/>
+        <xsl:with-param name="taxons" select="'5e86dc82-1981-48df-bbe5-abd4a9b3767b::Voedsel, natuur en leefomgeving||'"/>
+      </xsl:call-template>
+      <xsl:if test="//dc:type">
+          <xsl:call-template name="IMSclassification">
+            <xsl:with-param name="purpose_value" select="'medium'"/>
+            <xsl:with-param name="taxon_source" select="'http://library.wur.nl/vdex/publicatietypes.xml'"/>
+            <xsl:with-param name="taxons" select="concat(//dc:type, '::||')"/>
+          </xsl:call-template>
+      </xsl:if>
       <!-- access rights -->
       <xsl:call-template name="ensureAccessrights">
         <xsl:with-param name="taxons" select="'OpenAccess::open toegang||'"/>
@@ -410,50 +339,6 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:template name="czp-taxonpath">
-    <xsl:param name="vocabulary"/>
-
-    <xsl:param name="language"/>
-
-    <xsl:param name="czp_taxon_id"/>
-
-    <xsl:param name="czp_taxon_entry"/>
-
-    <xsl:element name="czp:taxonpath">
-
-      <xsl:call-template name="langstring-element">
-
-        <xsl:with-param name="element_name" select="'czp:source'"/>
-
-        <xsl:with-param name="language" select="'x-none'"/>
-
-        <xsl:with-param name="value" select="$vocabulary"/>
-      </xsl:call-template>
-
-      <xsl:element name="czp:taxon">
-
-        <xsl:call-template name="elemental">
-
-          <xsl:with-param name="element_name" select="'czp:id'"/>
-           <!-- verplicht -->
-
-           <xsl:with-param name="value" select="$czp_taxon_id"/>
-        </xsl:call-template>
-
-        <xsl:if test="$czp_taxon_entry !=''">
-        <xsl:call-template name="langstring-element">
-
-          <xsl:with-param name="element_name" select="'czp:entry'"/>
-
-          <xsl:with-param name="language" select="$language"/>
-
-          <xsl:with-param name="value" select="$czp_taxon_entry"/>
-        </xsl:call-template>
-        </xsl:if>
-      </xsl:element>
-    </xsl:element>
-  </xsl:template>
-
   <xsl:template name="date">
 
     <xsl:param name="value"/>
@@ -463,8 +348,7 @@
     <xsl:choose>
       <!-- for yyyy-mm-dd -->
 
-      <xsl:when
-          test="number(substring($value, 1, 4)) &gt; 1000 and number(substring($value, 1, 4)) &lt; 2100 and substring( $value, 5, 1 ) = '-' and number(substring ( $value, 6,2 )) &gt;= 0 and number(substring ( $value, 6,2 )) &lt; 13 and substring( $value, 8, 1) = '-' and number(substring ( $value, 9,2 )) &gt;= 0 and number(substring ( $value, 9,2 )) &lt; 32">
+      <xsl:when test="number(substring($value, 1, 4)) &gt; 1000 and number(substring($value, 1, 4)) &lt; 2100 and substring( $value, 5, 1 ) = '-' and number(substring ( $value, 6,2 )) &gt;= 0 and number(substring ( $value, 6,2 )) &lt; 13 and substring( $value, 8, 1) = '-' and number(substring ( $value, 9,2 )) &gt;= 0 and number(substring ( $value, 9,2 )) &lt; 32">
 
         <xsl:if test="$type = 'date'">
 
@@ -474,16 +358,14 @@
 
               <xsl:with-param name="element_name" select="'czp:datetime'"/>
 
-              <xsl:with-param name="value"
-                              select="concat(substring($value, 1, 4), '-', substring ( $value, 6,2 ), '-', substring ( $value, 9,2 ), 'T00:00:00Z' )"/>
+              <xsl:with-param name="value" select="concat(substring($value, 1, 4), '-', substring ( $value, 6,2 ), '-', substring ( $value, 9,2 ), 'T00:00:00Z' )"/>
             </xsl:call-template>
           </xsl:element>
         </xsl:if>
       </xsl:when>
       <!-- for dd-mm-yyyy -->
 
-      <xsl:when
-          test="number(substring($value, 7, 4)) &gt; 1000 and number(substring($value, 7, 4)) &lt; 2100 and substring( $value, 6, 1 ) = '-' and number(substring ( $value, 4,2 )) &gt;= 0 and number(substring ( $value, 4,2 )) &lt; 13 and substring( $value, 3, 1) = '-' and number(substring ( $value, 1,2 )) &gt;= 0 and number(substring ( $value, 1,2 )) &lt; 32">
+      <xsl:when test="number(substring($value, 7, 4)) &gt; 1000 and number(substring($value, 7, 4)) &lt; 2100 and substring( $value, 6, 1 ) = '-' and number(substring ( $value, 4,2 )) &gt;= 0 and number(substring ( $value, 4,2 )) &lt; 13 and substring( $value, 3, 1) = '-' and number(substring ( $value, 1,2 )) &gt;= 0 and number(substring ( $value, 1,2 )) &lt; 32">
 
         <xsl:if test="$type = 'date'">
 
@@ -493,8 +375,7 @@
 
               <xsl:with-param name="element_name" select="'czp:datetime'"/>
 
-              <xsl:with-param name="value"
-                              select="concat(substring($value, 7, 4), '-', substring ( $value, 4,2 ), '-', substring ( $value, 1,2 ), 'T00:00:00Z' )"/>
+              <xsl:with-param name="value" select="concat(substring($value, 7, 4), '-', substring ( $value, 4,2 ), '-', substring ( $value, 1,2 ), 'T00:00:00Z' )"/>
             </xsl:call-template>
           </xsl:element>
         </xsl:if>
@@ -518,13 +399,9 @@
       </xsl:when>
 
       <xsl:otherwise>
-
         <xsl:if test="$type = 'coverage'">
-
-          <xsl:call-template name="langstring-element">
-
-            <xsl:with-param name="element_name" select="'czp:coverage'"/>
-
+          <xsl:call-template name="IMSlangstring">
+            <xsl:with-param name="element" select="'czp:coverage'"/>
             <xsl:with-param name="value" select="$value"/>
           </xsl:call-template>
         </xsl:if>
@@ -543,59 +420,6 @@
 
     <xsl:element name="{$element_name}">
       <xsl:value-of select="$value"/>
-    </xsl:element>
-  </xsl:template>
-
-  <!-- Maakt een <$element_name><langstring xml:lang="$language">$value</langstring></$element_name> -->
-  <xsl:template name="langstring-element">
-
-    <xsl:param name="element_name"/>
-
-    <xsl:param name="language"/>
-
-    <xsl:param name="value"/>
-
-    <xsl:element name="{$element_name}">
-
-      <xsl:choose>
-
-        <xsl:when test="$language!=''">
-
-          <xsl:call-template name="langstring">
-
-            <xsl:with-param name="language" select="$language"/>
-
-            <xsl:with-param name="czp_langstring" select="$value"/>
-          </xsl:call-template>
-        </xsl:when>
-
-        <xsl:otherwise>
-
-          <xsl:call-template name="langstring">
-
-            <xsl:with-param name="language" select="$default_language"/>
-
-            <xsl:with-param name="czp_langstring" select="$value"/>
-          </xsl:call-template>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:element>
-  </xsl:template>
-
-  <!-- Maakt een <langstring xml:lang="$language">$value</langstring>-->
-  <xsl:template name="langstring">
-
-    <xsl:param name="czp_langstring"/>
-
-    <xsl:param name="language"/>
-
-    <xsl:element name="czp:langstring">
-
-      <xsl:attribute name="xml:lang">
-        <xsl:value-of select="$language"/>
-      </xsl:attribute>
-
-      <xsl:value-of select="$czp_langstring"/>
     </xsl:element>
   </xsl:template>
 </xsl:stylesheet>
