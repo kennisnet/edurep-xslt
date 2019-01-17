@@ -21,4 +21,7 @@ for f in $(find . -maxdepth 1 -name '*.xsl' -not -name ${REWRITE_INCLUDES_SHEET}
 done
 
 # also copy all vdex mapping sheets to local dir
-cp mapping-xslt/*.xsl ${LOCAL_DIR}
+for f in $(find mapping-xslt -name '*.xsl'); do
+    newname=$(basename ${f} | sed 's/mapping_//')
+    cp ${f} ${LOCAL_DIR}/${newname}
+done
