@@ -121,12 +121,11 @@
         <xsl:with-param name="title" select="//czp:lom/czp:general/czp:title/czp:langstring"/>
         <xsl:with-param name="element" select="'context'"/>
       </xsl:call-template>
-      <xsl:element name="czp:typicalagerange">
-        <xsl:call-template name="langstring">
-          <xsl:with-param name="czp_langstring" select="'*'"/>
-          <xsl:with-param name="language" select="'x-none'"/>
-        </xsl:call-template>
-      </xsl:element>
+      <xsl:call-template name="IMSlangstring">
+        <xsl:with-param name="element" select="'czp:typicalagerange'"/>
+		<xsl:with-param name="language" select="'x-none'"/>
+		<xsl:with-param name="value" select="'*'"/>
+      </xsl:call-template>
     </xsl:element>
 
     <xsl:if test="count(//czp:rights)=0">
@@ -165,7 +164,6 @@
 
   </xsl:template>
 
-
   <!-- Technical element is created in metametadata template, this is to prevent duplication -->
   <xsl:template match="czp:technical"/>
 
@@ -184,8 +182,9 @@
       </xsl:call-template>
 
       <xsl:element name="czp:resource">
-        <xsl:call-template name="langstring-element">
-          <xsl:with-param name="element_name" select="'czp:description'"/>
+        <xsl:call-template name="IMSlangstring">
+          <xsl:with-param name="element" select="'czp:description'"/>
+          <xsl:with-param name="language" select="'x-none'"/>
           <xsl:with-param name="value" select="'embed-url'"/>
         </xsl:call-template>
         <xsl:call-template name="IMScatalogentry">
@@ -224,20 +223,8 @@
         <xsl:with-param name="title" select="//czp:lom/czp:general/czp:title/czp:langstring"/>
         <xsl:with-param name="element" select="'classification'"/>
       </xsl:call-template>
-
     </xsl:element>
 
-    <xsl:element name="czp:classification">
-      <xsl:call-template name="IMSvocabulary">
-        <xsl:with-param name="element" select="'czp:purpose'"/>
-        <xsl:with-param name="source" select="$vdex_purpose"/>
-        <xsl:with-param name="value" select="'educational level'"/>
-      </xsl:call-template>
-      <xsl:call-template name="determine-context">
-        <xsl:with-param name="title" select="//czp:lom/czp:general/czp:title/czp:langstring"/>
-        <xsl:with-param name="element" select="'classificationOBK'"/>
-      </xsl:call-template>
-    </xsl:element>
 
     <!-- add access rights -->
     <xsl:call-template name="ensureAccessrights">
@@ -305,7 +292,7 @@
               <xsl:with-param name="context" select="'VO'"/>
             </xsl:call-template>
             <xsl:call-template name="make-classification">
-              <xsl:with-param name="context" select="'mbo'"/>
+              <xsl:with-param name="context" select="'MBO'"/>
             </xsl:call-template>
           </xsl:when>
         </xsl:choose>
@@ -331,7 +318,7 @@
               <xsl:with-param name="context" select="'VO'"/>
             </xsl:call-template>
             <xsl:call-template name="make-classification">
-              <xsl:with-param name="context" select="'mbo'"/>
+              <xsl:with-param name="context" select="'MBO'"/>
             </xsl:call-template>
           </xsl:when>
         </xsl:choose>
@@ -382,8 +369,8 @@
             <xsl:when test="$context = 'VO'">
               <xsl:text>2a1401e9-c223-493b-9b86-78f6993b1a8d</xsl:text>
             </xsl:when>
-            <xsl:when test="$context = 'BVE'">
-              <xsl:text>caa97efc-a713-41ea-a845-1534ca65eac9</xsl:text>
+            <xsl:when test="$context = 'MBO'">
+              <xsl:text>f3ac3fbb-5eae-49e0-8494-0a44855fff25</xsl:text>
             </xsl:when>
             <xsl:when test="$context = 'HBO'">
               <xsl:text>be140797-803f-4b9e-81cc-5572c711e09c</xsl:text>
@@ -408,8 +395,8 @@
             <xsl:when test="$context = 'VO'">
               <xsl:text>Voortgezet onderwijs</xsl:text>
             </xsl:when>
-            <xsl:when test="$context = 'BVE'">
-              <xsl:text>Beroepsonderwijs en Volwasseneneducatie</xsl:text>
+            <xsl:when test="$context = 'MBO'">
+              <xsl:text>MBO</xsl:text>
             </xsl:when>
             <xsl:when test="$context = 'HBO'">
               <xsl:text>HBO</xsl:text>
@@ -434,8 +421,8 @@
     <xsl:param name="czp_taxon_entry"/>
 
     <xsl:element name="czp:taxonpath">
-      <xsl:call-template name="langstring-element">
-        <xsl:with-param name="element_name" select="'czp:source'"/>
+      <xsl:call-template name="IMSlangstring">
+        <xsl:with-param name="element" select="'czp:source'"/>
         <xsl:with-param name="language" select="'x-none'"/>
         <xsl:with-param name="value" select="$vocabulary"/>
       </xsl:call-template>
@@ -449,9 +436,8 @@
         </xsl:if>
 
         <xsl:if test="$czp_taxon_entry!=''">
-          <xsl:call-template name="langstring-element">
-            <xsl:with-param name="element_name" select="'czp:entry'"/>
-            <xsl:with-param name="language" select="$language"/>
+          <xsl:call-template name="IMSlangstring">
+            <xsl:with-param name="element" select="'czp:entry'"/>
             <xsl:with-param name="value" select="$czp_taxon_entry"/>
           </xsl:call-template>
         </xsl:if>
@@ -463,33 +449,7 @@
   </xsl:template>
 
 
-  <!-- Create an element containing a langstring element -->
-  <xsl:template name="langstring-element">
-    <xsl:param name="element_name"/>
-    <xsl:param name="language"/>
-    <xsl:param name="value"/>
-
-    <xsl:element name="{$element_name}">
-      <xsl:choose>
-        <xsl:when test="$language!=''">
-          <xsl:call-template name="langstring">
-            <xsl:with-param name="language" select="$language"/>
-            <xsl:with-param name="czp_langstring" select="$value"/>
-          </xsl:call-template>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:call-template name="langstring">
-            <xsl:with-param name="language" select="$default_language"/>
-            <xsl:with-param name="czp_langstring" select="$value"/>
-          </xsl:call-template>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:element>
-
-  </xsl:template>
-
-
-  <!-- Create a langstring element -->
+  <!-- Create a langstring element for copyright description -->
   <xsl:template name="langstring">
     <xsl:param name="czp_langstring"/>
     <xsl:param name="language"/>
