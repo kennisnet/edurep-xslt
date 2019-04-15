@@ -516,7 +516,7 @@
             <xsl:for-each select="child::*[local-name() = 'educational']/*[local-name() = 'context']">
                 <xsl:choose>
                     <!-- IMS-MDv1.2.4 -->
-                    <xsl:when test="contains(child::*[local-name()= 'source'], 'vdex_context_czp_20060628') or contains(child::*[local-name()= 'source'], 'LOMv1.0')">
+                    <xsl:when test="contains(child::*[local-name()= 'source']/*[local-name() = 'langstring'], 'vdex_context_czp_20060628') or contains(child::*[local-name()= 'source']/*[local-name() = 'langstring'], 'LOMv1.0')">
                         <xsl:variable name="value" select="descendant::*[local-name() = 'value']/*[local-name() = 'langstring']"/> 
                         <xsl:choose>
                             <xsl:when test="$value = 'other'"/>
