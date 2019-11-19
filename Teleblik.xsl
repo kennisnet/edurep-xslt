@@ -1,9 +1,5 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2"
-                xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2"
-                version="1.0"
-                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd">
+<?xml version="1.0" standalone="no"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2" version="1.0" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd">
   <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
   <xsl:include href="edurep://validate"/>
@@ -87,14 +83,12 @@
 
       <xsl:call-template name="elemental">
         <xsl:with-param name="element_name" select="'czp:location'"/>
-        <xsl:with-param name="value"
-                        select="concat('http://teleblik.nl/vpx/asset/', //czp:general/czp:catalogentry/czp:entry/czp:langstring)"/>
+        <xsl:with-param name="value" select="concat('http://teleblik.nl/vpx/asset/', //czp:general/czp:catalogentry/czp:entry/czp:langstring)"/>
       </xsl:call-template>
       <xsl:if test="count(//czp:technical/czp:duration)!=0">
         <xsl:element name="czp:duration">
           <xsl:element name="czp:datetime">
-            <xsl:value-of
-                select="concat( substring-before( //czp:technical/czp:duration/czp:datetime, 'M' ), 'M', round(substring-before( substring-after(//czp:technical/czp:duration/czp:datetime,'M'), 'S')), 'S')"/>
+            <xsl:value-of select="concat( substring-before( //czp:technical/czp:duration/czp:datetime, 'M' ), 'M', round(substring-before( substring-after(//czp:technical/czp:duration/czp:datetime,'M'), 'S')), 'S')"/>
           </xsl:element>
         </xsl:element>
       </xsl:if>
@@ -148,13 +142,11 @@
         <!-- Insert lom.rights.description -->
         <xsl:element name="czp:description">
           <xsl:call-template name="langstring">
-            <xsl:with-param name="czp_langstring"
-                            select="'For information on the use of archive material, please contact the Customer Service department of the Netherlands Institute for Sound and Vision: klantenservice@beeldengeluid.nl.'"/>
+            <xsl:with-param name="czp_langstring" select="'For information on the use of archive material, please contact the Customer Service department of the Netherlands Institute for Sound and Vision: klantenservice@beeldengeluid.nl.'"/>
             <xsl:with-param name="language" select="'en'"/>
           </xsl:call-template>
           <xsl:call-template name="langstring">
-            <xsl:with-param name="czp_langstring"
-                            select="'Voor informatie over het gebruik van archiefmateriaal kunt u contact opnemen met de Klantenservice van het Nederlands Instituut voor Beeld en Geluid: klantenservice@beeldengeluid.nl.'"/>
+            <xsl:with-param name="czp_langstring" select="'Voor informatie over het gebruik van archiefmateriaal kunt u contact opnemen met de Klantenservice van het Nederlands Instituut voor Beeld en Geluid: klantenservice@beeldengeluid.nl.'"/>
             <xsl:with-param name="language" select="'nl'"/>
           </xsl:call-template>
         </xsl:element>
@@ -170,46 +162,6 @@
 
   <!-- Insert relation element before classification element -->
   <xsl:template match="czp:classification">
-
-    <!-- insert relation before the classification -->
-    <xsl:element name="czp:relation">
-
-      <!-- Old style relation element -->
-      <xsl:call-template name="IMSvocabulary">
-        <xsl:with-param name="element" select="'czp:kind'"/>
-        <xsl:with-param name="source" select="$vdex_relationkind"/>
-        <xsl:with-param name="value" select="'hasformat'"/>
-      </xsl:call-template>
-
-      <xsl:element name="czp:resource">
-        <xsl:call-template name="IMSlangstring">
-          <xsl:with-param name="element" select="'czp:description'"/>
-          <xsl:with-param name="language" select="'x-none'"/>
-          <xsl:with-param name="value" select="'embed-url'"/>
-        </xsl:call-template>
-        <xsl:call-template name="IMScatalogentry">
-          <xsl:with-param name="catalog" select="'URI'"/>
-          <xsl:with-param name="entry" select="concat('http://teleblik.nl/embed/vpx/asset/', //czp:general/czp:catalogentry/czp:entry/czp:langstring)" />
-        </xsl:call-template>
-      </xsl:element>
-    </xsl:element>
-
-    <!-- New style relation element -->
-    <xsl:element name="czp:relation">
-      <xsl:call-template name="IMSvocabulary">
-        <xsl:with-param name="element" select="'czp:kind'"/>
-        <xsl:with-param name="source" select="$vdex_relationkind"/>
-        <xsl:with-param name="value" select="'embed'"/>
-      </xsl:call-template>
-
-      <xsl:element name="czp:resource">
-        <xsl:call-template name="IMScatalogentry">
-          <xsl:with-param name="catalog" select="'URI'"/>
-          <xsl:with-param name="entry" select="concat('http://teleblik.nl/embed/vpx/asset/', //czp:general/czp:catalogentry/czp:entry/czp:langstring)" />
-        </xsl:call-template>
-      </xsl:element>
-
-    </xsl:element>
 
     <!-- insert classification (purpose = educational level) based on content of lom.general.title -->
     <xsl:element name="czp:classification">
@@ -240,8 +192,7 @@
     <xsl:param name="element"/>
 
     <xsl:choose>
-      <xsl:when
-          test="substring( $title, 1, 32)='Beleef de natuur mee met Adriaan' or substring( $title, 1, 11)='DE BZT SHOW' or substring( $title, 1, 15)='DE KAMER VAN KO' or substring( $title, 1, 14)='DE MUSEUMBENDE' or substring( $title, 1, 12)='DE SCHATKAST' or substring( $title, 1, 29)='DE EEFJE WENTELTEEFJE TV SHOW' or substring( $title, 1, 12)='FLIP DE BEER' or substring( $title, 1, 15)='HET ZANDKASTEEL' or substring( $title, 1, 22)='HUISJE BOOMPJE BEESTJE' or substring( $title, 1, 15)='IK MIK LORELAND' or substring( $title, 1, 10)='KOEKELOERE' or substring( $title, 1, 27)='LEESDAS LETTERVOS BOEKENTAS' or substring( $title, 1, 11)='LIEDMACHIEN' or substring( $title, 1, 20)='REKENEN MET SCHOOLTV' or substring( $title, 1, 19)='SINTERKLAASJOURNAAL' or substring( $title, 1, 16)='VAKKENWIJZER 7/8' or substring( $title, 1, 16)='VROEGER &amp; ZO'">
+      <xsl:when test="substring( $title, 1, 32)='Beleef de natuur mee met Adriaan' or substring( $title, 1, 11)='DE BZT SHOW' or substring( $title, 1, 15)='DE KAMER VAN KO' or substring( $title, 1, 14)='DE MUSEUMBENDE' or substring( $title, 1, 12)='DE SCHATKAST' or substring( $title, 1, 29)='DE EEFJE WENTELTEEFJE TV SHOW' or substring( $title, 1, 12)='FLIP DE BEER' or substring( $title, 1, 15)='HET ZANDKASTEEL' or substring( $title, 1, 22)='HUISJE BOOMPJE BEESTJE' or substring( $title, 1, 15)='IK MIK LORELAND' or substring( $title, 1, 10)='KOEKELOERE' or substring( $title, 1, 27)='LEESDAS LETTERVOS BOEKENTAS' or substring( $title, 1, 11)='LIEDMACHIEN' or substring( $title, 1, 20)='REKENEN MET SCHOOLTV' or substring( $title, 1, 19)='SINTERKLAASJOURNAAL' or substring( $title, 1, 16)='VAKKENWIJZER 7/8' or substring( $title, 1, 16)='VROEGER &amp; ZO'">
         <xsl:choose>
           <xsl:when test="$element='context'">
             <xsl:call-template name="make-context">
@@ -255,8 +206,7 @@
           </xsl:when>
         </xsl:choose>
       </xsl:when>
-      <xsl:when
-          test="substring( $title, 1, 9)='Canonclip' or substring( $title, 1, 12)='HET KLOKHUIS' or substring( $title, 1, 13)='JEUGDJOURNAAL' or substring( $title, 1, 20)='NIEUWS UIT DE NATUUR' or substring( $title, 1, 21)='SCHOOLTV WEEKJOURNAAL' or substring( $title, 1, 7)='SPANGAS' or substring( $title, 1, 12)='WILLEM WEVER' or substring( $title, 1, 9)='Z@PPSPORT'">
+      <xsl:when test="substring( $title, 1, 9)='Canonclip' or substring( $title, 1, 12)='HET KLOKHUIS' or substring( $title, 1, 13)='JEUGDJOURNAAL' or substring( $title, 1, 20)='NIEUWS UIT DE NATUUR' or substring( $title, 1, 21)='SCHOOLTV WEEKJOURNAAL' or substring( $title, 1, 7)='SPANGAS' or substring( $title, 1, 12)='WILLEM WEVER' or substring( $title, 1, 9)='Z@PPSPORT'">
         <xsl:choose>
           <xsl:when test="$element='context'">
             <xsl:call-template name="make-context">
@@ -276,8 +226,7 @@
           </xsl:when>
         </xsl:choose>
       </xsl:when>
-      <xsl:when
-          test="substring( $title, 1, 12)='BEELDENSTORM' or substring( $title, 1, 9)='2 VANDAAG' or substring( $title, 1, 21)='BAREND &amp; WITTEMAN' or substring( $title, 1, 9)='BUITENHOF' or substring( $title, 1, 21)='DE RONDE VAN WITTEMAN' or substring( $title, 1, 21)='DODE DICHTERS ALMANAK' or substring( $title, 1, 10)='EENVANDAAG' or substring( $title, 1, 13)='HET ELFDE UUR' or substring( $title, 1, 23)='HET LAGERHUIS: JONGEREN' or substring( $title, 1, 19)='HET UUR VAN DE WOLF' or substring( $title, 1, 13)='HET VERMOEDEN' or substring( $title, 1, 8)='JOURNAAL' or substring( $title, 1, 30)='KEYZER &amp; DE BOER ADVOCATEN' or substring( $title, 1, 26)='KNEVEL &amp; VAN DEN BRINK' or substring( $title, 1, 7)='NETWERK' or substring( $title, 1, 9)='NIEUWSUUR' or substring( $title, 1, 4)='NOVA' or substring( $title, 1, 19)='PAUW &amp; WITTEMAN' or substring( $title, 1, 7)='POWNEWS' or substring( $title, 1, 8)='PREMTIME' or substring( $title, 1, 11)='RONDOM TIEN' or substring( $title, 1, 11)='SOETERBEECK' or substring( $title, 1, 12)='TWEE VANDAAG' or substring( $title, 1, 6)='ZEMBLA'">
+      <xsl:when test="substring( $title, 1, 12)='BEELDENSTORM' or substring( $title, 1, 9)='2 VANDAAG' or substring( $title, 1, 21)='BAREND &amp; WITTEMAN' or substring( $title, 1, 9)='BUITENHOF' or substring( $title, 1, 21)='DE RONDE VAN WITTEMAN' or substring( $title, 1, 21)='DODE DICHTERS ALMANAK' or substring( $title, 1, 10)='EENVANDAAG' or substring( $title, 1, 13)='HET ELFDE UUR' or substring( $title, 1, 23)='HET LAGERHUIS: JONGEREN' or substring( $title, 1, 19)='HET UUR VAN DE WOLF' or substring( $title, 1, 13)='HET VERMOEDEN' or substring( $title, 1, 8)='JOURNAAL' or substring( $title, 1, 30)='KEYZER &amp; DE BOER ADVOCATEN' or substring( $title, 1, 26)='KNEVEL &amp; VAN DEN BRINK' or substring( $title, 1, 7)='NETWERK' or substring( $title, 1, 9)='NIEUWSUUR' or substring( $title, 1, 4)='NOVA' or substring( $title, 1, 19)='PAUW &amp; WITTEMAN' or substring( $title, 1, 7)='POWNEWS' or substring( $title, 1, 8)='PREMTIME' or substring( $title, 1, 11)='RONDOM TIEN' or substring( $title, 1, 11)='SOETERBEECK' or substring( $title, 1, 12)='TWEE VANDAAG' or substring( $title, 1, 6)='ZEMBLA'">
         <xsl:choose>
           <xsl:when test="$element='context'">
             <xsl:call-template name="make-context">
