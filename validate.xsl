@@ -77,7 +77,7 @@
             
             <!-- aggregationlevel met vdex: vdex_aggregationlevel_czp_20060628 of LOMv1.0 -->
             <!-- zowel voor IMS-MDv1.2.4 als voor IEEE-LOMv1.0 -->
-            <xsl:for-each select="child::*[local-name() = 'aggregationlevel']/*[local-name() = 'aggregationLevel']">
+            <xsl:for-each select="child::*[local-name() = 'general']/*[local-name() = 'aggregationlevel' or local-name() = 'aggregationLevel']">
                 <xsl:choose>
                     <!-- IMS-MDv1.2.4 -->
                     <xsl:when test="contains(child::*[local-name()= 'source']/*[local-name() = 'langstring'], 'vdex_aggregationlevel_czp_20060628') or contains(child::*[local-name()= 'source']/*[local-name() = 'langstring'], 'LOMv1.0')">
