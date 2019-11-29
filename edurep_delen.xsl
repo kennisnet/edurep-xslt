@@ -61,7 +61,7 @@
 					</xsl:variable>
 					<xsl:choose>
 						<xsl:when test="contains($uris, 'youtube.com') or contains($uris, 'youtu.be')">
-							<xsl:text>video/x-flv</xsl:text>
+							<xsl:text>video/vnd.youtube.yt</xsl:text>
 						</xsl:when>
 						<xsl:when test="contains($uris, 'vimeo.com')">
 							<xsl:text>video/x-flv</xsl:text>
