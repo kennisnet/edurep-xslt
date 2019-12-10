@@ -75,7 +75,6 @@
 				<xsl:call-template name="vdex_classification_discipline_czp_20060628_newToOld"/>
 				<xsl:call-template name="vdex_classification_domeinoverstijgende_vakken_mbo_2009_newToOld"/>
 				<xsl:call-template name="vdex_classification_kerndoelen_onderbouw_vo_20071115_newToOld"/>
-				<xsl:call-template name="vdex_classification_kerndoelen_po_04_2006_newToOld"/>
 				<xsl:call-template name="vdex_classification_opleidingsdomeinen_en_studierichtingen_mbo_2010_newToOld"/>
 				<xsl:call-template name="vdex_classification_referentiekader_taal_en_rekenen_czp_2009_newToOld"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_newToOld"/>
@@ -90,7 +89,6 @@
 			</xsl:when>
 			<xsl:when test="$collectionName = 'proefjes'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_newToOld"/>
-				<xsl:call-template name="vdex_classification_kerndoelen_po_04_2006_newToOld"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_newToOld"/>
 			</xsl:when>
 			<xsl:when test="$collectionName = 'Schooltv'">
