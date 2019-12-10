@@ -35,5 +35,55 @@
 		<xsl:call-template name="validateValue"/>
 	</xsl:template>
 
-</xsl:stylesheet>
+	<!-- Aggregationlevel element met foute waarde wordt vervangen door "2" -->
+	<xsl:template match="ieee:aggregationLevel">
+		<xsl:variable name="value" select="child::*[local-name() = 'value']"/>
+			<xsl:choose>
+				<xsl:when test="$value = '1' or $value = '2' or $value = '3' or $value = '4'">
+					<xsl:copy>
+						<xsl:apply-templates select="@*|node()"/>
+					</xsl:copy>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="IEEEvocabulary">
+						<xsl:with-param name="element" select="concat($usedNamespace, ':aggregationLevel')"/>
+						<xsl:with-param name="source" select="child::*[local-name() = 'source']"/>
+						<xsl:with-param name="value" select="'2'"/>
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+	</xsl:template>
 
+	<!-- Als de element format ontbreekt, wordt deze toegevoegd met de waarde 'text/html' -->
+	<xsl:template match="ieee:technical">
+		<xsl:choose>
+			<xsl:when test="ieee:format">
+				<xsl:element name="ieee:technical">
+					<xsl:for-each select="ieee:format">
+						<xsl:element name="ieee:format">
+							<xsl:value-of select="."/>
+						</xsl:element>
+					</xsl:for-each>
+					<xsl:for-each select="ieee:location">
+						<xsl:element name="ieee:location">
+							<xsl:value-of select="."/>
+						</xsl:element> 
+					</xsl:for-each>
+				</xsl:element> 
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:element name="ieee:technical">
+					<xsl:element name="ieee:format">
+						<xsl:text>text/html</xsl:text>
+					</xsl:element> 
+					<xsl:for-each select="ieee:location">
+						<xsl:element name="ieee:location">
+							<xsl:value-of select="."/>
+						</xsl:element> 
+					</xsl:for-each>
+				</xsl:element>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+</xsl:stylesheet>
