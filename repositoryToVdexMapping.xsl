@@ -15,10 +15,7 @@
 	<xsl:include href="edurep://so_learner_properties_20100304"/>
 	<xsl:include href="edurep://vakaanduiding_po_2009"/>
 	<xsl:include href="edurep://vakaanduiding_vo_20071115"/>
-	
-	<!-- Afwijkende VDEX'en voor Opmaat -->
-	<xsl:include href="edurep://educationallevel_czp_20090924"/>
-	<xsl:include href="edurep://vakaanduidingen_po_so_20090924"/>
+
 
 	<!-- Map repositories and VDEX -->
 	<xsl:template name="collectionMapping">
