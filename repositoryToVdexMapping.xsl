@@ -12,7 +12,6 @@
 	<xsl:include href="edurep://kerndoelen_onderbouw_vo_20071115"/>
 	<xsl:include href="edurep://opleidingsdomeinen_en_studierichtingen_mbo_2010"/>
 	<xsl:include href="edurep://referentiekader_taal_en_rekenen_czp_2009"/>
-	<xsl:include href="edurep://so_learner_properties_20100304"/>
 	<xsl:include href="edurep://vakaanduiding_po_2009"/>
 	<xsl:include href="edurep://vakaanduiding_vo_20071115"/>
 
