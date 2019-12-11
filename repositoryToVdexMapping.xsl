@@ -84,9 +84,6 @@
 			<xsl:when test="$collectionName = 'proefjes'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_newToOld"/>
 			</xsl:when>
-			<xsl:when test="$collectionName = 'Schooltv'">
-				<xsl:call-template name="vdex_classification_discipline_czp_20060628_oldToNew"/>
-			</xsl:when>
 			<xsl:when test="$collectionName = 'Teleblik'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
 			</xsl:when>
