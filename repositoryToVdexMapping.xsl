@@ -52,7 +52,6 @@
 				<xsl:call-template name="vdex_classification_opleidingsdomeinen_en_studierichtingen_mbo_2010_newToOld"/>
 			</xsl:when>
 			<xsl:when test="$collectionName = 'khan_video'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_newToOld"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_newToOld"/>
 			</xsl:when>
 			<xsl:when test="$collectionName = 'krantindeklas'">
@@ -64,7 +63,6 @@
 				<xsl:call-template name="vdex_classification_domeinoverstijgende_vakken_mbo_2009_oldToNew"/>
 			</xsl:when>
 			<xsl:when test="$collectionName = 'metaplus'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_newToOld"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_vo_20071115_newToOld"/>
 				<xsl:call-template name="vdex_classification_discipline_czp_20060628_newToOld"/>
 				<xsl:call-template name="vdex_classification_domeinoverstijgende_vakken_mbo_2009_newToOld"/>
@@ -80,9 +78,7 @@
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 			</xsl:when>
-			<xsl:when test="$collectionName = 'proefjes'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_newToOld"/>
-			</xsl:when>
+
 			<xsl:when test="$collectionName = 'Teleblik'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
 			</xsl:when>
