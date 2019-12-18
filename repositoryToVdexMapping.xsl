@@ -81,12 +81,6 @@
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20060628_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 			</xsl:when>
-			<xsl:when test="$collectionName = 'wellant'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20060628_oldToNew"/>
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
-				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
-				<xsl:call-template name="vdex_classification_opleidingsdomeinen_en_studierichtingen_mbo_2010_newToOld"/>
-			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 
