@@ -3,8 +3,6 @@
 	
 	<!-- Include VDEX mappings -->
 	<xsl:include href="edurep://discipline_20060628"/>
-	<xsl:include href="edurep://discipline_domains_lb_20110301"/>
-	<xsl:include href="edurep://discipline_mathematics_20110923"/>
 	<xsl:include href="edurep://domeinoverstijgende_vakken_mbo_2009"/>
 	<xsl:include href="edurep://educationallevel_20060628"/>
 	<xsl:include href="edurep://educationallevel_20071115"/>
@@ -56,7 +54,6 @@
 				<xsl:call-template name="vdex_classification_discipline_czp_20060628_newToOld"/>
 				<xsl:call-template name="vdex_classification_domeinoverstijgende_vakken_mbo_2009_newToOld"/>
 				<xsl:call-template name="vdex_classification_kerndoelen_onderbouw_vo_20071115_newToOld"/>
-				<xsl:call-template name="vdex_classification_discipline_domains_lb_20110301_newToOld"/>
 			</xsl:when>
 			<xsl:when test="$collectionName = 'NME'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
