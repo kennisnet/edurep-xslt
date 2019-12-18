@@ -6,13 +6,7 @@
 
 	<xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
-	<xsl:include href="edurep://repositoryToVdexMapping"/>
 	<xsl:include href="edurep://validate"/>
-
-	 <!-- Collectienaam voor het koppelen van -->
-	<xsl:variable name="collectionName">
-		<xsl:text>artik</xsl:text>
-	</xsl:variable>
 
 	<!-- De door de collectie gebruikte namespace -->
 	<xsl:variable name="usedNamespace">
@@ -29,8 +23,6 @@
 			<xsl:attribute name="xsi:schemaLocation">http://ltsc.ieee.org/xsd/LOM http://standards.ieee.org/reading/ieee/downloads/LOM/lomv1.0/xsd/lomLoose.xsd</xsl:attribute>
 
 			<xsl:apply-templates select="@*[. != xsi:schemaLocation]|node()"/>
-			<!-- Mapping begrippenkader -->
-			<xsl:call-template name="collectionMapping"/>
 			<!-- Maak een classificatie voor de validatie -->
 			<xsl:call-template name="buildClassification"/>
 			<xsl:call-template name="ensureAccessrights">
