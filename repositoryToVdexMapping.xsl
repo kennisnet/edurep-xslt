@@ -51,7 +51,6 @@
 				<xsl:call-template name="vdex_classification_domeinoverstijgende_vakken_mbo_2009_oldToNew"/>
 			</xsl:when>
 			<xsl:when test="$collectionName = 'metaplus'">
-				<xsl:call-template name="vdex_classification_discipline_czp_20060628_newToOld"/>
 				<xsl:call-template name="vdex_classification_domeinoverstijgende_vakken_mbo_2009_newToOld"/>
 				<xsl:call-template name="vdex_classification_kerndoelen_onderbouw_vo_20071115_newToOld"/>
 			</xsl:when>
@@ -62,7 +61,6 @@
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 			</xsl:when>
-
 			<xsl:when test="$collectionName = 'Teleblik'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
 			</xsl:when>
