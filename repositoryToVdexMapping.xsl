@@ -57,9 +57,6 @@
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
 			</xsl:when>
-			<xsl:when test="$collectionName = 'Teleblik'">
-				<xsl:call-template name="vdex_classification_educationallevel_czp_20071115_oldToNew"/>
-			</xsl:when>
 			<xsl:when test="$collectionName = 'webkwestie'">
 				<xsl:call-template name="vdex_classification_educationallevel_czp_20060628_oldToNew"/>
 				<xsl:call-template name="vdex_classification_vakaanduidingen_po_2009_oldToNew"/>
