@@ -6,7 +6,7 @@
                 xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <!-- Samhao XSLT voor de sets VILENTUM, VHL en LECTORHAS -->
+  <!-- Greeni XSLT voor de sets AERES, VHL en LECTORHAS -->
   <xsl:output encoding="UTF-8" indent="yes" method="xml" standalone="no"/>
 
   <xsl:include href="edurep://validate"/>
@@ -43,7 +43,7 @@
       <xsl:when test="//dc:publisher">
         <xsl:value-of select="//dc:publisher/text()"/>
       </xsl:when>
-      <xsl:otherwise>Samhao repository</xsl:otherwise>
+      <xsl:otherwise>Greeni repository</xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
 
@@ -108,7 +108,7 @@
               </xsl:variable>
               <xsl:call-template name="IMScatalogentry">
                 <xsl:with-param name="catalog" select="'URI'"/>
-                <xsl:with-param name="entry" select="concat('oai:www.samhao.nl:VBS:', translate($uri,'.',':'))"/>
+                <xsl:with-param name="entry" select="concat('oai:www.greeni.nl:VBS:', translate($uri,'.',':'))"/>
               </xsl:call-template>
             </xsl:if>
             <xsl:call-template name="IMScatalogentry">
