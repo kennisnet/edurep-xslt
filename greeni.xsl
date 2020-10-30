@@ -1,23 +1,37 @@
 <xsl:stylesheet version="1.0"
-    xmlns="http://www.openarchives.org/OAI/2.0/"
-    xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2"
-    xmlns:dai="info:eu-repo/dai"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:dcterms="http://purl.org/dc/terms/"
-    xmlns:didl="urn:mpeg:mpeg21:2002:02-DIDL-NS"
-    xmlns:diext="http://library.lanl.gov/2004-04/STB-RL/DIEXT"
-    xmlns:dii="urn:mpeg:mpeg21:2002:01-DII-NS"
-    xmlns:hbo="info:eu-repo/xmlns/hboMODSextension"
-    xmlns:mods="http://www.loc.gov/mods/v3"
-    xmlns:mrx="http://www.memorix.nl/memorix.xsd"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns="http://www.openarchives.org/OAI/2.0/"
+                xmlns:czp="http://www.imsglobal.org/xsd/imsmd_v1p2"
+                xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns:mrx="http://www.memorix.nl/memorix.xsd"
+                xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <!-- Greeni XSLT voor de sets AERES, VHL en LECTORHAS -->
   <xsl:output encoding="UTF-8" indent="yes" method="xml" standalone="no"/>
 
   <xsl:include href="edurep://validate"/>
 
   <xsl:param name="default_language">
-    <xsl:value-of select="//mods:languageTerm/text()"/>
+    <xsl:choose>
+      <xsl:when test="//dc:language/text() = 'dut'">
+        <xsl:text>nl</xsl:text>
+      </xsl:when>
+      <xsl:when test="//dc:language/text() = 'eng'">
+        <xsl:text>en</xsl:text>
+      </xsl:when>
+      <xsl:when test="//dc:language/text() = 'ger'">
+        <xsl:text>de</xsl:text>
+      </xsl:when>
+      <xsl:when test="//dc:language/text() = 'spa'">
+        <xsl:text>es</xsl:text>
+      </xsl:when>
+      <xsl:when test="//dc:language/text() = ''">
+        <xsl:text>x-none</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="//dc:language"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:param>
 
   <xsl:variable name="usedNamespace">
@@ -26,22 +40,22 @@
 
   <xsl:variable name="publisher">
     <xsl:choose>
-      <xsl:when test="//mods:publisher">
-        <xsl:value-of select="//mods:publisher/text()"/>
+      <xsl:when test="//dc:publisher">
+        <xsl:value-of select="//dc:publisher/text()"/>
       </xsl:when>
-      <xsl:otherwise>Surfsharekit repository</xsl:otherwise>
+      <xsl:otherwise>Greeni repository</xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
 
   <xsl:variable name="isbnissn">
     <xsl:choose>
-      <xsl:when test="//mods:identifier[starts-with(text(),'urn:ISSN:')]">
+      <xsl:when test="//dc:source[starts-with(text(),'urn:ISSN:')]">
         <xsl:text>urn:issn:</xsl:text>
-        <xsl:value-of select="translate(//mods:identifier[starts-with(text(),'urn:ISSN:')], translate(.,'0123456789X-',''), '')"/>
+        <xsl:value-of select="translate(//dc:source[starts-with(text(),'urn:ISSN:')], translate(.,'0123456789X-',''), '')"/>
       </xsl:when>
-      <xsl:when test="//mods:identifier[starts-with(text(),'urn:ISSN:')]">
+      <xsl:when test="//dc:source[starts-with(text(),'urn:ISSN:')]">
         <xsl:text>urn:isbn:</xsl:text>
-        <xsl:value-of select="translate(//mods:identifier[starts-with(text(),'urn:ISSN:')], translate(.,'0123456789X-',''), '')"/>
+        <xsl:value-of select="translate(//dc:source[starts-with(text(),'urn:ISSN:')], translate(.,'0123456789X-',''), '')"/>
       </xsl:when>
       <xsl:otherwise/>
     </xsl:choose>
@@ -49,11 +63,28 @@
 
   <xsl:variable name="isbnissndesc">
     <xsl:choose>
-      <xsl:when test="not(//mods:identifier[starts-with(text(),'urn:ISSN:')]) and not(//mods:identifier[starts-with(text(),'urn:ISSN:')])">
-        <xsl:value-of select="//mods:identifier"/>
+      <xsl:when test="not(//dc:source[starts-with(text(),'urn:ISSN:')]) and not(//dc:source[starts-with(text(),'urn:ISSN:')])">
+        <xsl:value-of select="//dc:source"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="//mods:identifier"/>
+        <xsl:value-of select="//dc:source"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
+  <xsl:variable name="accessrights">
+    <xsl:choose>
+      <xsl:when test="contains(//dc:rights/text(), 'RestrictedAccess')">
+        <xsl:text>RestrictedAccess::beperkte toegang||</xsl:text>
+      </xsl:when>
+      <xsl:when test="contains(//dc:rights/text(), 'OpenAccess')">
+        <xsl:text>OpenAccess::open toegang||</xsl:text>
+      </xsl:when>
+      <xsl:when test="contains(//dc:rights/text(), 'ClosedAccess')">
+        <xsl:text>ClosedAccess::gesloten toegang||</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text>RestrictedAccess::beperkte toegang||</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
@@ -65,55 +96,50 @@
       <xsl:element name="czp:general">
         <!-- identifier -->
         <!-- Catalogentry -->
-        <xsl:call-template name="IMScatalogentry">
-          <xsl:with-param name="catalog" select="'URI'"/>
-          <xsl:with-param name="entry" select="//dii:Identifier/text()"/>
-        </xsl:call-template>
-        <xsl:variable name="uri">
-          <xsl:call-template name="string-replace-all">
-            <xsl:with-param name="text" select="//dii:Identifier/text()"/>
-            <xsl:with-param name="replace" select="'urn:nbn:nl:hs:20-'"/>
-            <xsl:with-param name="by" select="'oai:surfsharekit.nl:'"/>
-          </xsl:call-template>
-        </xsl:variable>
-        <xsl:call-template name="IMScatalogentry">
-          <xsl:with-param name="catalog" select="'URI'"/>
-          <xsl:with-param name="entry" select="$uri"/>
-        </xsl:call-template>
-        <xsl:for-each select="//mods:identifier">
-          <xsl:if test="//mods:identifier[starts-with(text(),'URN:ISBN:')]">
-            <xsl:call-template name="IMScatalogentry">
-              <xsl:with-param name="catalog" select="'urn:isbn'"/>
-              <xsl:with-param name="entry" select="translate(., 'URN:ISBN:-', '')"/>
-            </xsl:call-template>
-          </xsl:if>
-          <xsl:if test="not(//mods:identifier[starts-with(text(),'URN:ISBN:')])">
+        <xsl:for-each select="//dc:identifier">
+          <xsl:if test="not(string-length(translate(., '0123456789', '')) = 0)">
+            <xsl:if test="//dc:identifier[starts-with(text(),'https://www.greeni.nl/iguana/www.main.cls?surl=greenisearch#RecordId=')]">
+              <xsl:variable name="uri">
+                <xsl:call-template name="string-replace-all">
+                  <xsl:with-param name="text" select="."/>
+                  <xsl:with-param name="replace" select="'https://www.greeni.nl/iguana/www.main.cls?surl=greenisearch#RecordId='"/>
+                  <xsl:with-param name="by" select="''"/>
+                </xsl:call-template>
+              </xsl:variable>
+              <xsl:call-template name="IMScatalogentry">
+                <xsl:with-param name="catalog" select="'URI'"/>
+                <xsl:with-param name="entry" select="concat('oai:www.greeni.nl:VBS:', translate($uri,'.',':'))"/>
+              </xsl:call-template>
+            </xsl:if>
             <xsl:call-template name="IMScatalogentry">
               <xsl:with-param name="catalog" select="'URI'"/>
               <xsl:with-param name="entry" select="."/>
             </xsl:call-template>
           </xsl:if>
         </xsl:for-each>
-        <xsl:if test="count(//didl:Resource[@mimeType='text/html']) &gt;0">
-          <xsl:call-template name="IMScatalogentry">
-            <xsl:with-param name="catalog" select="'URI'"/>
-            <xsl:with-param name="entry" select="//didl:Resource[@mimeType='text/html']/@ref"/>
-          </xsl:call-template>
-        </xsl:if>
+        <!--if isbn-->
+        <xsl:for-each select="//dc:identifier">
+          <xsl:if test="string-length(translate(., '0123456789', '')) = 0">
+            <xsl:call-template name="IMScatalogentry">
+              <xsl:with-param name="catalog" select="'urn:isbn'"/>
+              <xsl:with-param name="entry" select="."/>
+            </xsl:call-template>
+          </xsl:if>
+        </xsl:for-each>
         <!-- Title -->
         <xsl:choose>
-          <xsl:when test="//mods:title/text()">
+          <xsl:when test="//dc:title/text()">
             <xsl:choose>
-              <xsl:when test="string-length(//mods:title) &lt; 80">
+              <xsl:when test="string-length(//dc:title) &lt; 80">
                 <xsl:call-template name="IMSlangstring">
                   <xsl:with-param name="element" select="'czp:title'"/>
-                  <xsl:with-param name="value" select="//mods:title"/>
+                  <xsl:with-param name="value" select="//dc:title"/>
                 </xsl:call-template>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:call-template name="IMSlangstring">
                   <xsl:with-param name="element" select="'czp:title'"/>
-                  <xsl:with-param name="value" select="//mods:title"/>
+                  <xsl:with-param name="value" select="//dc:title"/>
                 </xsl:call-template>
               </xsl:otherwise>
             </xsl:choose>
@@ -125,10 +151,10 @@
         </xsl:element>
         <!-- Description -->
         <xsl:choose>
-          <xsl:when test="//mods:abstract/text()">
+          <xsl:when test="//dc:description/text()">
             <xsl:call-template name="IMSlangstring">
               <xsl:with-param name="element" select="'czp:description'"/>
-              <xsl:with-param name="value" select="//mods:abstract"/>
+              <xsl:with-param name="value" select="//dc:description"/>
             </xsl:call-template>
           </xsl:when>
           <xsl:otherwise>
@@ -139,21 +165,22 @@
           </xsl:otherwise>
         </xsl:choose>
         <!-- Keywords -->
-        <xsl:for-each select="//mods:topic">
+        <xsl:for-each select="//dc:subject">
           <xsl:call-template name="IMSlangstring">
+            <xsl:with-param name="language" select="'nl'"/> <!-- Hard coded NL -->
             <xsl:with-param name="element" select="'czp:keyword'"/>
             <xsl:with-param name="value" select="."/>
           </xsl:call-template>
         </xsl:for-each>
         <!-- Coverage -->
-        <xsl:for-each select="//mods:coverage">
+        <xsl:for-each select="//dc:coverage">
           <xsl:call-template name="IMSlangstring">
             <xsl:with-param name="element" select="'czp:coverage'"/>
             <xsl:with-param name="value" select="."/>
           </xsl:call-template>
         </xsl:for-each>
         <xsl:call-template name="date">
-          <xsl:with-param name="value" select="//mods:dateIssued"/>
+          <xsl:with-param name="value" select="//dc:date"/>
           <xsl:with-param name="type" select="'coverage'"/>
         </xsl:call-template>
         <!-- Aggregationlevel -->
@@ -166,50 +193,63 @@
       <!-- Lifecycle -->
       <xsl:element name="czp:lifecycle">
         <!-- Contribute author -->
-        <xsl:if test="//mods:name">
-          <xsl:for-each select="//mods:name">
-            <xsl:if test="current()//mods:roleTerm = 'aut'">
-              <xsl:element name="czp:contribute">
-                <xsl:call-template name="IMSvocabulary">
-                  <xsl:with-param name="element" select="'czp:role'"/>
-                  <xsl:with-param name="source" select="$vdex_contributerole"/>
-                  <xsl:with-param name="value" select="'author'"/>
-                </xsl:call-template>
-                <xsl:call-template name="czp-contributecentity">
-                  <xsl:with-param name="vcard_fn" select="./mods:displayForm"/>
-                  <xsl:with-param name="vcard_n" select="concat(./mods:namePart[@type='family'], ';', ./mods:namePart[@type='given'])"/>
-                  <xsl:with-param name="vcard_title" select="./mods:affiliation"/>
-                  <xsl:with-param name="vcard_uid" select="concat('DAI:', //dai:identifier[@IDref=current()/@ID])"/>
-                </xsl:call-template>
-              </xsl:element>
-            </xsl:if>
+        <xsl:if test="//dc:contributor">
+          <xsl:for-each select="//dc:contributor">
+            <xsl:variable name="contributor">
+              <xsl:call-template name="string-replace-all">
+                <xsl:with-param name="text" select="//dc:contributor"/>
+                <xsl:with-param name="replace" select="','"/>
+                <xsl:with-param name="by" select="';'"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:element name="czp:contribute">
+              <xsl:call-template name="IMSvocabulary">
+                <xsl:with-param name="element" select="'czp:role'"/>
+                <xsl:with-param name="source" select="$vdex_contributerole"/>
+                <xsl:with-param name="value" select="'author'"/>
+              </xsl:call-template>
+              <xsl:call-template name="czp-contributecentity">
+                <xsl:with-param name="vcard_fn" select="."/>
+                <xsl:with-param name="vcard_n" select="$contributor"/>
+              </xsl:call-template>
+            </xsl:element>
           </xsl:for-each>
         </xsl:if>
         <!-- Contribute publisher -->
-        <xsl:element name="czp:contribute">
-          <xsl:call-template name="IMSvocabulary">
-            <xsl:with-param name="element" select="'czp:role'"/>
-            <xsl:with-param name="source" select="$vdex_contributerole"/>
-            <xsl:with-param name="value" select="'publisher'"/>
-          </xsl:call-template>
-          <xsl:if test="not(translate(//mods:publisher , 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'hogeschool inholland')">
+        <xsl:for-each select="//dc:publisher">
+          <xsl:element name="czp:contribute">
+            <xsl:call-template name="IMSvocabulary">
+              <xsl:with-param name="element" select="'czp:role'"/>
+              <xsl:with-param name="source" select="$vdex_contributerole"/>
+              <xsl:with-param name="value" select="'publisher'"/>
+            </xsl:call-template>
+            <xsl:call-template name="czp-contributecentity">
+              <xsl:with-param name="vcard_fn" select="."/>
+              <xsl:with-param name="vcard_org" select="."/>
+            </xsl:call-template>
+            <xsl:call-template name="date">
+              <xsl:with-param name="value" select="//dc:date"/>
+              <xsl:with-param name="type" select="'date'"/>
+            </xsl:call-template>
+          </xsl:element>
+        </xsl:for-each>
+        <xsl:if test="count(//dc:publisher) = 0">
+          <xsl:element name="czp:contribute">
+            <xsl:call-template name="IMSvocabulary">
+              <xsl:with-param name="element" select="'czp:role'"/>
+              <xsl:with-param name="source" select="$vdex_contributerole"/>
+              <xsl:with-param name="value" select="'publisher'"/>
+            </xsl:call-template>
             <xsl:call-template name="czp-contributecentity">
               <xsl:with-param name="vcard_fn" select="$publisher"/>
               <xsl:with-param name="vcard_org" select="$publisher"/>
-              <xsl:with-param name="vcard_address" select="//mods:placeTerm/text()"/>
             </xsl:call-template>
-          </xsl:if>
-          <xsl:call-template name="czp-contributecentity">
-            <xsl:with-param name="vcard_fn" select="'Hogeschool InHolland'"/>
-            <xsl:with-param name="vcard_org" select="'Hogeschool InHolland'"/>
-            <xsl:with-param name="vcard_role" select="concat(//hbo:namePart[@type='lectorate'], ';', //hbo:namePart[@type='department'], ',',//hbo:namePart[@type='discipline']) "/>
-            <xsl:with-param name="vcard_address" select="'Amsterdam'"/>
-          </xsl:call-template>
-          <xsl:call-template name="date">
-            <xsl:with-param name="value" select="//mods:dateIssued"/>
-            <xsl:with-param name="type" select="'date'"/>
-          </xsl:call-template>
-        </xsl:element>
+            <xsl:call-template name="date">
+              <xsl:with-param name="value" select="//dc:date"/>
+              <xsl:with-param name="type" select="'date'"/>
+            </xsl:call-template>
+          </xsl:element>
+        </xsl:if>
       </xsl:element>
       <!-- Metametadata -->
       <xsl:element name="czp:metametadata">
@@ -222,19 +262,44 @@
       </xsl:element>
       <!-- Technical -->
       <xsl:element name="czp:technical">
-        <xsl:call-template name="elemental">
-          <xsl:with-param name="element_name" select="'czp:format'"/>
-          <!-- verplicht -->
-          <xsl:with-param name="value" select="'application/pdf'"/>
-        </xsl:call-template>
-        <xsl:call-template name="elemental">
-          <xsl:with-param name="element_name" select="'czp:location'"/>
-          <!-- verplicht -->
-          <xsl:with-param name="value" select="//didl:Resource[@mimeType='application/pdf']/@ref"/>
-        </xsl:call-template>
+        <xsl:choose>
+          <xsl:when test="count(//dc:format) > 0">
+            <xsl:call-template name="elemental">
+              <xsl:with-param name="element_name" select="'czp:format'"/>
+              <xsl:with-param name="value" select="//dc:format"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <!-- safe default, probably always at least a http source -->
+            <xsl:call-template name="elemental">
+              <xsl:with-param name="element_name" select="'czp:format'"/>
+              <xsl:with-param name="value" select="'text/html'"/>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:choose>
+          <xsl:when test="count(//dc:relation) > 0">
+            <xsl:call-template name="elemental">
+              <xsl:with-param name="element_name" select="'czp:location'"/>
+              <xsl:with-param name="value" select="//dc:relation"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <!-- pick first identifier starting with http -->
+            <xsl:call-template name="elemental">
+              <xsl:with-param name="element_name" select="'czp:location'"/>
+              <xsl:with-param name="value" select="//dc:identifier[starts-with(text(),'http')]"/>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:element>
       <!-- Educational -->
       <xsl:element name="czp:educational">
+        <xsl:call-template name="IMSvocabulary">
+          <xsl:with-param name="element" select="'czp:learningresourcetype'"/>
+          <xsl:with-param name="source" select="$vdex_learningresourcetype"/>
+          <xsl:with-param name="value" select="'informatiebron'"/>
+        </xsl:call-template>
         <xsl:call-template name="IMSvocabulary">
           <xsl:with-param name="element" select="'czp:intendedenduserrole'"/>
           <xsl:with-param name="source" select="$vdex_intendedenduserrole"/>
@@ -268,11 +333,6 @@
           <xsl:with-param name="source" select="$vdex_copyrightandotherrestrictions"/>
           <xsl:with-param name="value" select="'yes'"/>
         </xsl:call-template>
-        <xsl:call-template name="IMSlangstring">
-          <xsl:with-param name="element" select="'czp:description'"/>
-          <xsl:with-param name="language" select="'nl'"/>
-          <xsl:with-param name="value" select="//dc:rights"/>
-        </xsl:call-template>
       </xsl:element>
       <!-- Relation -->
       <xsl:if test="$isbnissn and $isbnissn != ''">
@@ -298,29 +358,32 @@
           </xsl:element>
         </xsl:element>
       </xsl:if>
-      <!-- only some surfsharekit repo's have this classification -->
-      <xsl:if test="contains(//didl:Item/didl:Component/didl:Resource/@ref, 'pubaflsinholland')">
-        <xsl:call-template name="IMSclassification">
-          <xsl:with-param name="purpose_value" select="'discipline'"/>
-          <xsl:with-param name="taxon_source" select="$vdex_classification_begrippenkader"/>
-          <xsl:with-param name="taxons" select="'5e86dc82-1981-48df-bbe5-abd4a9b3767b::Voedsel, natuur en leefomgeving||'"/>
-        </xsl:call-template>
-      </xsl:if>
 
-      <!-- access rights -->
+      <!-- Classification -->
+      <xsl:call-template name="IMSclassification">
+        <xsl:with-param name="purpose_value" select="'discipline'"/>
+        <xsl:with-param name="taxon_source" select="$vdex_classification_begrippenkader"/>
+        <xsl:with-param name="taxons" select="'5e86dc82-1981-48df-bbe5-abd4a9b3767b::Voedsel, natuur en leefomgeving||'"/>
+      </xsl:call-template>
+      <xsl:if test="//dc:type">
+          <xsl:call-template name="IMSclassification">
+            <xsl:with-param name="purpose_value" select="'idea'"/>
+            <xsl:with-param name="taxon_source" select="'http://library.wur.nl/vdex/publicatietypes-samhao.xml'"/>
+            <xsl:with-param name="taxons" select="concat(//dc:type, '::||')"/>
+          </xsl:call-template>
+      </xsl:if>
+      <!-- add access rights classification -->
       <xsl:call-template name="ensureAccessrights">
-        <xsl:with-param name="taxons" select="'OpenAccess::open toegang||'"/>
+        <xsl:with-param name="taxons" select="$accessrights"/>
       </xsl:call-template>
     </xsl:element>
   </xsl:template>
+
 
   <!-- Dit zijn de functies, verander alleen hierboven de variabelen. -->
   <xsl:template name="czp-contributecentity">
     <xsl:param name="vcard_n"/>
     <xsl:param name="vcard_fn"/>
-    <xsl:param name="vcard_title"/>
-    <xsl:param name="vcard_role"/>
-    <xsl:param name="vcard_uid"/>
     <xsl:param name="vcard_org"/>
     <xsl:param name="vcard_address"/>
     <xsl:element name="czp:centity">
@@ -332,38 +395,27 @@
         <xsl:if test="$vcard_fn !=''">
           <xsl:text>FN:</xsl:text>
           <xsl:value-of select="$vcard_fn"/>
-          <xsl:text>&#xa;</xsl:text>
-        </xsl:if>
-        <xsl:if test="$vcard_n !=''">
-          <xsl:text>N:</xsl:text>
-          <xsl:value-of select="$vcard_n"/>
-          <xsl:text>&#xa;</xsl:text>
-        </xsl:if>
-        <xsl:if test="$vcard_title !=''">
-          <xsl:text>TITLE:</xsl:text>
-          <xsl:value-of select="$vcard_title"/>
-          <xsl:text>&#xa;</xsl:text>
-        </xsl:if>
-        <xsl:if test="$vcard_role !='' and $vcard_role !=';,'">
-          <xsl:text>ROLE:</xsl:text>
-          <xsl:value-of select="$vcard_role"/>
-          <xsl:text>&#xa;</xsl:text>
-        </xsl:if>
-        <xsl:if test="$vcard_uid !='' and $vcard_uid != 'DAI:'">
-          <xsl:text>UID:</xsl:text>
-          <xsl:value-of select="$vcard_uid"/>
-          <xsl:text>&#xa;</xsl:text>
+          <xsl:text>
+</xsl:text>
+          <xsl:if test="$vcard_n !=''">
+            <xsl:text>N:</xsl:text>
+            <xsl:value-of select="$vcard_n"/>
+            <xsl:text>
+</xsl:text>
+          </xsl:if>
         </xsl:if>
         <xsl:if test="$vcard_org !=''">
           <xsl:text>ORG:</xsl:text>
           <xsl:value-of select="$vcard_org"/>
-          <xsl:text>&#xa;</xsl:text>
+          <xsl:text>
+</xsl:text>
         </xsl:if>
         <xsl:if test="$vcard_address !=''">
           <xsl:text>ADR:;;;</xsl:text>
           <xsl:value-of select="$vcard_address"/>
           <xsl:text>;;</xsl:text>
-          <xsl:text>&#xa;</xsl:text>
+          <xsl:text>
+</xsl:text>
         </xsl:if>
         <xsl:text>END:VCARD</xsl:text>
       </xsl:element>
