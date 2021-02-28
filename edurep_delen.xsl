@@ -2,6 +2,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2"
+	xmlns:oai="http://www.openarchives.org/OAI/2.0/"
 	xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd">
 
 <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
@@ -48,6 +49,21 @@
 	</xsl:call-template>
   </xsl:copy>
 </xsl:template>
+
+	<!-- edurepdelen add 2 fields after update from bme
+		the (non-)namespace conflicts with namespace of api added records
+		making them invalid upon entering edurep -->
+	<!-- the following 2 rules fix this (non-namespaced fields inherit the oai namespace) -->
+	<xsl:template match="lom:metametadata/oai:contribute">
+	</xsl:template>
+
+	<xsl:template match="lom:lifecycle/lom:contribute[child::lom:role/lom:value/lom:langstring = 'publisher']/oai:date">
+		<xsl:element name="lom:date">
+			<xsl:element name="lom:datetime">
+				<xsl:value-of select="//lom:lifecycle/lom:contribute[child::lom:role/lom:value/lom:langstring = 'publisher']/oai:date/oai:datetime"/>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
 
 	<!-- Vervang video bestandsformaat als de catalogentry één van de onderstaande URL's bevat -->
 	<xsl:template match="lom:format">
