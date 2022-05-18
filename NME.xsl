@@ -53,6 +53,11 @@
 					<xsl:with-param name="taxons" select="'RestrictedAccess::beperkte toegang||'"/>
 				</xsl:call-template>
 			</xsl:when>
+			<xsl:when test="contains(//lom:lom/lom:technical/lom:location/text(), 'voedseleducatie.nl')">
+				<xsl:call-template name="ensureAccessrights">
+					<xsl:with-param name="taxons" select="'RestrictedAccess::beperkte toegang||'"/>
+				</xsl:call-template>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="ensureAccessrights">
 					<xsl:with-param name="taxons" select="'OpenAccess::open toegang||'"/>
