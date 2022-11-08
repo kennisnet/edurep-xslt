@@ -74,35 +74,35 @@
                     <!-- Fout geschreven waarden -->
                     <xsl:when test="contains($value, 'author') or contains($value, 'auteur')">
                         <xsl:call-template name="IEEEvocabulary">
-                            <xsl:with-param name="element" select="concat($usedNamespace, ':intendedenduserrole')"/>
+                            <xsl:with-param name="element" select="concat($usedNamespace, ':intendedEndUserRole')"/>
                             <xsl:with-param name="source" select="child::*[local-name() = 'source']"/>
                             <xsl:with-param name="value" select="'author'"/>
                         </xsl:call-template>
                     </xsl:when>
                     <xsl:when test="contains($value, 'learner') or contains($value, 'leerling/student')">
                         <xsl:call-template name="IEEEvocabulary">
-                            <xsl:with-param name="element" select="concat($usedNamespace, ':intendedenduserrole')"/>
+                            <xsl:with-param name="element" select="concat($usedNamespace, ':intendedEndUserRole')"/>
                             <xsl:with-param name="source" select="child::*[local-name() = 'source']"/>
                             <xsl:with-param name="value" select="'learner'"/>
                         </xsl:call-template>
                     </xsl:when>
                     <xsl:when test="contains($value, 'teacher') or contains($value, 'leraar')">
                         <xsl:call-template name="IEEEvocabulary">
-                            <xsl:with-param name="element" select="concat($usedNamespace, ':intendedenduserrole')"/>
+                            <xsl:with-param name="element" select="concat($usedNamespace, ':intendedEndUserRole')"/>
                             <xsl:with-param name="source" select="child::*[local-name() = 'source']"/>
                             <xsl:with-param name="value" select="'teacher'"/>
                         </xsl:call-template>
                     </xsl:when>
                     <xsl:when test="contains($value, 'manager') or contains($value, 'beheerder')">
                         <xsl:call-template name="IEEEvocabulary">
-                            <xsl:with-param name="element" select="concat($usedNamespace, ':intendedenduserrole')"/>
+                            <xsl:with-param name="element" select="concat($usedNamespace, ':intendedEndUserRole')"/>
                             <xsl:with-param name="source" select="child::*[local-name() = 'source']"/>
                             <xsl:with-param name="value" select="'manager'"/>
                         </xsl:call-template>
                     </xsl:when>
                     <xsl:when test="$value=''">
                         <xsl:call-template name="IEEEvocabulary">
-                            <xsl:with-param name="element" select="concat($usedNamespace, ':intendedenduserrole')"/>
+                            <xsl:with-param name="element" select="concat($usedNamespace, ':intendedEndUserRole')"/>
                             <xsl:with-param name="source" select="child::*[local-name() = 'source']"/>
                             <xsl:with-param name="value" select="'learner'"/>
                         </xsl:call-template>
