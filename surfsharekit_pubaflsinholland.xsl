@@ -33,11 +33,7 @@
 		</xsl:copy>
 	</xsl:template>
 
-	<!-- default copy -->
-	<xsl:template match="@*|node()">
-		<!-- Velden valideren -->
-		<xsl:call-template name="validateValue"/>
-	</xsl:template>
+
 
 	<!-- Aggregationlevel element met foute waarde wordt vervangen door "2" -->
 	<xsl:template match="ieee:aggregationLevel">
@@ -99,5 +95,11 @@
 	        <xsl:with-param name="taxons" select="'5e86dc82-1981-48df-bbe5-abd4a9b3767b::Voedsel, natuur en leefomgeving||'"/>
 	    </xsl:call-template>
     </xsl:template>
+
+	<!-- default copy -->
+	<xsl:template match="@*|node()">
+		<!-- Velden valideren -->
+		<xsl:call-template name="validateValue"/>
+	</xsl:template>
 
 </xsl:stylesheet>

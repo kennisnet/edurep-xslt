@@ -1,3 +1,4 @@
+<?xml version="1.0" standalone="no"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oai_lom="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns:oai="http://www.openarchives.org/OAI/2.0/" xmlns:lom="http://www.imsglobal.org/xsd/imsmd_v1p2" xmlns="http://www.openarchives.org/OAI/2.0/" version="1.0" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p4.xsd http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 <xsl:output method="xml" indent="no" encoding="UTF-8" standalone="no"/>
 
@@ -53,17 +54,15 @@
 								<xsl:when test="contains(child::oai_lom:centity/oai_lom:vcard,'null')">
 									<xsl:text>BEGIN:VCARD 
 VERSION:3.0  
-N:Universiteit Utrecht, Freudenthal Instituut
-ORG:Universiteit Utrecht, Freudenthal Instituut    
+N:Freudenthal Instituut
+ORG:Freudenthal Instituut
 END:VCARD</xsl:text>
 								</xsl:when>
-								<!-- Afvangen van VCARDS met publishers (bijv. " Universiteit Utrecht, Freudenthal Instituut / AOC raad") -->
-								<xsl:when test="contains(child::oai_lom:centity/oai_lom:vcard,'ORG: Universiteit Utrecht, Freudenthal Instituut /')"/>
 								<xsl:when test="contains(child::oai_lom:centity/oai_lom:vcard,'ORG: Universiteit Utrecht')">
 									<xsl:text>BEGIN:VCARD 
 VERSION:3.0  
-N:Universiteit Utrecht, Freudenthal Instituut
-ORG:Universiteit Utrecht, Freudenthal Instituut    
+N:Freudenthal Instituut
+ORG:Freudenthal Instituut
 END:VCARD</xsl:text>
 								</xsl:when>
 								<xsl:otherwise>
@@ -76,9 +75,13 @@ END:VCARD</xsl:text>
 				</xsl:element>
 			</xsl:for-each>
 			
-			<!-- Alle vcards die een andere rol dan 'publisher' hebben ongewijzigd doorgeven -->
-			<xsl:for-each select="child::oai_lom:contribute[child::oai_lom:role/oai_lom:value/oai_lom:langstring != 'publisher']">
-				<xsl:apply-templates select="child::oai_lom:contribute"/>
+			<!-- Alle vcards die rol van 'author' hebben ongewijzigd doorgeven -->
+			<xsl:for-each select="child::oai_lom:contribute[child::oai_lom:role/oai_lom:value/oai_lom:langstring = 'author']">
+				<xsl:element name="oai_lom:contribute">
+					<xsl:apply-templates select="child::oai_lom:role"/>
+					<xsl:apply-templates select="child::oai_lom:centity"/>
+					<xsl:apply-templates select="child::oai_lom:date"/>
+				</xsl:element>
 			</xsl:for-each>
 		
 			<!-- Als er geen vcard voor een publisher is, dan deze toevoegen -->
@@ -106,8 +109,8 @@ END:VCARD</xsl:text>
 						<xsl:element name="oai_lom:vcard">
 							<xsl:text>BEGIN:VCARD 
 VERSION:3.0  
-N:Universiteit Utrecht, Freudenthal Instituut
-ORG:Universiteit Utrecht, Freudenthal Instituut    
+N:Freudenthal Instituut
+ORG:Freudenthal Instituut
 END:VCARD</xsl:text>
 						</xsl:element>
 					</xsl:element>
@@ -170,4 +173,3 @@ END:VCARD</xsl:text>
 </xsl:template>
 
 </xsl:stylesheet>
-
