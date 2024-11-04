@@ -264,10 +264,12 @@
       <xsl:element name="czp:technical">
         <xsl:choose>
           <xsl:when test="count(//dc:format) > 0">
-            <xsl:call-template name="elemental">
-              <xsl:with-param name="element_name" select="'czp:format'"/>
-              <xsl:with-param name="value" select="//dc:format"/>
-            </xsl:call-template>
+            <xsl:for-each select="//dc:format">  
+              <xsl:call-template name="elemental">
+                <xsl:with-param name="element_name" select="'czp:format'"/>
+                <xsl:with-param name="value" select="."/>
+              </xsl:call-template>
+            </xsl:for-each>
           </xsl:when>
           <xsl:otherwise>
             <!-- safe default, probably always at least a http source -->
@@ -279,10 +281,12 @@
         </xsl:choose>
         <xsl:choose>
           <xsl:when test="count(//dc:relation) > 0">
-            <xsl:call-template name="elemental">
-              <xsl:with-param name="element_name" select="'czp:location'"/>
-              <xsl:with-param name="value" select="//dc:relation"/>
-            </xsl:call-template>
+            <xsl:for-each select="//dc:relation">
+              <xsl:call-template name="elemental">
+                <xsl:with-param name="element_name" select="'czp:location'"/>
+                <xsl:with-param name="value" select="."/>
+              </xsl:call-template>
+            </xsl:for-each>
           </xsl:when>
           <xsl:otherwise>
             <!-- pick first identifier starting with http -->
